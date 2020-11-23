@@ -1,0 +1,45 @@
+* Rust
+  Default versions of Rust tools useful for bootstrapping or for use with
+  non-nixified Rust projects and projects that choose to rely on the floating
+  versions here rather than pinning their own versions.
+
+  If a project does at some point need a specific version, don't roll back these
+  versions.  Pin your project's versions instead.
+** Tools Included
+   - ~cargo2nix~ nixifier for Rust projects
+   - ~rust~ A working cargo & rustc
+*** Options
+
+    Configure your preferred Rust version by setting the following option in
+    your ~home.nix~
+
+    #+BEGIN_SRC nix
+    posimacs = {
+      rust-channel = "stable";
+      # rust-cahnnel = "nightly";
+      # rust-channel = "1.44.1";
+    };
+    #+END_SRC
+
+
+** Installation & Configuration
+   You should have home manager installed using the instructions at the root of
+   this repository.
+
+   #+BEGIN_SRC nix
+     { pkgs, ... }:
+
+     let
+       # assuming you use niv to manage your posimacs version pins
+       # sources = import ./nix/sources.nix;
+       # posimacs-rust = import "${sources.posimacs}/rust";
+
+       # the recommended way of local development, a path literal pointing to a
+       # checked out copy of this repository
+       posimacs-rust = ~/my/checked/out/copy/posimacs/rust;
+     in
+       imports = [
+         posimacs-rust
+       ];
+     }
+   #+END_SRC

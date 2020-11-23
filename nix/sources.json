@@ -1,0 +1,26 @@
+{
+    "emacs-overlay": {
+        "branch": "master",
+        "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "rev": "2301c4e71e1ee0cb957a271b331cb4144e3061be",
+        "sha256": "1z7llidq25x9pmdyq61zbsass4k5kk75xhc885ypx8l7xxwcgnjh",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/emacs-overlay/archive/2301c4e71e1ee0cb957a271b331cb4144e3061be.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixos-20.03",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "1fb95d956cc7f3f29366cb275f6254fd1e278bc5",
+        "sha256": "0pf3fqkm94f5j6vxsm4zbyq293rb0cpxqwdxzhp6agv6w5j5fmki",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/1fb95d956cc7f3f29366cb275f6254fd1e278bc5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

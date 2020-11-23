@@ -1,0 +1,38 @@
+{
+    "cargo2nix": {
+        "branch": "master",
+        "description": "Build Rust crates effortlessly with Nix",
+        "homepage": "",
+        "owner": "cargo2nix",
+        "repo": "cargo2nix",
+        "rev": "7980d189b194bc8dd24bb95edc4fb4df1fe7b0c0",
+        "sha256": "0lbzl0ra8jgkfzvjx3560acbn21kc30l0w2s49613mhbii1kb9q7",
+        "type": "tarball",
+        "url": "https://github.com/cargo2nix/cargo2nix/archive/7980d189b194bc8dd24bb95edc4fb4df1fe7b0c0.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixos-20.03",
+        "description": "Nix Packages collection",
+        "homepage": null,
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f9c449328840fe949c035f275b6c6d8fec077280",
+        "sha256": "042k7fjvn71db0fs2sjkdz00fv1085abqg8hspclm1f7hirzdwsy",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/f9c449328840fe949c035f275b6c6d8fec077280.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs-mozilla": {
+        "branch": "master",
+        "description": "mozilla related nixpkgs (extends nixos/nixpkgs repo)",
+        "homepage": null,
+        "owner": "mozilla",
+        "repo": "nixpkgs-mozilla",
+        "rev": "efda5b357451dbb0431f983cca679ae3cd9b9829",
+        "sha256": "11wqrg86g3qva67vnk81ynvqyfj0zxk83cbrf0p9hsvxiwxs8469",
+        "type": "tarball",
+        "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/efda5b357451dbb0431f983cca679ae3cd9b9829.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

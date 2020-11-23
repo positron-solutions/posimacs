@@ -1,0 +1,143 @@
+* Posimacs
+
+A home manager module including external programs, Emacs dependencies, and basic
+configurations to get started programming in Emacs with:
+
+- Rust
+- Nix
+
+Out of the box, major supported configurations & support programs include:
+
+- LSP and a Rust Analyzer build included, integration via Rustic
+- Minibuffer completions with Ivy + AMX + Counsel
+- =Straight.el= package management
+
+This module is also an example of configuring a program, its shell aliases,
+systemd units, accompanying files and programs as a fully self-contained
+declaration for easy distribution among other nix users.
+
+Emacs is an appopriate platform for distributing rich text-ui software without
+the limitations of virtual terminal interfaces.  The user can further integrate
+via emacs lisp, itself written in-editor and easily redistributed.
+
+Integration with other CLI tools via the =transient= Emacs package should be
+considered, especailly if writing Rust CLI tools that have nice options
+libraries like clap and you want to rapidly develop a more efficient frontend
+while keeping a CLI interface avaiable.
+
+** Installing the Posimacs Module
+
+After you have installed home manager, you just need to add this module to your
+=imports= list and then create at least =~/.emacs.d/init.el= to load the
+provided configuration files.
+
+#+BEGIN_SRC nix ~/.config/nixpkgs/home.nix
+  { pkgs, ... }:
+
+  let
+    # Assuming you use niv for providing pinned versions of git dependencies
+    # sources = import ./nix/sources.nix;
+    # posimacs = "${sources.posimacs}";
+
+    # Using local development style, a path literal pointing to where you checked
+    # out this branch, which is recommended because it's faster to make changes
+    posimacs = ~/path/to/my/posimacs;
+  in {
+    imports = [ posimacs ];
+
+    # Module configuration via options (found in default.nix
+    #
+    # Use the emacs daemon, enabling `emacsclient` aliases if aliases are turned on
+    # services.emacs.enable = true;
+    #
+    # don't provide alias shortcuts for client commands or EDITOR setting
+    # home.emacs.aliases = false;
+    #
+  }
+#+END_SRC
+
+And then you need to write at least a shim =early-init.el= and =init.el= to load
+the files home manager has linked into =~/.emacs.d=
+
+#+BEGIN_SRC elisp ~/.emacs.d/early-init.el
+(load (expand-file-name "posimacs-fastload.el" user-emacs-directory))
+#+END_SRC
+
+This example =~/.emacs.d/init.el= loads everything.  If you wish to omit some
+files or load your own custom versions, just be aware that some of the provided
+files may not be completely coherent without the others.  This is not a
+structured module system like spacemacs layers etc.
+
+#+BEGIN_SRC elisp ~/.emacs.d/init.el
+  ;; This init file just loads the provided files
+
+  (let ((posimacs-files '("posimacs-defaults.el"
+                          "posimacs-minibuffer.el"
+                          "posimacs-prog.el"
+                          "posimacs-vc.el")))
+                          (dolist (file-name posimacs-files)
+                          (load (expand-file-name file-name user-emacs-directory))))
+
+
+  ;; Now that you have some basics configured, learn to use ielm or program in
+  ;; buffer with M-x eval-region etc and customize the rest of the owl
+#+END_SRC
+
+Tell home manager to update your nix environment
+
+#+BEGIN_SRC sh
+home-manager switch
+#+END_SRC
+
+If the daemon is active (default) it will start and, if the =~/.emacs.d/=
+straight cache is cold, =straight.el= will begin downloading your dependencies
+and building packages.  Connect to the daemon with =emacsclient=.
+
+Otherwise you can just run =emacs= to watch the process manually.
+
+*** Additional OSX Steps
+
+Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
+
+You will /still/ need to run =M-x all-the-icons-install-fonts= for icons to
+begin working.  Can't pre-install them as they are not picked up in
+=~/Library/Fonts/=
+
+** Daemon
+
+The daemon is extremely convenient for fast loading and keeping all buffers
+accessible to all panes by launching clients to a central emacs server.  This is
+not available on OSX yet.  On Linux, you can enable it by, in addition to the
+installation instructions above, settting =services.emacs.enable = true;= in
+your =home.nix=.
+
+Whenever you reload, the daemon will not restart because you might have open
+files that needs saving and systemd knows nothing about these.  Therefore,
+restart your daemon manually (it prints this instruction after =home-manager
+switch=) by running =systemctl --user restart emacs=.
+
+** Maintenance
+
+There's 2-3 layers of modularization and customization we can use to achieve
+cooperative customization:
+
+1. Git branches
+2. Home manager modules
+3. Emacs packages (from a package repo or custom source)
+4. Emacs files in non-package format
+
+*** Don't Forget Customize!
+
+You likely don't need to change a variable setting in this repo.  Configure the
+relevant variable in your =custom.el= file by using =M-x customize= or =C-h v
+<variable name>= and save it the way you like.  If it's a matter of opinion, we
+don't need to fix it in source.
+
+*** When blocked by a config, try to make it /more/ flexible
+
+If something is in your way, attempt to extract it to a new `.el` file or
+parameterize it.  Maintaining an independent branch may become too painful over
+time, but could be viable if you are doing local development on posimacs
+(recommended for faster iteration).  If your lisp files grow into a first-class
+package, of course try to publish it on Melpa or where straight can use it from
+git source.  For the last-mile configuration, bare =.el= files are appropriate.
