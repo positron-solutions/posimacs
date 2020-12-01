@@ -79,6 +79,9 @@
   (projectile-mode +1)
   (setq counsel-projectile-switch-project-action 'magit-status))
 
+;; provides emacs ripgrep integration for counsel-projectil-ripgrep
+(use-package projectile-ripgrep)
+
 (use-package counsel-projectile
   :after (counsel projectile)
   :config (counsel-projectile-mode))
