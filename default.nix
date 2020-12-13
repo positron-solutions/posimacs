@@ -28,11 +28,11 @@ in {
   config = {
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
-      ripgrep # projectile-ripgrep function relies on this
-      symbola
+      niv
       nix-index
       nix-prefetch-git
-      niv
+      ripgrep # projectile-ripgrep function relies on this
+      symbola
     ];
 
     programs.emacs = {
