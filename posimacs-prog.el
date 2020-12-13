@@ -11,6 +11,9 @@
 
 (use-package nix-mode)
 
+(use-package yasnippet
+  :config (yas-global-mode))
+
 (use-package rustic
   :requires (direnv)
   :init

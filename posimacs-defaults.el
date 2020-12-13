@@ -66,7 +66,6 @@
 
 (use-package hydra) ;; TODO make some cool Hydras!
 
-(use-package yasnippet)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
