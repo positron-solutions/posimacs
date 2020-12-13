@@ -8,7 +8,7 @@ let
       (import sources.emacs-overlay)
     ];
   };
-
+  emacs-vterm = pkgs.callPackage ./emacs-vterm {};
 in {
   options.posimacs-options = {
     aliases = lib.mkOption {
@@ -28,6 +28,7 @@ in {
   config = {
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
+      emacs-vterm
       niv
       nix-index
       nix-prefetch-git
@@ -52,6 +53,49 @@ in {
       "nano" = "emacs";
     });
 
+    programs.bash.initExtra = ''
+      # Extra bash shell configuration for vterm in emacs
+
+      vterm_printf(){
+          if [ -n "$TMUX" ]; then
+              # Tell tmux to pass the escape sequences through
+              # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+              printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+          elif [ "''${TERM%%-*}" = "screen" ]; then
+              # GNU screen (screen, screen-256color, screen-256color-bce)
+              printf "\eP\e]%s\007\e\\" "$1"
+          else
+              printf "\e]%s\e\\" "$1"
+          fi
+      }
+
+      if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+        function clear(){
+          vterm_printf "51;Evterm-clear-scrollback";
+          tput clear;
+        }
+      fi
+
+      PROMPT_COMMAND='echo -ne "\033]0;''${HOSTNAME}:''${PWD}\007"'
+
+      vterm_prompt_end(){
+          vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
+      }
+      PS1=$PS1'\[$(vterm_prompt_end)\]'
+
+      vterm_cmd() {
+          local vterm_elisp
+          vterm_elisp=""
+          while [ $# -gt 0 ]; do
+              vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
+              shift
+          done
+          vterm_printf "51;E$vterm_elisp"
+      }
+
+      # End vterm configuration
+    '';
+
     home.sessionVariables = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
       # Use a new client window and fall back to terminal standalone if client fails
       EDITOR = "emacsclient --create-frame";
@@ -67,6 +111,7 @@ in {
     home.file.".emacs.d/posimacs-defaults.el".source = ./posimacs-defaults.el;
     home.file.".emacs.d/posimacs-minibuffer.el".source = ./posimacs-minibuffer.el;
     home.file.".emacs.d/posimacs-prog.el".source = ./posimacs-prog.el;
+    home.file.".emacs.d/posimacs-terminal.el".source = ./posimacs-terminal.el;
     home.file.".emacs.d/posimacs-vc.el".source = ./posimacs-vc.el;
 
     # pre-install fonts for all-the-icons
@@ -76,5 +121,8 @@ in {
     home.file.".local/share/fonts/material-design-icons.ttf".source = ./fonts/material-design-icons.ttf;
     home.file.".local/share/fonts/octicons.ttf".source = ./fonts/octicons.ttf;
     home.file.".local/share/fonts/weathericons.ttf".source = ./fonts/weathericons.ttf;
+
+    # link emacs-vterm module into load path
+    home.file.".emacs.d/vendor/emacs-vterm".source = emacs-vterm;
   };
 }

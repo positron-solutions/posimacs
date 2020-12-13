@@ -11,6 +11,7 @@ Out of the box, major supported configurations & support programs include:
 - LSP and a Rust Analyzer build included, integration via Rustic
 - Minibuffer completions with Ivy + AMX + Counsel
 - =Straight.el= package management
+- Vterm integration & nix build of emacs-libvterm
 
 This module is also an example of configuring a program, its shell aliases,
 systemd units, accompanying files and programs as a fully self-contained
@@ -74,6 +75,7 @@ structured module system like spacemacs layers etc.
   (let ((posimacs-files '("posimacs-defaults.el"
                           "posimacs-minibuffer.el"
                           "posimacs-prog.el"
+                          "posimacs-terminal.el"
                           "posimacs-vc.el")))
                           (dolist (file-name posimacs-files)
                           (load (expand-file-name file-name user-emacs-directory))))
