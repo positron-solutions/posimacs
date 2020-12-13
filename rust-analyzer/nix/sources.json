@@ -5,22 +5,22 @@
         "homepage": "",
         "owner": "cargo2nix",
         "repo": "cargo2nix",
-        "rev": "7980d189b194bc8dd24bb95edc4fb4df1fe7b0c0",
-        "sha256": "0lbzl0ra8jgkfzvjx3560acbn21kc30l0w2s49613mhbii1kb9q7",
+        "rev": "4bbd3137ff1422ef3565748eae33efe6e2ffbf39",
+        "sha256": "0f2j9cz5syx8c171nvac7jc0wsb1xvp87ykwrlkidprjgncryr0f",
         "type": "tarball",
-        "url": "https://github.com/cargo2nix/cargo2nix/archive/7980d189b194bc8dd24bb95edc4fb4df1fe7b0c0.tar.gz",
+        "url": "https://github.com/cargo2nix/cargo2nix/archive/4bbd3137ff1422ef3565748eae33efe6e2ffbf39.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "nixos-20.03",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
+        "branch": "master",
+        "description": "Nix Packages collection",
+        "homepage": "",
         "owner": "NixOS",
-        "repo": "nixpkgs-channels",
-        "rev": "f9c449328840fe949c035f275b6c6d8fec077280",
-        "sha256": "042k7fjvn71db0fs2sjkdz00fv1085abqg8hspclm1f7hirzdwsy",
+        "repo": "nixpkgs",
+        "rev": "e34208e10033315fddf6909d3ff68e2d3cf48a23",
+        "sha256": "0ngkx5ny7bschmiwc5q9yza8fdwlc3zg47avsywwp8yn96k2cpmg",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/f9c449328840fe949c035f275b6c6d8fec077280.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/e34208e10033315fddf6909d3ff68e2d3cf48a23.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-mozilla": {
@@ -29,22 +29,10 @@
         "homepage": null,
         "owner": "mozilla",
         "repo": "nixpkgs-mozilla",
-        "rev": "efda5b357451dbb0431f983cca679ae3cd9b9829",
-        "sha256": "11wqrg86g3qva67vnk81ynvqyfj0zxk83cbrf0p9hsvxiwxs8469",
+        "rev": "18cd4300e9bf61c7b8b372f07af827f6ddc835bb",
+        "sha256": "1s0d1l5y7a3kygjbibssjnj7fcc87qaa5s9k4kda0j13j9h4zwgr",
         "type": "tarball",
-        "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/efda5b357451dbb0431f983cca679ae3cd9b9829.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "rust-analyzer": {
-        "branch": "master",
-        "description": "An experimental Rust compiler front-end for IDEs",
-        "homepage": "https://rust-analyzer.github.io/",
-        "owner": "rust-analyzer",
-        "repo": "rust-analyzer",
-        "rev": "0b2b9a5508186c16a2e782f47ce7e0e1c5fb8d33",
-        "sha256": "1lkqhaygl6wak3hypmn3zb2h0v4n082xbpaywmzqr53vhw678sp0",
-        "type": "tarball",
-        "url": "https://github.com/rust-analyzer/rust-analyzer/archive/0b2b9a5508186c16a2e782f47ce7e0e1c5fb8d33.tar.gz",
+        "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/18cd4300e9bf61c7b8b372f07af827f6ddc835bb.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

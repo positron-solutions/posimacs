@@ -2,19 +2,25 @@
   - This package is set up to just work, but updating the version is not yet as
     easy as =niv update=
   - In order for you repo to operate properly with direnv, you will need the
-    =rust-src= package in your shell.  Search a working repo for =rust-src= in
-    the nix files to see how.
+    =rust-src= package in your shell.  Cargo2nix has a complete example in its
+    shell setup, but here's the snippet:
+#+BEGIN_SRC nix
+  shell = pkgs.mkShell {
+    inputsFrom = pkgs.lib.mapAttrsToList (_: pkg: pkg { }) rustPkgs.noBuild.workspace;
+    nativeBuildInputs = with rustPkgs; [ cargo rustc rust-src ];
+
+    # This line adds RUST_SRC_PATH to the environment so that, via direnv
+    # integration, your Rust Analyzer binary will begin using the correct rust
+    # source
+    RUST_SRC_PATH = "${rustPkgs.rust-src}/lib/rustlib/src/rust/library";
+  };
+#+END_SRC
 ** Updating Rust Analyzer Version
-  - To avoid vendoring the Rust Analyzer source and until Cargo2nix better
-    supports this use case, the Cargo.nix shipped here is a custom freeze.
+  - Cargo2nix generates a Cargo.nix that, together with the Cargo2nix overlay,
+    are a reproducible build of Rust Analyzer
 *** Re-Freezing Cargo.nix
   1. Download Rust Analyzer source
-  2. Load a nix-shell with bleeding edge Cargo2nix
+  2. Load a nix-shell with bleeding edge Cargo2nix (0.9+)
   3. Nixify as usual
-  4. Modify Cargo.nix to accept a =workspaceSrc= argument
-  5. Modify paths in Cargo.nix to consume your provided source directly, not using =fetchCrateLocal=
-     =src = "${workspaceSrc}/crates/ra_flycheck";=
-     - use the expression: =src = fetchCrateLocal .\\([a-zA-Z-_/]+\\)/.=
-     - and replace with =src = "${workspaceSrc}\1"=
-  6. Copy this modified Cargo.nix into this module and **update the rust-analyzer source rev**
-     =niv update rust-analyzer --attribute rev=shAkzkAhuiakjadfklAkljasfklj=
+  6. Copy this modified Cargo.nix into this module and **update the
+     rust-analyzer source rev**
