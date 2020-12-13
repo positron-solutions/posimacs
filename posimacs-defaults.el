@@ -66,6 +66,7 @@
 
 (use-package hydra) ;; TODO make some cool Hydras!
 
+(use-package command-log-mode)  ; useful for seeing what you're calling
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
