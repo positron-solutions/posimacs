@@ -47,15 +47,23 @@
                                'ivy-rich-switch-buffer-transformer)
   (ivy-rich-mode 1))
 
+(use-package helpful  ; much more useful help buffers
+  :bind (([remap describe-function] . helpful-callable)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-key] . helpful-key)
+         ("H-h" . helpful-at-point)))
+
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
 ;; The customization of ivy-initial-inputs-alist is to allow matching anywhere
 ;; rather than the first match being at the start of a suggestion
 (use-package counsel
   :delight
-  :after ivy
+  :after (ivy helpful)
   :config
   (counsel-mode)
   (setq ivy-initial-inputs-alist
+  (setq counsel-describe-function-function #'helpful-callable)
+  (setq counsel-describe-variable-function #'helpful-variable)
         (quote
          ((counsel-minor . "^+")
           (counsel-package . "^+")
