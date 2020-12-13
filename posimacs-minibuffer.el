@@ -61,12 +61,12 @@
   :after (ivy helpful)
   :config
   (counsel-mode)
-  (setq ivy-initial-inputs-alist
   (setq counsel-describe-function-function #'helpful-callable)
   (setq counsel-describe-variable-function #'helpful-variable)
+  (setq ivy-initial-inputs-alist  ; by default, match anywhere in name
         (quote
-         ((counsel-minor . "^+")
-          (counsel-package . "^+")
+         ((counsel-minor . "")
+          (counsel-package . "")
           (counsel-org-capture . "")
           (counsel-M-x . "")
           (counsel-describe-function . "")
@@ -74,8 +74,8 @@
           (org-refile . "")
           (org-agenda-refile . "")
           (org-capture-refile . "")
-          (Man-completion-table . "^")
-          (woman . "^")))))
+          (Man-completion-table . "")
+          (woman . "")))))
 
 ;; Git & project tree based searching for files
 (use-package projectile

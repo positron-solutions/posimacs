@@ -17,6 +17,7 @@
 (use-package rustic
   :requires (direnv)
   :init
+  ; we need RUST_SRC_PATH from direnv before lsp starts
   (advice-add 'rustic-setup-lsp :before #'direnv-update-environment)
   :config
   (setq rustic-lsp-server 'rust-analyzer)
@@ -32,23 +33,22 @@
   :config
   (setq company-selection-wrap-around t)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-search-map (kbd "C-n") 'company-select-next)
-  (define-key company-search-map (kbd "C-p") 'company-select-previous)
-  (define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
-
+  (define-key company-active-map (kbd "C-p") 'company-select-previous))
 
 ;; not compatible with emacs in a tty
 (use-package company-box
+  :custom (company-box-doc-delay 2.0 "Delay doc spam")
   :delight (company-box-mode nil company-box)
   :hook (company-mode . company-box-mode))
 
 (use-package flycheck
   :delight flycheck-mode
+  :custom ((flycheck-display-errors-delay 5 "Reduce error noise while typing"))
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)) ; Highlight detected errors
 
 (use-package lsp-mode ;; language server protocol
+  :custom (lsp-idle-delay 3.0 "Reduce error noise while typing or completing")
   :config
   (setq lsp-prefer-flymake nil)
   (setq lsp-prefer-capf t)
@@ -82,3 +82,4 @@
 
 ;; (dap-register-debug-template
 
+;;; posimacs-prog.el ends here
