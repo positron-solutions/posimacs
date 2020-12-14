@@ -23,8 +23,8 @@ in {
   options.posimacs-options.rust-channel = lib.mkOption {
     type = lib.types.str;
     description = "Version of Rust to install, such as 1.45.0 or stable";
-    example = "stable";
-    default = "1.45.0";
+    example = "1.45.0";
+    default = "stable";
   };
 
   config = {
