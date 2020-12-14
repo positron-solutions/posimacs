@@ -5,7 +5,7 @@ let
 in {
   config = {
     home.packages = [
-      rust-analyzer
+      # rust-analyzer
     ];
   };
 }
