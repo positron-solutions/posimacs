@@ -32,7 +32,8 @@ in {
       cargo2nix
       pkgs.gcc
       pinnedPkgs.llvm
-      rustChannel.rust
+      rustChannel.rustc
+      rustChannel.cargo
     ]
     ++ osSpecific;
   };
