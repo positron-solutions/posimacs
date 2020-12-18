@@ -29,8 +29,8 @@ while keeping a CLI interface avaiable.
 ** Installing the Posimacs Module
 
 After you have installed home manager, you just need to add this module to your
-=imports= list and then create at least =~/.emacs.d/init.el= to load the
-provided configuration files.
+=imports= list and then create at least =~/.emacs.d/init.el= to load the posimacs
+shim
 
 #+BEGIN_SRC nix ~/.config/nixpkgs/home.nix
   { pkgs, ... }:
@@ -52,37 +52,25 @@ provided configuration files.
     # services.emacs.enable = true;
     #
     # don't provide alias shortcuts for client commands or EDITOR setting
-    # home.emacs.aliases = false;
+    # posimacs.aliases = false;
     #
   }
 #+END_SRC
 
-And then you need to write at least a shim =early-init.el= and =init.el= to load
-the files home manager has linked into =~/.emacs.d=
+In order for posimacs modules to have their lisp files loaded, you need to load
+the generated shims.  An early-init and init shim are generated.
 
 #+BEGIN_SRC elisp ~/.emacs.d/early-init.el
-(load (expand-file-name "posimacs-fastload.el" user-emacs-directory))
+;; load the posimacs early-init shim
+(load (expand-file-name "posimacs-early-init.el" user-emacs-directory))
 #+END_SRC
 
-This example =~/.emacs.d/init.el= loads everything.  If you wish to omit some
-files or load your own custom versions, just be aware that some of the provided
-files may not be completely coherent without the others.  This is not a
-structured module system like spacemacs layers etc.
-
 #+BEGIN_SRC elisp ~/.emacs.d/init.el
-  ;; This init file just loads the provided files
+;; load the posimacs init shim
+(load (expand-file-name "posimacs-init.el" user-emacs-directory))
 
-  (let ((posimacs-files '("posimacs-defaults.el"
-                          "posimacs-minibuffer.el"
-                          "posimacs-prog.el"
-                          "posimacs-terminal.el"
-                          "posimacs-vc.el")))
-                          (dolist (file-name posimacs-files)
-                          (load (expand-file-name file-name user-emacs-directory))))
-
-
-  ;; Now that you have some basics configured, learn to use ielm or program in
-  ;; buffer with M-x eval-region etc and customize the rest of the owl
+;; Now that you have some basics configured, learn to use ielm or program in
+;; buffer with M-x eval-region etc and customize the rest of the owl
 #+END_SRC
 
 Tell home manager to update your nix environment

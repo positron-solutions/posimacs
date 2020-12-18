@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.posimacs-options;
+  cfg = config.posimacs;
   sources = import nix/sources.nix;
   emacs-pkgs = import sources.nixpkgs {
     overlays = [
@@ -10,12 +10,26 @@ let
   };
   emacs-vterm = pkgs.callPackage ./emacs-vterm {};
 in {
-  options.posimacs-options = {
+  options.posimacs = {
     aliases = lib.mkOption {
       default = pkgs.stdenv.isLinux;
       example = true;
       description = "Succinct shortcuts";
       type = lib.types.bool;
+    };
+
+    modules = lib.mkOption {
+      type = lib.types.listOf lib.types.string;
+      default = [];
+      description = "lisp files posimacs-init.el shim will load";
+      example = ["posimacs-terminal.el"];
+    };
+
+    earlyModules = lib.mkOption {
+      type = lib.types.listOf lib.types.string;
+      default = [];
+      description = "lisp files posimacs-early-init.el shim will load";
+      example = ["posimacs-fastload.el"];
     };
   };
 
@@ -25,15 +39,39 @@ in {
     ./rust
   ];
 
-  config = {
+  config = let
+
+    posimacsEarlyFileList = if
+      (builtins.length cfg.modules) > 0
+      then lib.concatImapStrings
+        (pos: file:
+          let
+            close = if (pos == builtins.length cfg.earlyModules) then "\"" else "\"\n";
+          in
+            if pos == 1
+            then "\"" + file + close
+            else "                        \"" + file + close)
+        cfg.earlyModules
+      else "";
+
+    posimacsFileList = if
+      (builtins.length cfg.modules) > 0
+      then lib.concatImapStrings
+        (pos: file:
+          let
+            close = if (pos == builtins.length cfg.modules) then "\"" else "\"\n";
+          in
+            if pos == 1
+            then "\"" + file + close
+            else "                        \"" + file + close)
+        cfg.modules
+      else "";
+  in {
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
       emacs-vterm
-      niv
-      nix-index
-      nix-prefetch-git
       ripgrep # projectile-ripgrep function relies on this
-      symbola
+      symbola # Emacs can use this font to override symbols
     ];
 
     programs.emacs = {
@@ -113,6 +151,59 @@ in {
     home.file.".emacs.d/posimacs-prog.el".source = ./posimacs-prog.el;
     home.file.".emacs.d/posimacs-terminal.el".source = ./posimacs-terminal.el;
     home.file.".emacs.d/posimacs-vc.el".source = ./posimacs-vc.el;
+    home.file.".emacs.d/posimacs-init.el".text = ''
+    ;;; posimacs-init.el --- Posimacs init
+
+    ;;; Commentary:
+    ;; This list was constructed via home manager and this shim provides a stable
+    ;; target for init.el to load so that init.el doesn't need to change when modules
+    ;; change.
+    ;;
+    ;; Simply load this file in your init.el to pick up on modules configured through
+    ;; posimacs.
+    ;;
+    ;; (load (expand-file-name "posimacs-init.el" user-emacs-directory))
+
+    ;;; Code:
+    (let ((posimacs-files '(${posimacsFileList})))
+      (dolist (file-name posimacs-files)
+        (load (expand-file-name file-name user-emacs-directory))))
+
+    ;;; posimacs-init.el ends here
+    '';
+
+    posimacs.modules = [
+      "posimacs-defaults.el"
+      "posimacs-minibuffer.el"
+      "posimacs-prog.el"
+      "posimacs-terminal.el"
+      "posimacs-vc.el"
+    ];
+
+    home.file.".emacs.d/posimacs-early-init.el".text = ''
+    ;;; posimacs-early-init.el --- Posimacs init
+
+    ;;; Commentary:
+    ;; This list was constructed via home manager and this shim provides a stable
+    ;; target for early-init.el to load so that early-init.el doesn't need to change
+    ;; when modules change.
+    ;;
+    ;; Simply load this file in your early-init.el to pick up on modules configured
+    ;; through posimacs.
+    ;;
+    ;; (load (expand-file-name "posimacs-early-init.el" user-emacs-directory))
+
+    ;;; Code:
+    (let ((posimacs-files '(${posimacsEarlyFileList})))
+      (dolist (file-name posimacs-files)
+        (load (expand-file-name file-name user-emacs-directory))))
+
+    ;;; posimacs-early-init.el ends here
+    '';
+
+    posimacs.earlyModules = [
+      "posimacs-fastload.el"
+    ];
 
     # pre-install fonts for all-the-icons
     home.file.".local/share/fonts/all-the-icons.ttf".source = ./fonts/all-the-icons.ttf;
