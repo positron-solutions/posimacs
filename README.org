@@ -1,32 +1,18 @@
 * Posimacs
 
-A home manager module including external programs, Emacs dependencies, and basic
-configurations to get started programming in Emacs with:
-
-- Rust
-- Nix
-
-Out of the box, major supported configurations & support programs include:
+A set of home manager modules that install emacs, configurations, and 3rd party
+programs with nix.  Included modules contain configuration covering:
 
 - LSP and a Rust Analyzer build included, integration via Rustic
 - Minibuffer completions with Ivy + AMX + Counsel
 - =Straight.el= package management
 - Vterm integration & nix build of emacs-libvterm
 
-This module is also an example of configuring a program, its shell aliases,
+These modules are also an example of configuring a program, its shell aliases,
 systemd units, accompanying files and programs as a fully self-contained
 declaration for easy distribution among other nix users.
 
-Emacs is an appopriate platform for distributing rich text-ui software without
-the limitations of virtual terminal interfaces.  The user can further integrate
-via emacs lisp, itself written in-editor and easily redistributed.
-
-Integration with other CLI tools via the =transient= Emacs package should be
-considered, especailly if writing Rust CLI tools that have nice options
-libraries like clap and you want to rapidly develop a more efficient frontend
-while keeping a CLI interface avaiable.
-
-** Installing the Posimacs Module
+** Installing the Posimacs Modules
 
 After you have installed home manager, you just need to add this module to your
 =imports= list and then create at least =~/.emacs.d/init.el= to load the posimacs
@@ -96,6 +82,13 @@ Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
 You will /still/ need to run =M-x all-the-icons-install-fonts= for icons to
 begin working.  Can't pre-install them as they are not picked up in
 =~/Library/Fonts/=
+
+** Writing Posimacs Modules
+
+If you write a package like vterm that builds and installs 3rd party
+dependencies and configures the user's shell etc, all you need to plug into the
+posimacs-init shim is to add your elisp file to the =posimacs.modules= list just
+how the vterm module does it.
 
 ** Daemon
 
