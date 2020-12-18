@@ -44,7 +44,10 @@ shim
     # out this branch, which is recommended because it's faster to make changes
     posimacs = ~/path/to/my/posimacs;
   in {
-    imports = [ posimacs ];
+    imports = [
+      posimacs
+      posimacs/vterm
+    ];
 
     # Module configuration via options (found in default.nix
     #
