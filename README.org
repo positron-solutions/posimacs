@@ -98,7 +98,7 @@ begin working.  Can't pre-install them as they are not picked up in
 The daemon is extremely convenient for fast loading and keeping all buffers
 accessible to all panes by launching clients to a central emacs server.  This is
 not available on OSX yet.  On Linux, you can enable it by, in addition to the
-installation instructions above, settting =services.emacs.enable = true;= in
+installation instructions above, setting =services.emacs.enable = true;= in
 your =home.nix=.
 
 Whenever you reload, the daemon will not restart because you might have open

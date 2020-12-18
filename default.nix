@@ -79,8 +79,8 @@ in {
       enable = true;
     };
 
-    # symbola is a good font for nice looking unicode symbols
-    # that Emacs uses to override the font used to render code
+    # Fontconfig will ensure that fonts installed in home.packages
+    # are available
     fonts.fontconfig.enable = true;
 
     programs.bash.shellAliases = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
@@ -144,13 +144,8 @@ in {
       ALTERNATE_EDITOR = "TERM=xterm-256color emacs -nw";
     });
 
-    # configs and theme
     home.file.".emacs.d/posimacs-fastload.el".source = ./posimacs-fastload.el;
-    home.file.".emacs.d/posimacs-defaults.el".source = ./posimacs-defaults.el;
-    home.file.".emacs.d/posimacs-minibuffer.el".source = ./posimacs-minibuffer.el;
-    home.file.".emacs.d/posimacs-prog.el".source = ./posimacs-prog.el;
-    home.file.".emacs.d/posimacs-terminal.el".source = ./posimacs-terminal.el;
-    home.file.".emacs.d/posimacs-vc.el".source = ./posimacs-vc.el;
+
     home.file.".emacs.d/posimacs-init.el".text = ''
     ;;; posimacs-init.el --- Posimacs init
 
@@ -212,6 +207,13 @@ in {
     home.file.".local/share/fonts/material-design-icons.ttf".source = ./fonts/material-design-icons.ttf;
     home.file.".local/share/fonts/octicons.ttf".source = ./fonts/octicons.ttf;
     home.file.".local/share/fonts/weathericons.ttf".source = ./fonts/weathericons.ttf;
+
+    # lisp files available to load via posimacsModules
+    home.file.".emacs.d/posimacs-defaults.el".source = ./posimacs-defaults.el;
+    home.file.".emacs.d/posimacs-minibuffer.el".source = ./posimacs-minibuffer.el;
+    home.file.".emacs.d/posimacs-prog.el".source = ./posimacs-prog.el;
+    home.file.".emacs.d/posimacs-terminal.el".source = ./posimacs-terminal.el;
+    home.file.".emacs.d/posimacs-vc.el".source = ./posimacs-vc.el;
 
     # link emacs-vterm module into load path
     home.file.".emacs.d/vendor/emacs-vterm".source = emacs-vterm;
