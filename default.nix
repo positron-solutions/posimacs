@@ -33,10 +33,7 @@ in {
   };
 
   # import modules within modules for composition / dependency
-  imports = [
-    ./rust-analyzer
-    ./rust
-  ];
+  imports = [ ];
 
   config = let
 

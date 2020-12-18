@@ -14,16 +14,6 @@
 (use-package yasnippet
   :config (yas-global-mode))
 
-(use-package rustic
-  :requires (direnv)
-  :init
-  ; we need RUST_SRC_PATH from direnv before lsp starts
-  (advice-add 'rustic-setup-lsp :before #'direnv-update-environment)
-  :config
-  (setq rustic-lsp-server 'rust-analyzer)
-  (setq rustic-analyzer-command "rust-analyzer")
-  (setenv "RUST_BACKTRACE" "full"))
-
 ;; COMPlete ANYthing
 (use-package company
   :delight company-mode

@@ -46,6 +46,7 @@ shim
   in {
     imports = [
       posimacs
+      posimacs/rust
       posimacs/vterm
     ];
 

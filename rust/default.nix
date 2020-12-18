@@ -17,7 +17,7 @@ in let
   rustChannel = pinnedPkgs.rustChannelOf { channel = cfg.rust-channel; };
 in {
   imports = [
-    ../rust-analyzer
+    ./rust-analyzer
   ];
 
   options.posimacs-options.rust-channel = lib.mkOption {
@@ -28,6 +28,12 @@ in {
   };
 
   config = {
+    # link the rust lisp into place and include it in the init shim
+    home.file.".emacs.d/posimacs-rust.el".source = ./posimacs-rust.el;
+    posimacs.modules = [
+      "posimacs-rust.el"
+    ];
+
     home.packages = [
       cargo2nix
       pkgs.gcc
@@ -35,5 +41,7 @@ in {
       rustChannel.rust
     ]
     ++ osSpecific;
+
+
   };
 }
