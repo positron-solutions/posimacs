@@ -85,8 +85,12 @@ in {
       "nano" = "emacsclient --create-frame";  # How to break a nano habit
       # "nano" = "emacsclient -nw --create-frame";  # Terminal version of above
       "emacs" = "emacsclient --create-frame"; # Don't re-use frames
+      "vi" = "emacsclient --create-frame";
+      "vim" = "emacsclient --create-frame";
     } else {
       "nano" = "emacs";
+      "vi" = "emacs";
+      "vim" = "emacs";
     });
 
     home.sessionVariables = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
