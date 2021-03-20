@@ -8,7 +8,6 @@
 ;;; Code:
 
 (use-package magit
-  :bind ("C-x g" . magit-status)
   :custom
   ;; also try magit-display-buffer-fullframe-status-v1
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
@@ -27,5 +26,11 @@
 
 (use-package git-timemachine
   :config)
+
+(use-package git-messenger)
+
+(use-package git-gutter
+  :config
+  (global-git-gutter-mode +1))
 
 ;;; posimacs-vc.el ends here
