@@ -127,6 +127,7 @@ in {
     '';
 
     posimacs.modules = [
+      "posimacs-bindings.el"
       "posimacs-defaults.el"
       "posimacs-extras.el"
       "posimacs-minibuffer.el"
@@ -169,6 +170,7 @@ in {
     home.file.".local/share/fonts/weathericons.ttf".source = ./fonts/weathericons.ttf;
 
     # lisp files available to load via posimacsModules
+    home.file.".emacs.d/posimacs-bindings.el".source = ./posimacs-bindings.el;
     home.file.".emacs.d/posimacs-defaults.el".source = ./posimacs-defaults.el;
     home.file.".emacs.d/posimacs-extras.el".source = ./posimacs-extras.el;
     home.file.".emacs.d/posimacs-minibuffer.el".source = ./posimacs-minibuffer.el;
