@@ -124,6 +124,7 @@ in {
 
     posimacs.modules = [
       "posimacs-defaults.el"
+      "posimacs-extras.el"
       "posimacs-minibuffer.el"
       "posimacs-prog.el"
       "posimacs-style.el"
