@@ -38,7 +38,6 @@
   (ivy-use-virtual-buffers t))
 
 (use-package ivy-rich  ; More informative ivy completions
-  :after ivy
   (ivy-virtual-abbreviate 'full
                           ivy-rich-switch-buffer-align-virtual-buffer t
                           ivy-rich-path-style 'abbrev)
