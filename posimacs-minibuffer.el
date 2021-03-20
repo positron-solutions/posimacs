@@ -12,8 +12,7 @@
 ;;; Code:
 
 (use-package swiper ; the better buffer search
-  :bind ("C-s" . swiper)
-  :config)
+  :bind ("C-s" . swiper))
 
 ;; case insensitive matching of filenames
 (setq read-file-name-completion-ignore-case t)
@@ -38,30 +37,39 @@
   (ivy-use-virtual-buffers t))
 
 (use-package ivy-rich  ; More informative ivy completions
-  (ivy-virtual-abbreviate 'full
-                          ivy-rich-switch-buffer-align-virtual-buffer t
-                          ivy-rich-path-style 'abbrev)
+  :after (ivy counsel)
   :config
-  (ivy-set-display-transformer 'ivy-switch-buffer
-                               'ivy-rich-switch-buffer-transformer)
-  (ivy-rich-mode 1))
+
+  ;; (ivy-virtual-abbreviate 'full
+  ;;                         ivy-rich-switch-buffer-align-virtual-buffer t
+  ;;                         ivy-rich-path-style 'abbrev)
+  ;; (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  ;; (ivy-set-display-transformer 'ivy-switch-buffer
+                                        ; 'ivy-rich-switch-buffer-transformer)
+
+  (ivy-rich-mode +1)
+  (ivy-rich-project-root-cache-mode +1))
+
+; (use-package all-the-icons-ivy-rich
+;   :hook (ivy-rich-mode . all-the-icons-ivy-rich-mode))
 
 (use-package helpful  ; much more useful help buffers
+  :after counsel
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-key] . helpful-key)
-         ("H-h" . helpful-at-point)))
+         ("H-h" . helpful-at-point))
+  :config
+  (setq counsel-describe-function-function #'helpful-callable)
+  (setq counsel-describe-variable-function #'helpful-variable))
 
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
 ;; The customization of ivy-initial-inputs-alist is to allow matching anywhere
 ;; rather than the first match being at the start of a suggestion
 (use-package counsel
   :delight
-  :after (ivy helpful)
   :config
   (counsel-mode)
-  (setq counsel-describe-function-function #'helpful-callable)
-  (setq counsel-describe-variable-function #'helpful-variable)
   (setq ivy-initial-inputs-alist  ; by default, match anywhere in name
         (quote
          ((counsel-minor . "")
@@ -78,7 +86,7 @@
 
 ;; Git & project tree based searching for files
 (use-package projectile
-  :after magit counsel
+  :after magit
   :delight
   :init (setq projectile-completion-system 'ivy)
   :bind-keymap ("C-x p" . projectile-command-map)
@@ -90,15 +98,28 @@
 (use-package projectile-ripgrep)
 
 (use-package counsel-projectile
-  :after (counsel projectile)
-  :config (counsel-projectile-mode))
+  ; :after (counsel projectile)
+  :config
+  (counsel-projectile-mode))
 
 ;; https://github.com/domtronn/all-the-icons.el
 ;; File & other icons used by company-box, ivy, dired, and other packages to
 ;; give more visual cues about completion options and lists of items
 (use-package all-the-icons)
 (use-package all-the-icons-ivy
-  :config (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
+  :after ivy counsel-projectile
+  :config
+  ;; `all-the-icons-ivy' is incompatible with ivy-rich's switch-buffer
+  ;; modifications, so we disable them and merge them ourselves
+  (setq all-the-icons-ivy-buffer-commands nil)
+
+  (all-the-icons-ivy-setup)
+  (let ((all-the-icons-ivy-file-commands
+         '(counsel-projectile
+           counsel-projectile-find-file
+           counsel-projectile-find-dir)))
+    (all-the-icons-ivy-setup)))
+
 (use-package all-the-icons-dired
   :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
