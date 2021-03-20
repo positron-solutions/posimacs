@@ -66,6 +66,9 @@ in {
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
       ripgrep # projectile-ripgrep function relies on this
+      roboto
+      roboto-mono
+      roboto-slab
       symbola # Emacs can use this font to override symbols
     ];
 
@@ -123,6 +126,7 @@ in {
       "posimacs-defaults.el"
       "posimacs-minibuffer.el"
       "posimacs-prog.el"
+      "posimacs-style.el"
       "posimacs-vc.el"
     ];
 
@@ -161,8 +165,11 @@ in {
 
     # lisp files available to load via posimacsModules
     home.file.".emacs.d/posimacs-defaults.el".source = ./posimacs-defaults.el;
+    home.file.".emacs.d/posimacs-extras.el".source = ./posimacs-extras.el;
     home.file.".emacs.d/posimacs-minibuffer.el".source = ./posimacs-minibuffer.el;
     home.file.".emacs.d/posimacs-prog.el".source = ./posimacs-prog.el;
+    home.file.".emacs.d/posimacs-style.el".source = ./posimacs-style.el;
+    home.file.".emacs.d/posimacs-dark-theme.el".source = ./posimacs-dark-theme.el;
     home.file.".emacs.d/posimacs-vc.el".source = ./posimacs-vc.el;
   };
 }
