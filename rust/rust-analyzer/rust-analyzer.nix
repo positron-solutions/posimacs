@@ -5,26 +5,25 @@
   crossSystem ? null,
 }:
 let
-  # 1. Setup nixpkgs with nixpkgs-mozilla overlay and cargo2nix overlay.
   pkgs = import sources.nixpkgs {
     inherit system crossSystem;
     overlays =
       let
-        rustOverlay = import "${sources.nixpkgs-mozilla}/rust-overlay.nix";
+        rustOverlay = import sources.rust-overlay;
         cargo2nixOverlay = (import "${sources.cargo2nix}/overlay");
       in
         overlays ++ [ cargo2nixOverlay rustOverlay ];
   };
 
   rustPkgs = pkgs.rustBuilder.makePackageSet' {
-    rustChannel = "1.48.0";
+    rustChannel = "1.50.0";
     packageFun = import ./Cargo.nix;
 
     workspaceSrc = pkgs.fetchFromGitHub {
       owner = "rust-analyzer";
       repo = "rust-analyzer";
-      rev = "cadf0e9fb630d04367ef2611383865963d84ab54";
-      sha256 = "0w5q8srjhv510398ay5m3rih3nkwcf4f2grb55f1gc2kd7m6bfww";
+      rev = "5ba7852cf153688d5b5035a9a2a2145aa7334d79";
+      sha256 = "150gydm0mg72bbhgjjks8qc5ldiqyzhai9z4yfh4f1s2bwdfh3yf";
     };
   };
 
