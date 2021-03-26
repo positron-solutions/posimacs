@@ -47,13 +47,15 @@
   (require 'smartparens-config))
 
 (use-package direnv ; direnv integration
+  :after lsp
   :delight 'direnv-mode
-  ;; this is fixed upstream
-  ;; :hook (before-hack-local-variables . #'direnv-update-environment)
-  ;; :config
-  ;; (direnv-mode)
   :config
-  (setq direnv-always-show-summary nil))
+  ;; Ensures that external dependencies are available before they are called.
+  (add-hook 'prog-mode-hook #'direnv--maybe-update-environment)
+  ;; XXX cargo culted.  Investigate
+  (add-to-list 'direnv-non-file-modes 'vterm-mode)
+  (setq direnv-always-show-summary nil)
+  (direnv-mode 1))
 
 (use-package ws-butler ; Cleanup whitespace at end of lines
   :delight

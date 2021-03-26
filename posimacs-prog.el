@@ -11,65 +11,78 @@
 
 (use-package nix-mode)
 
-(use-package yasnippet
-  :config (yas-global-mode))
-
-;; COMPlete ANYthing
-(use-package company
-  :delight company-mode
-  :after (lsp lsp-ui)
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (setq company-selection-wrap-around t)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous))
-
-;; not compatible with emacs in a tty
-(use-package company-box
-  :custom (company-box-doc-delay 2.0 "Delay doc spam")
-  :delight (company-box-mode nil company-box)
-  :hook (company-mode . company-box-mode))
-
-(use-package flycheck
-  :delight flycheck-mode
-  :custom ((flycheck-display-errors-delay 5 "Reduce error noise while typing"))
-  :config
-  (add-hook 'after-init-hook #'global-flycheck-mode)) ; Highlight detected errors
-
-(use-package lsp-mode ;; language server protocol
-  :custom (lsp-idle-delay 3.0 "Reduce error noise while typing or completing")
-  :config
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-prefer-capf t)
-  (setq lsp-rust-server 'rust-analyzer) ;; will use rls as backup
-  (setq lsp-rust-analyzer-server-command "rust-analyzer"))
-
 ;; LSP may send messages that are fairly large
 (setq read-process-output-max (* (* 1024 1024) 8)) ;; 8mb
 
-;; excessive UI feedback for light reading between coding
-(use-package lsp-ui
-  :config
-  (setq
-   lsp-ui-doc-enable nil
-   lsp-ui-imenu-enable nil
-   lsp-ui-peek-enable nil
-   lsp-ui-sideline-enable nil
-   ))
 
-;; TODO this is incomplete for rust
-;; debug adapter protocol
+(use-package lsp-mode
+  :commands lsp
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all nil) ; only show symbol info, not everything returned
+  (lsp-signature-render-documentation nil) ; don't show eldocs in popup
+  (lsp-idle-delay 3.0 "Reduce error noise while typing or completing")
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-headerline-breadcrumb-enable nil)
+  :config
+  (advice-add 'lsp :before #'direnv-update-environment)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :custom
+  ; (lsp-ui-peek-enable nil) ; since peek opens on action, not spammy
+  (lsp-ui-sideline-enable nil) ; XXX de-spam
+  (lsp-ui-doc-include-signature) ; if we did show docs, show signature!
+  (lsp-ui-doc-enable nil))
+
+;; COMPlete ANYthing
+(use-package company
+  :custom
+  (company-idle-delay 0.2) ;; how long to wait until popup
+  ; (company-begin-commands nil) ;; disable popup
+  :bind (:map company-active-map
+	      ("C-n". company-select-next)
+	      ("C-p". company-select-previous)
+	      ("M-<". company-select-first)
+	      ("M->". company-select-last)
+              ("<tab>". company-complete-selection)
+	      ("TAB". company-complete-selection))
+  :config
+  (add-hook 'after-init-hook #'global-company-mode)) ; thank me later
+
+(use-package yasnippet
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode)
+  (add-hook 'after-init-hook #'yas-global-mode))
+
+(use-package flycheck
+  :custom (flycheck-display-errors-delay 10 "Reduce error noise while typing")
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
+
 (use-package dap-mode
   :config
-  ;; (dap-mode 1)
-  ;; (dap-ui-mode 1)
-  ;; (dap-tooltip-mode 1) ; dap-mode will use minibuffer if not enabled
-  ;; (tooltip-mode 1))
-  )
+  (dap-ui-mode)
+  (dap-ui-controls-mode 1)
 
-;; (use-package dap-lldb)
-
-;; (dap-register-debug-template
+  (require 'dap-lldb)
+  (require 'dap-gdb-lldb)
+  ;; installs .extension/vscode
+  ; (dap-gdb-lldb-setup)
+  (dap-register-debug-template
+   "Rust::LLDB Run Configuration"
+   (list :type "lldb"
+         :request "launch"
+         :name "LLDB::Run"
+	 :gdbpath "rust-lldb"
+         :target nil
+         :cwd nil)))
 
 ;;; posimacs-prog.el ends here

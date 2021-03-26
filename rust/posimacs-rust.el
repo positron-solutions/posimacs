@@ -6,13 +6,25 @@
 ;;; Code:
 
 (use-package rustic
-  :requires (direnv)
-  :init
-  ; we need RUST_SRC_PATH from direnv before lsp starts
-  (advice-add 'rustic-setup-lsp :before #'direnv-update-environment)
+  :custom
+  (rustic-spinner-type "moon")
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
   :config
   (setq rustic-lsp-server 'rust-analyzer)
   (setq rustic-analyzer-command "rust-analyzer")
-  (setenv "RUST_BACKTRACE" "full"))
+  (setenv "RUST_BACKTRACE" "full")
+
+  ;; (add-hook 'lsp-mode-hook :before #'direnv-update-environment)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t))
 
 ;;; posimacs-rust.el ends here
