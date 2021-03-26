@@ -50,8 +50,9 @@
   (ivy-rich-mode +1)
   (ivy-rich-project-root-cache-mode +1))
 
-; (use-package all-the-icons-ivy-rich
-;   :hook (ivy-rich-mode . all-the-icons-ivy-rich-mode))
+(use-package all-the-icons-ivy-rich
+  :after counsel-projectile
+  :init  (all-the-icons-ivy-rich-mode 1))
 
 (use-package helpful  ; much more useful help buffers
   :after counsel
@@ -106,20 +107,6 @@
 ;; File & other icons used by company-box, ivy, dired, and other packages to
 ;; give more visual cues about completion options and lists of items
 (use-package all-the-icons)
-(use-package all-the-icons-ivy
-  :after ivy counsel-projectile
-  :config
-  ;; `all-the-icons-ivy' is incompatible with ivy-rich's switch-buffer
-  ;; modifications, so we disable them and merge them ourselves
-  (setq all-the-icons-ivy-buffer-commands nil)
-
-  (all-the-icons-ivy-setup)
-  (let ((all-the-icons-ivy-file-commands
-         '(counsel-projectile
-           counsel-projectile-find-file
-           counsel-projectile-find-dir)))
-    (all-the-icons-ivy-setup)))
-
 (use-package all-the-icons-dired
   :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
