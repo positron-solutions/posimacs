@@ -1,4 +1,4 @@
-;;; posimacs-bindings --- Things are looking up
+;;; posimacs-bindings --- Things are looking up -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -25,5 +25,20 @@
   :config (require 'vlf-setup))
 
 (use-package sudo-edit) ; upgrade perms to write read-only file
+
+
+(defun pmx-hack-locals-other-window (target-buffer)
+  "Hack elisp with this buffer's buffer locals"
+  (interactive (list (read-buffer "Target buffer: "
+                            (current-buffer) ; default
+                            nil ; require match
+                            nil ; filter pred
+                            )))
+  (let ((new-buffer-name (format "*ielm-<%s>*" target-buffer)))
+    (pop-to-buffer (get-buffer-create new-buffer-name))
+    (ielm new-buffer-name)
+    (ielm-change-working-buffer target-buffer)))
+
+(global-set-key (kbd "M-i") 'pmx-hack-locals-other-window)
 
 ;;; posimacs-extras.el ends here
