@@ -26,4 +26,20 @@
 
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 
+;;; Code:
+(let ((posimacs-files '("posimacs-bindings.el"
+                        "posimacs-defaults.el"
+                        "posimacs-extras.el"
+                        "posimacs-minibuffer.el"
+                        "posimacs-prog.el"
+                        "posimacs-style.el"
+                        "posimacs-vc.el"
+
+                        "rust/posimacs-rust.el"
+                        "vterm/posimacs-terminal.el")))
+  (dolist (file-name posimacs-files)
+    (load (expand-file-name
+           (concat "posimacs/" file-name)
+           user-emacs-directory))))
+
 ;;; posimacs-init.el ends here.

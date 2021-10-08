@@ -16,53 +16,15 @@ in {
       description = "Succinct shortcuts";
       type = lib.types.bool;
     };
-
-    modules = lib.mkOption {
-      type = lib.types.listOf lib.types.string;
-      default = [];
-      description = "lisp files posimacs-init.el shim will load";
-      example = ["posimacs-terminal.el"];
-    };
-
-    earlyModules = lib.mkOption {
-      type = lib.types.listOf lib.types.string;
-      default = [];
-      description = "lisp files posimacs-early-init.el shim will load";
-      example = ["posimacs-fastload.el"];
-    };
   };
 
   # import modules within modules for composition / dependency
-  imports = [ ];
+  imports = [
+    ./vterm
+    ./rust
+  ];
 
-  config = let
-
-    posimacsEarlyFileList = if
-      (builtins.length cfg.modules) > 0
-      then lib.concatImapStrings
-        (pos: file:
-          let
-            close = if (pos == builtins.length cfg.earlyModules) then "\"" else "\"\n";
-          in
-            if pos == 1
-            then "\"" + file + close
-            else "                        \"" + file + close)
-        cfg.earlyModules
-      else "";
-
-    posimacsFileList = if
-      (builtins.length cfg.modules) > 0
-      then lib.concatImapStrings
-        (pos: file:
-          let
-            close = if (pos == builtins.length cfg.modules) then "\"" else "\"\n";
-          in
-            if pos == 1
-            then "\"" + file + close
-            else "                        \"" + file + close)
-        cfg.modules
-      else "";
-  in {
+  config = {
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
       ripgrep # projectile-ripgrep function relies on this
@@ -103,64 +65,6 @@ in {
       ALTERNATE_EDITOR = "TERM=xterm-256color emacs -nw";
     });
 
-    home.file.".emacs.d/posimacs-fastload.el".source = ./posimacs-fastload.el;
-
-    home.file.".emacs.d/posimacs-init.el".text = ''
-    ;;; posimacs-init.el --- Posimacs init
-
-    ;;; Commentary:
-    ;; This list was constructed via home manager and this shim provides a stable
-    ;; target for init.el to load so that init.el doesn't need to change when modules
-    ;; change.
-    ;;
-    ;; Simply load this file in your init.el to pick up on modules configured through
-    ;; posimacs.
-    ;;
-    ;; (load (expand-file-name "posimacs-init.el" user-emacs-directory))
-
-    ;;; Code:
-    (let ((posimacs-files '(${posimacsFileList})))
-      (dolist (file-name posimacs-files)
-        (load (expand-file-name file-name user-emacs-directory))))
-
-    ;;; posimacs-init.el ends here
-    '';
-
-    posimacs.modules = [
-      "posimacs-bindings.el"
-      "posimacs-defaults.el"
-      "posimacs-extras.el"
-      "posimacs-minibuffer.el"
-      "posimacs-prog.el"
-      "posimacs-style.el"
-      "posimacs-vc.el"
-    ];
-
-    home.file.".emacs.d/posimacs-early-init.el".text = ''
-    ;;; posimacs-early-init.el --- Posimacs init
-
-    ;;; Commentary:
-    ;; This list was constructed via home manager and this shim provides a stable
-    ;; target for early-init.el to load so that early-init.el doesn't need to change
-    ;; when modules change.
-    ;;
-    ;; Simply load this file in your early-init.el to pick up on modules configured
-    ;; through posimacs.
-    ;;
-    ;; (load (expand-file-name "posimacs-early-init.el" user-emacs-directory))
-
-    ;;; Code:
-    (let ((posimacs-files '(${posimacsEarlyFileList})))
-      (dolist (file-name posimacs-files)
-        (load (expand-file-name file-name user-emacs-directory))))
-
-    ;;; posimacs-early-init.el ends here
-    '';
-
-    posimacs.earlyModules = [
-      "posimacs-fastload.el"
-    ];
-
     # pre-install fonts for all-the-icons
     home.file.".local/share/fonts/all-the-icons.ttf".source = ./fonts/all-the-icons.ttf;
     home.file.".local/share/fonts/file-icons.ttf".source = ./fonts/file-icons.ttf;
@@ -168,15 +72,5 @@ in {
     home.file.".local/share/fonts/material-design-icons.ttf".source = ./fonts/material-design-icons.ttf;
     home.file.".local/share/fonts/octicons.ttf".source = ./fonts/octicons.ttf;
     home.file.".local/share/fonts/weathericons.ttf".source = ./fonts/weathericons.ttf;
-
-    # lisp files available to load via posimacsModules
-    home.file.".emacs.d/posimacs-bindings.el".source = ./posimacs-bindings.el;
-    home.file.".emacs.d/posimacs-defaults.el".source = ./posimacs-defaults.el;
-    home.file.".emacs.d/posimacs-extras.el".source = ./posimacs-extras.el;
-    home.file.".emacs.d/posimacs-minibuffer.el".source = ./posimacs-minibuffer.el;
-    home.file.".emacs.d/posimacs-prog.el".source = ./posimacs-prog.el;
-    home.file.".emacs.d/posimacs-style.el".source = ./posimacs-style.el;
-    home.file.".emacs.d/posimacs-dark-theme.el".source = ./posimacs-dark-theme.el;
-    home.file.".emacs.d/posimacs-vc.el".source = ./posimacs-vc.el;
   };
 }

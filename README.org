@@ -1,7 +1,7 @@
 * Posimacs
 
-A set of home manager modules that install emacs, configurations, and 3rd party
-programs with nix.  Included modules contain configuration covering:
+A set of home manager modules that install emacs and 3rd party programs with
+nix.  Included modules contain configuration covering:
 
 - LSP and a Rust Analyzer build included, integration via Rustic
 - Minibuffer completions with Ivy + AMX + Counsel
@@ -14,29 +14,22 @@ declaration for easy distribution among other nix users.
 
 ** Installing the Posimacs Modules
 
-After you have installed home manager, you just need to add this module to your
-=imports= list and then create at least =~/.emacs.d/init.el= to load the posimacs
-shim
+To use this repository like a normal Emacs user, clone it into your =~/.emacs.d=
+directory.  To have home manager pick up the included modules, just load the paths:
 
 #+BEGIN_SRC nix ~/.config/nixpkgs/home.nix
   { pkgs, ... }:
 
-  let
-    # Assuming you use niv for providing pinned versions of git dependencies
-    # sources = import ./nix/sources.nix;
-    # posimacs = "${sources.posimacs}";
+  {
 
     # Using local development style, a path literal pointing to where you checked
-    # out this branch, which is recommended because it's faster to make changes
-    posimacs = ~/path/to/my/posimacs;
-  in {
+    # out this branch, which is recommended beceause it's faster to make changes
+    # than if you use niv or a flakes source
     imports = [
-      posimacs
-      posimacs/rust
-      posimacs/vterm
+      ~/.emacs.d/posimacs
     ];
 
-    # Module configuration via options (found in default.nix
+    # Module configuration via options (found in default.nix)
     #
     # Use the emacs daemon, enabling `emacsclient` aliases if aliases are turned on
     # services.emacs.enable = true;
@@ -47,8 +40,8 @@ shim
   }
 #+END_SRC
 
-In order for posimacs modules to have their lisp files loaded, you need to load
-the generated shims.  An early-init and init shim are generated.
+In order for posimacs modules to have their lisp files loaded, you can load the
+shims or do something similar to their contents.
 
 #+BEGIN_SRC elisp ~/.emacs.d/early-init.el
 ;; load the posimacs early-init shim
@@ -63,10 +56,12 @@ the generated shims.  An early-init and init shim are generated.
 ;; buffer with M-x eval-region etc and customize the rest of the owl
 #+END_SRC
 
+*** Home Manager
+
 Tell home manager to update your nix environment
 
 #+BEGIN_SRC sh
-home-manager switch
+  home-manager switch
 #+END_SRC
 
 If the daemon is active (default) it will start and, if the =~/.emacs.d/=
@@ -82,13 +77,6 @@ Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
 You will /still/ need to run =M-x all-the-icons-install-fonts= for icons to
 begin working.  Can't pre-install them as they are not picked up in
 =~/Library/Fonts/=
-
-** Writing Posimacs Modules
-
-If you write a package like vterm that builds and installs 3rd party
-dependencies and configures the user's shell etc, all you need to plug into the
-posimacs-init shim is to add your elisp file to the =posimacs.modules= list just
-how the vterm module does it.
 
 ** Daemon
 

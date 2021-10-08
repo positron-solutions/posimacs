@@ -12,10 +12,6 @@ in {
     # link emacs-vterm module into convenient load path
     home.file.".emacs.d/vendor/emacs-vterm".source = emacs-vterm;
     # link loading shim into place and include in posimacs-init.el shim
-    home.file.".emacs.d/posimacs-terminal.el".source = ./posimacs-terminal.el;
-    posimacs.modules = [
-      "posimacs-terminal.el"
-    ];
 
     # TODO detect default shell and support zsh.initExtra as well
     programs.bash.initExtra = ''

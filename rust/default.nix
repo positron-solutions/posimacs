@@ -38,12 +38,6 @@ in {
   };
 
   config = {
-    # link the rust lisp into place and include it in the init shim
-    home.file.".emacs.d/posimacs-rust.el".source = ./posimacs-rust.el;
-    posimacs.modules = [
-      "posimacs-rust.el"
-    ];
-
     home.packages = [
       cargo2nix
       pkgs.gcc
