@@ -8,17 +8,24 @@
 
 ;;; Code:
 
-(set-face-attribute 'default nil
-                    :font (font-spec :family "Roboto Mono"
-                                     :size 22))
-(set-face-attribute 'fixed-pitch-serif nil
-                    :font (font-spec :family "Roboto Mono"
-                                     :size 22))
+(defun pmx--setup-fonts (&rest)
+  "Nice fonts for nice people (and robots)."
+  (set-face-attribute 'default nil
+                      :font (font-spec :family "Roboto Mono"
+                                       :size 20))
+  (set-face-attribute 'fixed-pitch-serif nil
+                      :font (font-spec :family "Roboto Mono"
+                                       :size 20)))
+
+;; XXX believe this can be declared once without resorting to hook
+(add-hook 'server-after-make-frame-hook #'pmx--setup-fonts)
 
 (use-package doom-themes
-  ;; XXX Module structure would at most default this behavior
   :config
+  (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
   (load-theme 'posimacs-dark t)
+
+  (pmx--setup-fonts)
 
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
