@@ -14,6 +14,7 @@
 
 ;; Even if no buffers have unsaved changes, prompt before quitting
 (setq confirm-kill-emacs 'y-or-n-p)
+
 ;; Unbind Pesky Sleep Button
 (global-unset-key [(control z)])
 (global-unset-key [(control x)(control z)])
@@ -70,7 +71,6 @@
   :config
   (global-subword-mode 1))
 
-(use-package hydra) ;; TODO make some cool Hydras!
 ;; has a binding in help
 (use-package command-log-mode ; useful for seeing what you're calling
   :custom
