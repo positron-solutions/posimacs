@@ -15,9 +15,6 @@
 ;; a proper handler for the file, but during startup, it won’t need any of them.
 (defvar file-name-handler-alist-old file-name-handler-alist)
 
-;; Early init goes here after version 27
-;; https://www.reddit.com/r/emacs/comments/enmbv4/earlyinitel_reduce_init_time_about_02_sec_and/
-
 ;; https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
 (setq gc-cons-threshold most-positive-fixnum
       file-name-handler-alist nil)
