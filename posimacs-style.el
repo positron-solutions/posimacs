@@ -1,4 +1,4 @@
-;;; posimacs-doom-themes --- Things are looking up
+;;; posimacs-doom-themes --- Things are looking up -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
