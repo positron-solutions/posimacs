@@ -70,6 +70,18 @@ and building packages.  Connect to the daemon with =emacsclient=.
 
 Otherwise you can just run =emacs= to watch the process manually.
 
+*** Straight
+
+To use initialize with the frozen versions of packages that this repository
+uses, symlink the =default.el= into straight's version directory.
+
+#+begin_src bash
+link -s ~/.emacs.d/posimacs/default.el ~/.emacs.d/straight/versions/
+#+end_src
+
+This just provides reproducibility in the event that there are bugs or some
+packages need to be maintained on slightly different sources or branches etc.
+
 *** Additional OSX Steps
 
 Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
