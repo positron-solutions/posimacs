@@ -73,13 +73,15 @@
 (use-package hydra) ;; TODO make some cool Hydras!
 ;; has a binding in help
 (use-package command-log-mode ; useful for seeing what you're calling
+  :custom
+  (command-log-mode-window-font-size 20)
+  (command-log-mode-open-log-turns-on-mode t "Show buffer enables mode")
+  (command-log-mode-close-log-turns-off-mode t "Show buffer enables mode")
+  (command-log-mode-is-global "Auto-enable does so globally (including minibuffer)")
   :config
-  (setq clm/log-command-exceptions* '(nil
-                                      self-insert-command
-                                      handle-switch-frmae
-                                      newline)) ; show all commands
-  (setq command-log-mode-open-log-turns-on-mode t))
 
+  ;; Be chatty.  Show everything besides self-insert-command
+  (setq clm/log-command-exceptions* '(self-insert-command)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
