@@ -40,10 +40,6 @@
 (scroll-bar-mode -1)
 (column-number-mode 1) ; show columns in modeline
 
-(setq-default fill-column 80) ; How wide to auto-fill paragraphs
-
-(setq-default indent-tabs-mode nil) ; tabs are not real
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load Paths & Packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
