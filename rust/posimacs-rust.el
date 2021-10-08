@@ -22,8 +22,6 @@
   (setq rustic-analyzer-command "rust-analyzer")
   (setenv "RUST_BACKTRACE" "full")
 
-  ;; (add-hook 'lsp-mode-hook :before #'direnv-update-environment)
-
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t))
 
