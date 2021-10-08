@@ -71,8 +71,15 @@
   (global-subword-mode 1))
 
 (use-package hydra) ;; TODO make some cool Hydras!
+;; has a binding in help
+(use-package command-log-mode ; useful for seeing what you're calling
+  :config
+  (setq clm/log-command-exceptions* '(nil
+                                      self-insert-command
+                                      handle-switch-frmae
+                                      newline)) ; show all commands
+  (setq command-log-mode-open-log-turns-on-mode t))
 
-(use-package command-log-mode)  ; useful for seeing what you're calling
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
