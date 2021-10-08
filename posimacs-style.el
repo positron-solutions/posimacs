@@ -23,4 +23,57 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+;; Gotta keep up with everyone else and their cool dashboards
+(use-package dashboard
+  :ensure t
+  :config
+
+  ;; top stuff
+  (setq dashboard-startup-banner (concat user-emacs-directory "posimacs/graphics/posimacs-banner.png"))
+  (setq dashboard-set-navigator t)
+  (setq dashboard-set-init-info t)
+  (setq dashboard-banner-logo-title nil)
+
+  (setq dashboard-navigator-buttons
+        `(((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+            "Github"
+            "View Public Repository"
+            (lambda (&rest _) (browse-url "https://github.com/positron-solutions/posimacs")))
+           (,(all-the-icons-octicon "flame" :height 1.1 :v-adjust 0.0)
+            "Bugs"
+            "Report an Issue or Request Feature"
+            (lambda (&rest _) (browse-url "https://github.com/positron-solutions/posimacs/issues")))
+           (,(all-the-icons-faicon "reddit-alien" :height 1.1 :v-adjust 0.0)
+            "Reddit"
+            "Come to Emacs Subreddit!"
+            (lambda (&rest _) (browse-url "https://www.reddit.com/r/emacs/top/?t=month"))))))
+
+  ;; items
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons nil) ; the icons for agenda are not great
+  (setq dashboard-items '((projects . 5)
+                          (agenda . 5)))
+  (setq dashboard-show-shortcuts nil)
+  (dashboard-modify-heading-icons '((projects . "star")
+                                    (agenda . "milestone")))
+  (setq dashboard-item-names '(("Projects:" .
+                                (concat (all-the-icons-octicon "star") " Projects:"))
+                               ("Agenda for the coming week:" .
+                                (concat  " This week's agenda:" (all-the-icons-fileicon "org")))))
+
+  ;; footer
+  (setq dashboard-set-footer t)
+  (setq dashboard-footer-messages '("Next year we're adding a text editor!"))
+  (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                     :height 1.1
+                                                     :v-adjust -0.05
+                                                     :face 'font-lock-keyword-face))
+
+  ;; other
+  (setq dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
+
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
+  (dashboard-setup-startup-hook))
+
 ;;; posimacs-doom-themes.el ends here.

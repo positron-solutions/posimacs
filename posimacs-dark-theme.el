@@ -131,6 +131,7 @@ determine the exact padding."
    (modeline-bg-inactive-l `(,(doom-darken (car bg-alt) 0.2) ,@(cdr base0))))
 
 ;;;; --- extra faces ------------------------
+
   (((all-the-icons-dblue &override) :foreground teal)
    (elscreen-tab-other-screen-face :background bg-blue :foreground fg-alt)
 
@@ -274,6 +275,9 @@ determine the exact padding."
    (css-proprietary-property :foreground orange)
    (css-property             :foreground green)
    (css-selector             :foreground blue)
+
+;;;; --- dashboard --------------------------
+   (dashboard-banner-logo-title :foreground lime :height 128)
 
 ;;;;; markdown-mode
    (markdown-markup-face :foreground base5)

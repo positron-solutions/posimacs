@@ -158,17 +158,7 @@ observed."
   (setq doom-modeline-icon (display-graphic-p frame)))
 
 ;; A slightly more informative scratch buffer
-(setq initial-scratch-message
-"\
-;;
-;;        ___        _ _
-;;       | _ \\___ __(_) |_ _ _ ___ _ _
-;;       |  _/ _ (_-< |  _| '_/ _ \\ ' \\
-;;       |_| \\___/__/_|\\__|_| \\___/_||_|
-;;
-;;       \n\
-;;       Alt + X to search functions\n\
-;;       info-emacs-manual for an enumeration of Emacs concepts\n")
+(setq initial-scratch-message nil)
 
 ;; https://github.com/Malabarba/beacon
 ;; When you scroll, the cursor highlights very loudly

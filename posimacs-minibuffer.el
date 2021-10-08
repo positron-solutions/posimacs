@@ -93,7 +93,8 @@
   :bind-keymap ("C-x p" . projectile-command-map)
   :config
   (projectile-mode +1)
-  (setq counsel-projectile-switch-project-action 'magit-status))
+  (setq counsel-projectile-switch-project-action 'magit-status)
+  (setq projectile-switch-project-action 'magit-status))
 
 ;; provides emacs ripgrep integration for counsel-projectil-ripgrep
 (use-package projectile-ripgrep)
