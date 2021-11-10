@@ -16,14 +16,26 @@ let
   };
 
   rustPkgs = pkgs.rustBuilder.makePackageSet' {
-    rustChannel = "1.50.0";
+    rustChannel = "1.56.1";
     packageFun = import ./Cargo.nix;
+    localPatterns = [ ''^(src|crates|xpath|tests|templates)(/.*)?'' ''[^/]*\.(rs|toml)$'' ];
+    packageOverrides = pkgs: pkgs.rustBuilder.overrides.all ++ [
+      (pkgs.rustBuilder.rustLib.makeOverride {
+        name = "rust-analyzer";
+        overrideAttrs = drv: {
+          propagatedNativeBuildInputs = drv.propagatedNativeBuildInputs or [ ] ++ [
+            pkgs.gperftools
+          ];
+        };
+      })
+    ];
+
 
     workspaceSrc = pkgs.fetchFromGitHub {
       owner = "rust-analyzer";
       repo = "rust-analyzer";
-      rev = "5ba7852cf153688d5b5035a9a2a2145aa7334d79";
-      sha256 = "150gydm0mg72bbhgjjks8qc5ldiqyzhai9z4yfh4f1s2bwdfh3yf";
+      rev = "2c0f433fd2e838ae181f87019b6f1fefe33c6f54";
+      sha256 = "sha256-nqRK5276uTKOfwd1HAp4iOucjka651MkOL58qel8Hug=";
     };
   };
 
