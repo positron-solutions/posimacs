@@ -1,26 +1,42 @@
 * Nixified Rust Analyzer
-  - This package is set up to just work, but updating the version is not yet as
-    easy as =niv update=
-  - In order for you repo to operate properly with direnv, you will need the
-    =rust-src= package in your shell.  Cargo2nix has a complete example in its
-    shell setup, but here's the snippet:
+
+  This is a nix flake for Rust Analyzer.
+
+  Usually the =rust-src= is provided by the repository to match its Rust
+  version for the toolchain in use by each repo.
+
+  Inside your repo's flake, just set =RUST_SRC_PATH= similar to how it's done in cargo2nix.
+
 #+BEGIN_SRC nix
-  shell = pkgs.mkShell {
+
+  devShell = pkgs.mkShell {
     inputsFrom = pkgs.lib.mapAttrsToList (_: pkg: pkg { }) rustPkgs.noBuild.workspace;
-    nativeBuildInputs = with rustPkgs; [ cargo rustc rust-src ];
+    nativeBuildInputs = [ rustPkgs.rustChannel ] ++ (with pkgs; [cacert]);
 
     # This line adds RUST_SRC_PATH to the environment so that, via direnv
     # integration, your Rust Analyzer binary will begin using the correct rust
     # source
-    RUST_SRC_PATH = "${rustPkgs.rust-src}/lib/rustlib/src/rust/library";
+    RUST_SRC_PATH = "${rustPkgs.rustChannel}/lib/rustlib/src/rust/library";
   };
+
 #+END_SRC
+
 ** Updating Rust Analyzer Version
+
   - Cargo2nix generates a Cargo.nix that, together with the Cargo2nix overlay,
     are a reproducible build of Rust Analyzer
+
 *** Re-Freezing Cargo.nix
+
   1. Download Rust Analyzer source
   2. Load a nix-shell with bleeding edge Cargo2nix (0.9+)
   3. Nixify as usual
   6. Copy this modified Cargo.nix into this module and **update the
      rust-analyzer source rev**
+
+*** Errata
+
+    - Last freeze set both allocators in the features for rust-analyzer.  Remove
+      mimalloc feature.
+
+    - The gperftools dependency needed to be added via override
