@@ -2,7 +2,7 @@
 
 let
   cfg = config.posimacs;
-  emacs-vterm = pkgs.callPackage ./emacs-vterm {};
+  emacs-vterm = (import ./emacs-vterm).default;
 in {
   config = {
     home.packages = [
