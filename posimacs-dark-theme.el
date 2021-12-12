@@ -68,6 +68,7 @@ determine the exact padding."
    (yellow     '("#FFD000" "color-179" "brightyellow" ))
    (blue       '("#51A2E0" "color-117" "blue"         ))
    (spark      '("#1983D4" "color-117" "blue"         ))
+   (dark-spark '("#0D446E" "color-75"  "blue"         ))
    (shock      '("#FF6933" "color-202" "yellow"       ))
    (cyan       '("#36D8BD" "color-79"  "cyan"         ))
    (raw        '("#B272C4" "color-134" "magenta"      ))
@@ -262,7 +263,7 @@ determine the exact padding."
 
 ;;;;; tooltips for company & lsp ui
    (company-tooltip :background tooltip-bg)
-   (internal-border :background spark)
+   (internal-border :background dark-spark)
    (tooltips :background tooltip-bg)
    (lsp-ui-doc-background :background tooltip-bg)
 ;;;;; lsp-mode and lsp-ui-mode
