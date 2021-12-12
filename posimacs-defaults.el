@@ -1,4 +1,4 @@
-;;; posimacs-defaults --- Posimacs
+;;; posimacs-defaults --- Posimacs  -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
