@@ -32,24 +32,21 @@
 ;; Use recycle bin or whatever
 (setq delete-by-moving-to-trash t)
 
+;; Lock files annoying
+(setq create-lockfiles nil)
+
 ;; deprecate the really crappy list-buffers mode
 ;; ibuffer is more comprehensive than the filtered counsel switch buffer
 (substitute-key-definition 'list-buffers 'ibuffer global-map)
 
 (show-paren-mode 1) ; Show matching parentheses
 
+(delete-selection-mode 1) ; Actions on active region will delete
+
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; Basic packages ;;
 ;;;;;;;;;;;;;;;;;;;;
-
-;; parenthetical matching and expansion
-;; https://gist.github.com/pvik/8eb5755cc34da0226e3fc23a320a3c95
-(use-package smartparens
-  :hook (prog-mode . smartparens-mode)
-  :delight ""
-  :config
-  (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-  (require 'smartparens-config))
 
 (use-package direnv ; direnv integration
   :after lsp
