@@ -36,7 +36,7 @@ determine the exact padding."
   ;; name        default   256         16
   ((bg         '("#0D0E16" "color-233" "black"        ))
    (bg-alt     '("#040408" "color-232" "brightblack"  ))
-   (widget     '("#151724" "color-232" "brightblack"  ))
+   (widget     '("#1F2133" "color-232" "brightblack"  ))
    (base0      '("#0F1019" "color-234" "black"        ))
    (base1      '("#121212" "color-233" "brightblack"  ))
    (base2      '("#1E1E33" "color-236" "brightblack"  ))
@@ -80,7 +80,7 @@ determine the exact padding."
    (magenta    '("#8041D8" "color-98"  "magenta"      ))
    (violet     '("#AB11D8" "color-128" "magenta"      ))
 
-   (bg-hl      '("#102B52" "color-19"  "brightblack"  ))
+   (bg-hl      '("#143666" "color-19"  "brightblack"  ))
    (bg-blue    '("#0C213E" "color-17"  "brightblack"  ))
    (dark-blue  bg-blue)
    (bg-cyan    '("#092D27" "color-23"  "brightblack"  ))
