@@ -9,6 +9,15 @@
 
 ;;; Code:
 
+;; TODO write org and elisp grammars
+(use-package tree-sitter
+  :config
+  ;; (add-hook 'rust-mode-hook #'tree-sitter-mode)
+  ;; (add-hook 'emacs-lisp-mode-hook #'tree-sitter-mode))
+  )
+
+(use-package tree-sitter-langs)
+
 (use-package nix-mode)
 
 ;; LSP may send messages that are fairly large
