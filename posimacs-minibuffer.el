@@ -90,7 +90,6 @@
   :after magit
   :delight
   :init (setq projectile-completion-system 'ivy)
-  :bind-keymap ("C-x p" . projectile-command-map)
   :config
   (projectile-mode +1)
   (setq counsel-projectile-switch-project-action 'magit-status)
