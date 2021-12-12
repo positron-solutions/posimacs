@@ -50,14 +50,11 @@
 (use-package company
   :custom
   (company-idle-delay 0.2) ;; how long to wait until popup
-  ; (company-begin-commands nil) ;; disable popup
-  :bind (:map company-active-map
-	      ("C-n". company-select-next)
-	      ("C-p". company-select-previous)
-	      ("M-<". company-select-first)
-	      ("M->". company-select-last)
-              ("<tab>". company-complete-selection)
-	      ("TAB". company-complete-selection))
+  :bind ((:map company-active-map
+	       ("M-n". company-select-next)
+	       ("M-p". company-select-previous)
+               ("<tab>". company-complete-or-common)
+	       ("TAB". company-complete-or-common)))
   :config
   (add-hook 'after-init-hook #'global-company-mode)) ; thank me later
 
