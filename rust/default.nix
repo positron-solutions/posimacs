@@ -8,6 +8,7 @@ let
     overlays = [ specialArgs.rust-overlay.overlay ];
   };
 
+  rust-analyzer = (import ./rust-analyzer).defaultPackage.${specialArgs.system};
   cargo2nix = specialArgs.cargo2nix.defaultPackage.${specialArgs.system};
 in let
   osSpecific = if pkgs.stdenv.isDarwin
@@ -15,10 +16,6 @@ in let
                else [pkgs.cacert];
   rustComponents = withRustPkgs.rust-bin."${cfg.rust-channel-type}"."${cfg.rust-version}".default;
 in {
-  imports = [
-    ./rust-analyzer
-  ];
-
   options.posimacs-options.rust-version = lib.mkOption {
     type = lib.types.str;
     description = "Version of Rust to install, such as 1.45.0 or latest";
@@ -39,6 +36,7 @@ in {
       pkgs.gcc
       pkgs.llvm
       rustComponents
+      rust-analyzer
     ]
     ++ osSpecific;
   };
