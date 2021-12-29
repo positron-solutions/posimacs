@@ -1,13 +1,8 @@
 { config, pkgs, lib, specialArgs, ... }:
 
 let
+  posimacs = specialArgs.inputs.posimacs;
   cfg = config.posimacs;
-  emacs-pkgs = import specialArgs.nixpkgs {
-    system = specialArgs.system;
-    overlays = [
-      (import specialArgs.emacs-overlay)
-    ];
-  };
 in {
   options.posimacs = {
     aliases = lib.mkOption {
@@ -25,6 +20,8 @@ in {
   ];
 
   config = {
+    nixpkgs.overlays = [ posimacs.emacs-overlay.overlay ];
+
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
       ripgrep # projectile-ripgrep function relies on this
@@ -35,7 +32,7 @@ in {
     ];
 
     programs.emacs = {
-      package = emacs-pkgs.emacsUnstable;
+      package = pkgs.emacsUnstable;
       enable = true;
     };
 

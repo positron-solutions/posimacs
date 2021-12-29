@@ -3,18 +3,15 @@
 let
   cfg = config.posimacs-options;
 
-  withRustPkgs = (import specialArgs.nixpkgs) {
-    system = specialArgs.system;
-    overlays = [ specialArgs.rust-overlay.overlay ];
-  };
+  rust = specialArgs.inputs.posimacs.rust;
 
-  rust-analyzer = (import ./rust-analyzer).defaultPackage.${specialArgs.system};
-  cargo2nix = specialArgs.cargo2nix.defaultPackage.${specialArgs.system};
+  rust-analyzer = rust.rust-analyzer.defaultPackage.${specialArgs.system};
+  cargo2nix = rust.cargo2nix.defaultPackage.${specialArgs.system};
 in let
   osSpecific = if pkgs.stdenv.isDarwin
                then [pkgs.darwin.apple_sdk.frameworks.Security]
                else [pkgs.cacert];
-  rustComponents = withRustPkgs.rust-bin."${cfg.rust-channel-type}"."${cfg.rust-version}".default;
+  rustComponents = pkgs.rust-bin."${cfg.rust-channel-type}"."${cfg.rust-version}".default;
 in {
   options.posimacs-options.rust-version = lib.mkOption {
     type = lib.types.str;
@@ -31,6 +28,8 @@ in {
   };
 
   config = {
+    nixpkgs.overlays = [ rust.rust-overlay.overlay ];
+
     home.packages = [
       cargo2nix
       pkgs.gcc
