@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, specialArgs, ... }:
 
 let
   cfg = config.posimacs;
-  emacs-vterm = (import ./emacs-vterm).default;
+  emacs-vterm = (import ./emacs-vterm).defaultPackage.${specialArgs.system};
 in {
   config = {
     home.packages = [

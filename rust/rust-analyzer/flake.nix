@@ -6,6 +6,10 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs?ref=release-21.05";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
     rust-analyzer-src = {
       url = "github:rust-analyzer/rust-analyzer?rev=2c0f433fd2e838ae181f87019b6f1fefe33c6f54";
       flake = false;
@@ -29,7 +33,7 @@
         # create the workspace & dependencies package set
         rustPkgs = pkgs.rustBuilder.makePackageSet' {
           # rust toolchain version
-          rustChannel = "1.56.1";
+          rustChannel = "1.57.0";
           # nixified Cargo.lock
           packageFun = import ./Cargo.nix;
 

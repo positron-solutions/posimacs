@@ -1,14 +1,18 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-21.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-21.11";
     emacs-vterm-src = {
       url = "github:akermu/emacs-libvterm?rev=2681120b770573044832ba8c22ccbac192e1a294";
       flake = false;
     };
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, emacs-vterm-src}:
+  outputs = { self, nixpkgs, flake-utils, flake-compat, emacs-vterm-src}:
     flake-utils.lib.eachDefaultSystem (system:
 
       let

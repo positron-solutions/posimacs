@@ -1,11 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, specialArgs, ... }:
 
 let
   cfg = config.posimacs;
-  sources = import nix/sources.nix;
-  emacs-pkgs = import sources.nixpkgs {
+  emacs-pkgs = import specialArgs.nixpkgs {
+    system = specialArgs.system;
     overlays = [
-      (import sources.emacs-overlay)
+      (import specialArgs.emacs-overlay)
     ];
   };
 in {

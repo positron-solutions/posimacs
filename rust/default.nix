@@ -1,20 +1,19 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, specialArgs, ... }:
 
 let
   cfg = config.posimacs-options;
 
-  sources = import ./nix/sources.nix;
-  pinnedPkgs = import sources.nixpkgs {
-    overlays = [
-      (import sources.rust-overlay)
-    ];
+  withRustPkgs = (import specialArgs.nixpkgs) {
+    system = specialArgs.system;
+    overlays = [ specialArgs.rust-overlay.overlay ];
   };
-  cargo2nix = (import sources.cargo2nix { }).package;
+
+  cargo2nix = specialArgs.cargo2nix.defaultPackage.${specialArgs.system};
 in let
-  osSpecific = if pinnedPkgs.stdenv.isDarwin
-               then [pinnedPkgs.darwin.apple_sdk.frameworks.Security]
-               else [pinnedPkgs.cacert];
-  rustComponents = pinnedPkgs.rust-bin."${cfg.rust-channel-type}"."${cfg.rust-version}".default;
+  osSpecific = if pkgs.stdenv.isDarwin
+               then [pkgs.darwin.apple_sdk.frameworks.Security]
+               else [pkgs.cacert];
+  rustComponents = withRustPkgs.rust-bin."${cfg.rust-channel-type}"."${cfg.rust-version}".default;
 in {
   imports = [
     ./rust-analyzer
@@ -38,7 +37,7 @@ in {
     home.packages = [
       cargo2nix
       pkgs.gcc
-      pinnedPkgs.llvm
+      pkgs.llvm
       rustComponents
     ]
     ++ osSpecific;
