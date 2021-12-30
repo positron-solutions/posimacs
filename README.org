@@ -1,35 +1,152 @@
 * Posimacs
 
-A set of home manager modules that install emacs and 3rd party programs with
-nix.  Included modules contain configuration covering:
+Demonstration management of 3rd party dependencies & dotfile integration for
+Emacs using [[https://nixos.org/download.html][Nix]].
 
-- LSP and a Rust Analyzer build included, integration via Rustic
-- Minibuffer completions with Ivy + AMX + Counsel
-- =Straight.el= package management
-- Vterm integration & nix build of emacs-libvterm
+Update =init.el= etc via the local development style while maintaining all your
+dependencies and dotfiles with highly reliable purpose-built tooling.
 
-These modules are also an example of configuring a program, its shell aliases,
-systemd units, accompanying files and programs as a fully self-contained
-declaration for easy distribution among other nix users.
+** The Big Picture Scheme
 
-** Installing the Posimacs Modules
+Different tools are appropriate for different aspects of propagating configuring
+for Emacs and your home environment around Emacs.
 
-To use this repository like a normal Emacs user, clone it into your =~/.emacs.d=
-directory.  To have home manager pick up the included modules, just load the paths:
+*** [[https://github.com/raxod502/straight.el][Straight.el]] elisp dependency management
+
+  Straight is used to obtain elisp dependencies and freeze versions into
+  reproducible lock files
+
+*** [[https://github.com/nix-community/home-manager][Home Manager]] dotfile integration
+
+  Many Emacs extensions like vterm benefit from terminal configuration or the
+  inclusion of files such as graphics and fonts into specific directories.  Home
+  manager also can perform systemd integration and start the Emacs server.
+
+  A hunk of shell configuration for vterm:
+
+  #+begin_src nix
+    programs.bash.initExtra = ''
+      vterm_printf(){
+          if [ -n "$TMUX" ]; then
+              # Tell tmux to pass the escape sequences through
+              # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+              printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+          elif [ "''${TERM%%-*}" = "screen" ]; then
+              # GNU screen (screen, screen-256color, screen-256color-bce)
+              printf "\eP\e]%s\007\e\\" "$1"
+          else
+              printf "\e]%s\e\\" "$1"
+          fi
+      }
+      ''
+  #+end_src
+
+  Home manager uses a module structure similar to NixOS that makes it easy for
+  many configurations to be declared independently and then get recursively
+  merged together either without caring about each other or with explicit
+  cross-settings behavior.
+
+  Posimacs modules are also an example of configuring a program, its shell
+  aliases, systemd units, accompanying files and programs as a fully
+  self-contained declaration for easy distribution among other nix users.
+
+*** Nix flake expressions for 3rd party dependencies
+
+  Nix is really good at managing non-elisp dependencies.  Instead of downloading
+  binaries from some CI server, you can build and modify packages for your
+  platform however you need.  Nixpkgs has roughly everything and changing any
+  dependency is usually quite straightforward.
+
+  Modifying the version of guile scheme available in nixpkgs:
+
+  #+begin_src nix
+    # Don't like something in nixpkgs?  Override it!
+    guile-3 = pkgs.guile.overrideAttrs( drv: {
+      version = "3.0.7";
+      src = builtins.fetchurl {
+        url = "https://ftp.gnu.org/gnu/guile/guile-3.0.7.tar.xz";
+        sha256 = "1dwiwsrpm4f96alfnz6wibq378242z4f16vsxgy1n9r00v3qczgm";
+      };
+    });
+  #+end_src
+
+** About the Included Emacs Configurations
+
+ *This is not meant to be an excellent distribution of Emacs yet.* The practice
+ of distributing hunks of configuration by burying them in git repos is
+ anachronistic.  Work is ongoing to update this anachronism to 2003-2004 level
+ technology.
+
+ However, using these anachronistic rituals, Posimacs does attempt to maintain a
+ decent setup for:
+
+ - LSP and a Rust Analyzer build included, integration via Rustic
+ - Minibuffer completions with Ivy + AMX + Counsel
+ - Vterm integration & nix build of emacs-libvterm
+
+ Much of my actual setup is unpublished.  It's still unclear which parts will be
+ best as elisp packages or hunks of configuration bound for distribution via
+ some other mechanism.  Bear with me.
+
+** Installation
+
+There are three parts to implement the full scheme:
+
+- Setting up home manager and including this repository as a flake input (local
+  development style against a clone is strongly recommended).
+- Loading the posimacs shims into =init.el= and =early-init.el=
+- Symlinking the Straight lockfile into place to synchronize Emacs package
+  versions
+
+*** Including Home Manager Module
+
+ Clone this repository into your =~/.emacs.d= directory.
+
+ Home manager can use this repo as a flake input and then the input can be used
+ to load the module using the =extraSpecialArgs= mechanism
+
+ #+begin_src nix ~/.config/nixpkgs/flake.nix
+   {
+     inputs = {
+       nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
+       home-manager.url = "github:nix-community/home-manager";
+       home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+       # set path to your cloned posimacs repo, which is a nix flake
+       posimacs.url = "path:~/.emacs.d/posimacs";
+     };
+
+     outputs = inputs:
+       let
+         system = "x86_64-linux";  # or x86_64-darwin etc
+         specialArgs = {inherit system inputs;};
+         username = "emacslegend"; # change this to your user name
+       in {
+       homeConfigurations = {
+         ${username} = inputs.home-manager.lib.homeManagerConfiguration {
+           import username system;
+           homeDirectory = "/home/${username}";
+           configuration.imports = [ ./home.nix ];
+           extraSpecialArgs = specialArgs;
+         };
+       };
+     };
+   }
+
+ #+end_src
+
+ The flake sets up =specialArgs= which contains the posimacs module for
+  inclusion in =home.nix=
 
 #+BEGIN_SRC nix ~/.config/nixpkgs/home.nix
-  { pkgs, ... }:
+  { pkgs, specialArgs, ... }:
 
   {
-
-    # Using local development style, a path literal pointing to where you checked
-    # out this branch, which is recommended beceause it's faster to make changes
-    # than if you use niv or a flakes source
     imports = [
-      ~/.emacs.d/posimacs
+      specialArgs.posimacs
     ];
 
-    # Module configuration via options (found in default.nix)
+    # Module configuration via options (found in top level default.nix)
     #
     # Use the emacs daemon, enabling `emacsclient` aliases if aliases are turned on
     # services.emacs.enable = true;
@@ -40,37 +157,25 @@ directory.  To have home manager pick up the included modules, just load the pat
   }
 #+END_SRC
 
+*** Loading Emacs files
+
 In order for posimacs modules to have their lisp files loaded, you can load the
 shims or do something similar to their contents.
 
 #+BEGIN_SRC elisp ~/.emacs.d/early-init.el
 ;; load the posimacs early-init shim
-(load (expand-file-name "posimacs-early-init.el" user-emacs-directory))
+(load (expand-file-name "posimacs/posimacs-early-init.el" user-emacs-directory))
 #+END_SRC
 
 #+BEGIN_SRC elisp ~/.emacs.d/init.el
 ;; load the posimacs init shim
-(load (expand-file-name "posimacs-init.el" user-emacs-directory))
+(load (expand-file-name "posimacs/posimacs-init.el" user-emacs-directory))
 
 ;; Now that you have some basics configured, learn to use ielm or program in
 ;; buffer with M-x eval-region etc and customize the rest of the owl
 #+END_SRC
 
-*** Home Manager
-
-Tell home manager to update your nix environment
-
-#+BEGIN_SRC sh
-  home-manager switch
-#+END_SRC
-
-If the daemon is active (default) it will start and, if the =~/.emacs.d/=
-straight cache is cold, =straight.el= will begin downloading your dependencies
-and building packages.  Connect to the daemon with =emacsclient=.
-
-Otherwise you can just run =emacs= to watch the process manually.
-
-*** Straight
+*** Using Straight's Package Lock
 
 To use initialize with the frozen versions of packages that this repository
 uses, symlink the =default.el= into straight's version directory.
@@ -82,6 +187,21 @@ link -s ~/.emacs.d/posimacs/default.el ~/.emacs.d/straight/versions/
 This just provides reproducibility in the event that there are bugs or some
 packages need to be maintained on slightly different sources or branches etc.
 
+
+*** Home Manager
+
+Tell home manager to update your nix environment
+
+#+BEGIN_SRC bash
+  home-manager switch --flake ~/.config/nixpkgs
+#+END_SRC
+
+If the daemon is enabled (default) it will start and, if the =~/.emacs.d/=
+straight cache is cold, =straight.el= will begin downloading your dependencies
+and building packages.  Connect to the daemon with =emacsclient=.
+
+Otherwise you can just run =emacs= to watch the process manually.
+
 *** Additional OSX Steps
 
 Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
@@ -90,18 +210,40 @@ You will /still/ need to run =M-x all-the-icons-install-fonts= for icons to
 begin working.  Can't pre-install them as they are not picked up in
 =~/Library/Fonts/=
 
-** Daemon
+*** Daemon
 
 The daemon is extremely convenient for fast loading and keeping all buffers
-accessible to all panes by launching clients to a central emacs server.  This is
-not available on OSX yet.  On Linux, you can enable it by, in addition to the
-installation instructions above, setting =services.emacs.enable = true;= in
+accessible to all panes by launching clients to a central emacs server.  This
+might not available on OSX yet.  On Linux, you can disable it by, in addition to
+the installation instructions above, setting =services.emacs.enable = false;= in
 your =home.nix=.
 
 Whenever you reload, the daemon will not restart because you might have open
 files that needs saving and systemd knows nothing about these.  Therefore,
 restart your daemon manually (it prints this instruction after =home-manager
 switch=) by running =systemctl --user restart emacs=.
+
+** The Actual Vision
+
+The optimum Nix integration appears to be slightly different than what is
+currently implemented.
+
+*** Emacs generated nix profile
+
+Emacs can drive its own nix profile if it wants to, and this can be done to
+provide 3rd party dependencies with or without home manager integrations.
+
+*** Emacs generated home manager module
+
+Emacs can also write its own module and have the home.nix import it so that when
+Emacs makes changes to that module, it can ensure that they are picked up by
+running the switch command on its own.
+
+*** Emacs generated .el files
+
+Distributing hunks by copy & pasting configurations from various literate org
+files around the internet is a form of implicit dependencies that virtually
+ensures cargo culting & decay.  Posimacs is being used to develop a better way.
 
 ** Maintenance
 
