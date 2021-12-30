@@ -8,7 +8,7 @@
 
 ;;; Code:
 
-(defun pmx--setup-fonts (&rest)
+(defun pmx--setup-fonts (&rest args)
   "Nice fonts for nice people (and robots)."
   (set-face-attribute 'default nil
                       :font (font-spec :family "Roboto Mono"
