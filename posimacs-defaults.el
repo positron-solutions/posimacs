@@ -180,4 +180,9 @@ observed."
   :config
   (beacon-mode))
 
+;; Fill while typing by default in text modes
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'fundamental-mode-hook #'auto-fill-mode)
+(add-hook 'org-mode-hook #'auto-fill-mode)
+(add-hook 'markdown-mode-hook #'auto-fill-mode)
 ;;; posimacs-defaults ends here
