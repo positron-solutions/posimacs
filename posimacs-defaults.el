@@ -69,16 +69,16 @@
   (global-subword-mode 1))
 
 ;; has a binding in help
-(use-package command-log-mode ; useful for seeing what you're calling
+(use-package command-log-mode
   :custom
-  (command-log-mode-window-font-size 20)
-  (command-log-mode-open-log-turns-on-mode t "Show buffer enables mode")
-  (command-log-mode-close-log-turns-off-mode t "Show buffer enables mode")
-  (command-log-mode-is-global "Auto-enable does so globally (including minibuffer)")
-  :config
+  (clm-window-text-scale 2 "Command log two steps higher text scale")
+  (clm-logging-shows-buffer t "Toggling will show the buffer.")
+  (clm-hiding-disables-logging t "Toggling visible buffer turns off logging.")
+  (clm-disabling-logging-kills-buffer t "The buffer will be new when displayed again.")
+  (clm-log-globally t "Auto-enable with global minor mode (including minibuffer)")
+  (clm-exceptions '(self-insert-command) "Be chatty.
+        Show everything besides self-insert-command"))
 
-  ;; Be chatty.  Show everything besides self-insert-command
-  (setq clm/log-command-exceptions* '(self-insert-command)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
