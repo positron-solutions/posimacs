@@ -23,7 +23,7 @@
       ("f" "Function" counsel-describe-function)
       ]
      ["Watch"
-      ("l" "Recent commands" clm/toggle-command-log-buffer)
+      ("l" "Recent commands" clm-toggle)
       ("e" "Echo Messages" view-echo-area-messages)
       ]
      ["Search"

@@ -79,6 +79,9 @@
   (clm-exceptions '(self-insert-command) "Be chatty.
         Show everything besides self-insert-command"))
 
+;; TODO find other packages that are not being managed by straight and bring them under the law
+;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
+(use-package project)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
