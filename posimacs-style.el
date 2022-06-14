@@ -78,7 +78,7 @@
   ;; other
   (setq dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
 
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
   (dashboard-setup-startup-hook))
 
