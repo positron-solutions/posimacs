@@ -32,7 +32,6 @@
 
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
-  :ensure t
   :config
 
   ;; top stuff
