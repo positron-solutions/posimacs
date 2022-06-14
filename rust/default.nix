@@ -5,8 +5,8 @@ let
 
   rust = specialArgs.inputs.posimacs.rust;
 
-  rust-analyzer = rust.rust-analyzer.defaultPackage.${specialArgs.system};
-  cargo2nix = rust.cargo2nix.defaultPackage.${specialArgs.system};
+  rust-analyzer = rust.rust-analyzer.packages.${specialArgs.system}.default;
+  cargo2nix = rust.cargo2nix.packages.${specialArgs.system}.default;
 in let
   osSpecific = if pkgs.stdenv.isDarwin
                then [pkgs.darwin.apple_sdk.frameworks.Security]

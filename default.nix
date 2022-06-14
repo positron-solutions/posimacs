@@ -32,7 +32,7 @@ in {
     ];
 
     programs.emacs = {
-      package = pkgs.emacsUnstable;
+      package = pkgs.emacsNativeComp;
       enable = true;
     };
 

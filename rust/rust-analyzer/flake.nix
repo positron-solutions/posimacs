@@ -1,22 +1,16 @@
 {
   inputs = {
-    cargo2nix.url = "github:cargo2nix/cargo2nix";
-    flake-utils.url = "github:numtide/flake-utils";
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    rust-overlay.inputs.flake-utils.follows = "flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-21.11";
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
+    # Use a github flake URL for real packages
+    cargo2nix.url = "github:cargo2nix/cargo2nix/release-0.11.0";
+    flake-utils.follows = "cargo2nix/flake-utils";
+    nixpkgs.follows = "cargo2nix/nixpkgs";
     rust-analyzer-src = {
-      url = "github:rust-analyzer/rust-analyzer?rev=2c0f433fd2e838ae181f87019b6f1fefe33c6f54";
+      url = "github:rust-lang/rust-analyzer/?rev=f94fa62d69faf5bd63b3772d3ec4f0c76cf2db57";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, cargo2nix, flake-utils, rust-overlay, rust-analyzer-src, ... }:
+  outputs = inputs: with inputs;
 
     # Build the output set for each default system, resulting in paths such as:
     # nix build .#pkgs.x86_64-linux.<name>
@@ -26,14 +20,13 @@
         # create nixpkgs that contains rustBuilder from cargo2nix overlay
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [(import "${cargo2nix}/overlay")
-                      rust-overlay.overlay];
+          overlays = [ cargo2nix.overlays.default ];
         };
 
         # create the workspace & dependencies package set
-        rustPkgs = pkgs.rustBuilder.makePackageSet' {
+        rustPkgs = pkgs.rustBuilder.makePackageSet {
           # rust toolchain version
-          rustChannel = "1.57.0";
+          rustVersion = "1.61.0";
           # nixified Cargo.lock
           packageFun = import ./Cargo.nix;
 
@@ -58,10 +51,9 @@
         packages = {
           # nix build .#rust-analyzer
           rust-analyzer = (rustPkgs.workspace.rust-analyzer {}).bin;
+          # nix build
+          default = packages.rust-analyzer;
         };
-
-        # nix build
-        defaultPackage = packages.rust-analyzer;
       }
     );
 }
