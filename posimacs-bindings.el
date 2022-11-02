@@ -56,7 +56,8 @@
       ("a" "Docstrings" counsel-apropos)
       ("A" "Documentation" apropos-documentation)
       ("e" "Shortdoc elisp" shortdoc-display-group)
-      ("M" "Emacs manual" info-emacs-manual)
+      ("L" "Elisp manual (good)" elisp-index-search)
+      ("M" "Emacs manual (bad)" info-emacs-manual)
       ("g" "Glossary" search-emacs-glossary)]])
 
   (transient-define-prefix pmx-projectile ()
