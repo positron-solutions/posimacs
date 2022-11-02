@@ -27,22 +27,13 @@
 
 (add-hook 'emacs-startup-hook #'reset-gc-threshold)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Basic Minimalist UI Choices ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq inhibit-startup-message t) ; GNU's Not Unix
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (column-number-mode 1) ; show columns in modeline
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Load Paths & Packages ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(setq package-enable-at-startup nil) ;
+(setq package-enable-at-startup nil) ; straight
 
 
 ;;; posimacs-fastload.el ends here

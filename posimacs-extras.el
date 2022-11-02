@@ -14,7 +14,7 @@
 (straight-use-package
  '(snow :type git :host github :repo "alphapapa/snow.el"))
 
-(use-package no-littering)
+; (use-package no-littering) ; organize ~/.emacs.d
 
 ;; tracking command usage to measure pain
 (use-package keyfreq

@@ -20,6 +20,17 @@
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+(setq straight-disable-native-compile nil)
+
+;; Load no-littering just after boostrapping straight.  Otherwise, packages may
+;; initialize to weird locations.
+(use-package 'no-littering
+  :config
+  (require 'no-littering))
+
+
+;; Needs to load early for some reason
+(straight-use-package 'org)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
