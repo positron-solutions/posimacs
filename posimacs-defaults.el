@@ -103,7 +103,7 @@
 (advice-add 'split-window-below :after #'balance-windows--advice)
 (advice-add 'delete-window :after #'balance-windows--advice)
 
-(defun pk-split-window-conservatively (&optional window)
+(defun pmx-split-window-conservatively (&optional window)
   "Split WINDOW only if absolutely necessary.
 Only split if there is no split, and only split into left & right
 windows.  If no window is specified then WINDOW defaults to
@@ -118,7 +118,7 @@ observed."
           (split-window-right))
       nil)))
 
-(setq split-window-preferred-function #'pk-split-window-conservatively)
+(setq split-window-preferred-function #'pmx-split-window-conservatively)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Window Controls ;;
