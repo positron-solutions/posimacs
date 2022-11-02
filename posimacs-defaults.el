@@ -25,12 +25,17 @@
 ;; focus help window so that it can be closed immediately with 'q'
 (setq help-window-select t)
 
-(setq-default fill-column 80) ; How wide to auto-fill paragraphs
+(setq-default fill-column 100) ; How wide to auto-fill paragraphs
 
 (setq-default indent-tabs-mode nil) ; tabs are not real
 
 ;; Use recycle bin or whatever
 (setq delete-by-moving-to-trash t)
+
+(setq flyspell-mode t)
+
+;; LISP
+(setq load-prefer-newer t)
 
 ;; Lock files annoying
 (setq create-lockfiles nil)
@@ -132,16 +137,18 @@ observed."
   :config
   (setq switch-window-threshold 2)
   (setq switch-window-shortcut-style 'qwerty)
-  (setq switch-window-minibuffer-shortcut ?z)
+  (setq switch-window-minibuffer-shortcut ?m)
+  (setq switch-window-input-style 'read-event)
   (setq switch-window-background nil)
-  (setq switch-window-qwerty-shortcuts '("p" "o" "s" "i" "t" "r" "m" "a" "c" "x" "y" "v" "u"))
-  :bind ("C-x o" . switch-window))
+  (setq switch-window-qwerty-shortcuts '("p" "o" "s" "i" "t" "r" "a" "c" "x" "y" "v" "u")))
 
 (use-package rotate) ; rotate windows and layouts
 
 (use-package avy ; fast-cursor-jumping in buffer visible area
-  :bind ("C-v" . avy-goto-word-1) ; avy-goto-subword-1 sometimes hangs
-  :config (setq avy-all-windows 'all-frames)) ; avy can switch frames
+  :custom
+  (setq avy-escape-chars '(?\e ?\C-g))
+  :config
+  (setq avy-all-windows 'all-frames)) ; avy can switch frames
 
 ;;;;;;;;;;;;;;
 ;; Controls ;;
@@ -180,9 +187,33 @@ observed."
   :config
   (beacon-mode))
 
+;; When do we ever want to confirm after requesting execution?
+(setq org-confirm-babel-evaluate nil)
+
 ;; Fill while typing by default in text modes
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (add-hook 'fundamental-mode-hook #'auto-fill-mode)
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
+
+
+
+(defvar pmx-help-modes '(helpful-mode
+                         help-mode
+                         Man-mode
+                         woman-mode
+                         Info-mode))
+
+(defun pmx-buffer-help-p (buf act)
+  "BUF is a help buffer, ignore ACT."
+  (member (buffer-local-value 'major-mode (get-buffer buf)) pmx-help-modes))
+
+(add-to-list 'display-buffer-alist
+             `(pmx-buffer-help-p         ;predicate
+               (display-buffer--maybe-same-window
+                display-buffer-reuse-window
+                display-buffer-reuse-mode-window) ;functions to try
+               (mode . ,pmx-help-modes)
+               (inhibit-same-window . nil)))
+
 ;;; posimacs-defaults ends here

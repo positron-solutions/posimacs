@@ -26,19 +26,18 @@
 
 (use-package sudo-edit) ; upgrade perms to write read-only file
 
+;;;###autoload
+(defun screenshot-svg ()
+  "Save a screenshot of the current frame as an SVG image.
+Saves to a temp file and puts the filename in the kill ring."
+  (interactive)
+  (let* ((filename (make-temp-file "Emacs" nil ".svg"))
+         (data (x-export-frames nil 'svg)))
+    (with-temp-file filename
+      (insert data))
+    (kill-new filename)
+    (message filename)))
 
-(defun pmx-hack-locals-other-window (target-buffer)
-  "Hack elisp with this buffer's buffer locals"
-  (interactive (list (read-buffer "Target buffer: "
-                            (current-buffer) ; default
-                            nil ; require match
-                            nil ; filter pred
-                            )))
-  (let ((new-buffer-name (format "*ielm-<%s>*" target-buffer)))
-    (pop-to-buffer (get-buffer-create new-buffer-name))
-    (ielm new-buffer-name)
-    (ielm-change-working-buffer target-buffer)))
 
-(global-set-key (kbd "M-i") 'pmx-hack-locals-other-window)
 
 ;;; posimacs-extras.el ends here

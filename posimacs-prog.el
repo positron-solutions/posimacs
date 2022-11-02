@@ -19,9 +19,10 @@
 (use-package tree-sitter-langs)
 
 (use-package nix-mode)
+(use-package list-environment) ; specificaly for inspecting nix envs
 
 ;; LSP may send messages that are fairly large
-(setq read-process-output-max (* (* 1024 1024) 8)) ;; 8mb
+(setq read-process-output-max (* (* 1024 1024) 32)) ;; 32mb
 
 
 (use-package lsp-mode
@@ -31,10 +32,11 @@
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all nil) ; only show symbol info, not everything returned
   (lsp-signature-render-documentation nil) ; don't show eldocs in popup
-  (lsp-idle-delay 3.0 "Reduce error noise while typing or completing")
+  (lsp-idle-delay 0.5 "Reduce error noise while typing or completing")
   (lsp-rust-analyzer-server-display-inlay-hints t)
   (lsp-headerline-breadcrumb-enable nil)
   :config
+  ;; (setq lsp-use-plists t)  ; breaks rust-analyzer integration right now
   (advice-add 'lsp :before #'direnv-update-environment)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
@@ -72,6 +74,19 @@
 
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
+
+(defun pmx-buffer-ert-p (buf act)
+  "BUF is an ert results buffer, ignore ACT."
+  (eq (buffer-local-value 'major-mode (get-buffer buf)) 'ert-results-mode))
+
+(use-package ert
+  :config
+  (add-to-list 'display-buffer-alist
+               `(pmx-buffer-ert-p         ;predicate
+                 (display-buffer-reuse-mode-window) ;functions to try
+                 (inhibit-same-window . nil))))
+
+(use-package auto-compile)
 
 (use-package dap-mode
   :config

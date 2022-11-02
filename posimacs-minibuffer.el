@@ -12,7 +12,7 @@
 ;;; Code:
 
 (use-package swiper ; the better buffer search
-  :bind ("C-s" . swiper))
+  :bind ("M-s" . swiper))
 
 ;; case insensitive matching of filenames
 (setq read-file-name-completion-ignore-case t)
@@ -71,6 +71,7 @@
   :delight
   :config
   (counsel-mode)
+  (setq counsel-find-file-at-point t)
   (setq ivy-initial-inputs-alist  ; by default, match anywhere in name
         (quote
          ((counsel-minor . "")
@@ -86,12 +87,17 @@
           (woman . "")))))
 
 ;; Git & project tree based searching for files
+;; TODO move over with VC stuff
 (use-package projectile
   :after magit
   :delight
   :init (setq projectile-completion-system 'ivy)
   :config
   (projectile-mode +1)
+  (push "^target" projectile-globally-ignored-directories)
+  (setq projectile-track-known-projects-automatically nil)
+  (setq projectile-sort-order 'recently-active)
+  (setq projectile-completion-system 'ivy)
   (setq counsel-projectile-switch-project-action 'magit-status)
   (setq projectile-switch-project-action 'magit-status))
 
