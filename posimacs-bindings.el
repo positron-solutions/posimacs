@@ -213,10 +213,12 @@
   (defun pmx-keyboard-quit ()
     "Quit, but if minibuffer is open and not focused, quit it."
     (interactive)
+    (declare-function minibuffer-keyboard-quit "delsel" ())
     (if (active-minibuffer-window)
-        (minibuffer-keyboard-quit)
+        (progn (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
+               (select-window (active-minibuffer-window))
+               (minibuffer-keyboard-quit))
       (keyboard-quit)))
-
 
   (general-def 'global-map "C-g" 'pmx-keyboard-quit)
 
