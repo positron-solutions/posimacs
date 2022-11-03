@@ -39,5 +39,33 @@ Saves to a temp file and puts the filename in the kill ring."
     (message filename)))
 
 
+(defun pmx--mru-buffer ()
+  "Get the buffer of the most recently used window."
+  (window-buffer (get-mru-window t t t)))
+
+(defun pmx--not-ielm-buffer-p (buffer)
+  "Filter predicate to remove ielm buffers from `read-buffer' candidates.
+
+BUFFER candidate"
+  (not (eq (buffer-local-value 'major-mode buffer)
+           'inferior-emacs-lisp-mode)))
+
+(defun pmx-ielm-this-buffer (&optional target-buffer)
+  "Hack this buffer's locals with elisp in ielm.
+
+TARGET-BUFFER buffer whose locals we want to hack
+
+If the TARGET-BUFFER is already an ielm buffer, warn instead.
+When TARGET-BUFFER is nil, use the result of `current-buffer'"
+  (interactive)
+  (let* ((target-buffer (or target-buffer (current-buffer)))
+        (new-buffer-name (format "*ielm-<%s>*" target-buffer)))
+    (if (pmx--not-ielm-buffer-p target-buffer)
+      (progn (pop-to-buffer (get-buffer-create new-buffer-name))
+             (ielm new-buffer-name)
+             (ielm-change-working-buffer target-buffer))
+      (user-error "Target buffer %s is already an ielm buffer" (buffer-name target-buffer)))))
+
+
 
 ;;; posimacs-extras.el ends here
