@@ -16,7 +16,7 @@ in {
   # import modules within modules for composition / dependency
   imports = [
     specialArgs.inputs.posimacs.emacs-vterm.nixosModules.${specialArgs.system}.emacs-vterm
-    ./rust
+    specialArgs.inputs.posimacs.rust.nixosModules.${specialArgs.system}.rust
   ];
 
   config = {

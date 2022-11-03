@@ -1,12 +1,8 @@
+{ rust-analyzer, cargo2nix, rust-overlay}:
 { config, pkgs, lib, specialArgs, ... }:
 
 let
   cfg = config.posimacs-options;
-
-  rust = specialArgs.inputs.posimacs.rust;
-
-  rust-analyzer = rust.rust-analyzer.packages.${specialArgs.system}.default;
-  cargo2nix = rust.cargo2nix.packages.${specialArgs.system}.default;
 in let
   osSpecific = if pkgs.stdenv.isDarwin
                then [pkgs.darwin.apple_sdk.frameworks.Security]
@@ -28,7 +24,7 @@ in {
   };
 
   config = {
-    nixpkgs.overlays = [ rust.rust-overlay.overlay ];
+    nixpkgs.overlays = [ rust-overlay.overlays.default ];
 
     home.packages = [
       cargo2nix

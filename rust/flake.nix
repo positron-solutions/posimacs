@@ -1,5 +1,5 @@
 {
-  description = "Rust inputs for flake style home manager module";
+  description = "Home manager module for Emacs rust dependencies & integration.";
 
   inputs = {
     cargo2nix.url = "github:cargo2nix/cargo2nix/?ref=release-0.11.0";
@@ -11,16 +11,23 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.cargo2nix.follows = "cargo2nix";
     };
-
-    # These may be included due to some inadvertent `follows` behavior that needs
-    # sorting out
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  # "properly defined inputs" are just passed through for consumption in modules
-  outputs = inputs: inputs;
+  outputs = { self, cargo2nix, nixpkgs, rust-analyzer, rust-overlay, flake-utils,}:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        rust-analyzer' = rust-analyzer.packages.${system}.default;
+        cargo2nix' = cargo2nix.packages.${system}.default;
+
+        # Create the module and inject its dependency we declared above
+        module = import ./rust-module.nix { inherit rust-overlay;
+                                            cargo2nix = cargo2nix';
+                                            rust-analyzer = rust-analyzer';};
+      in rec {
+        nixosModules = {
+          rust = module;
+          default = nixosModules.rust;
+        };
+      });
 }
