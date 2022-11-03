@@ -1,6 +1,8 @@
 {
-  description = "Emacs installation with home manager dotfiles integration and
-  3rd party deps defined in nix flakes.";
+  description = ''
+    Home manager module for an Emacs installation with dotfiles integration &
+    3rd party deps.
+  '';
 
   inputs = {
     cargo2nix = {
@@ -36,6 +38,21 @@
     };
   };
 
-  # "properly defined inputs" are just passed through for consumption in modules
-  outputs = inputs: inputs;
+  outputs = inputs:
+    inputs.flake-utils.lib.eachDefaultSystem (system:
+
+      let
+        # Submodules from our inputs are injected into the home manager module
+        module = import ./posimacs.nix {
+          rust = inputs.rust.nixosModules.${system}.default;
+          emacs-vterm = inputs.emacs-vterm.nixosModules.${system}.default;
+          emacs-overlay = inputs.emacs-overlay;
+        };
+
+      in rec {
+        nixosModules = {
+          posimacs = module;
+          default = nixosModules.posimacs;
+        };
+      });
 }

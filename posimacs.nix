@@ -1,3 +1,4 @@
+{ emacs-vterm, rust, emacs-overlay }:
 { config, pkgs, lib, specialArgs, ... }:
 
 let
@@ -15,12 +16,12 @@ in {
 
   # import modules within modules for composition / dependency
   imports = [
-    specialArgs.inputs.posimacs.emacs-vterm.nixosModules.${specialArgs.system}.emacs-vterm
-    specialArgs.inputs.posimacs.rust.nixosModules.${specialArgs.system}.rust
+    emacs-vterm
+    rust
   ];
 
   config = {
-    nixpkgs.overlays = [ posimacs.emacs-overlay.overlay ];
+    nixpkgs.overlays = [ emacs-overlay.overlays.default ];
 
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
