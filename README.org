@@ -3,10 +3,13 @@
 [[./graphics/posimacs-github-banner.svg]]
 
 Demonstration management of 3rd party dependencies & dotfile integration for
-Emacs using [[https://nixos.org/download.html][Nix]].
+Emacs using [[https://nixos.org/download.html][Nix]] and [[https://github.com/nix-community/home-manager][Home-Manager]].
 
-Update =init.el= etc via the local development style while maintaining all your
-dependencies and dotfiles with highly reliable purpose-built tooling.
+Maintain all of your dependencies and dotfiles for Emacs, reproducibly, portably.
+
+This style does not require =home-manager switch= just to pick up changes in
+your elisp files.  It does not rely on Nix to manage elisp packages.  Straight
+is used for package locking.
 
 ** The Big Picture Scheme
 
@@ -57,7 +60,9 @@ for Emacs and your home environment around Emacs.
   Nix is really good at managing non-elisp dependencies.  Instead of downloading
   binaries from some CI server, you can build and modify packages for your
   platform however you need.  Nixpkgs has roughly everything and changing any
-  dependency is usually quite straightforward.
+  dependency is usually quite straightforward.  Public caches are available for
+  many popular packages and most packages from nixpkgs itself will be returned
+  from a cache by default.
 
   Modifying the version of guile scheme available in nixpkgs:
 
@@ -97,15 +102,15 @@ There are three parts to implement the full scheme:
 - Setting up home manager and including this repository as a flake input (local
   development style against a clone is strongly recommended).
 - Loading the posimacs shims into =init.el= and =early-init.el=
-- Symlinking the Straight lockfile into place to synchronize Emacs package
-  versions
+- Symlinking (or copying) the Straight lockfile into place to synchronize Emacs
+  package versions.  Optional.
 
 *** Including Home Manager Module
 
- Clone this repository into your =~/.emacs.d= directory.
+ Clone this repository and symlink it into your =~/.emacs.d= directory.
 
- Home manager can use this repo as a flake input and then the input can be used
- to load the module using the =extraSpecialArgs= mechanism
+ Home manager can use this repo as a flake input.  The input contains a
+ nixosModule that you simply pass into your home manager module expression.
 
  #+begin_src nix ~/.config/nixpkgs/flake.nix
    {
@@ -115,37 +120,41 @@ There are three parts to implement the full scheme:
        home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
        # set path to your cloned posimacs repo, which is a nix flake
-       posimacs.url = "path:~/.emacs.d/posimacs";
+       posimacs = {
+         url = "path:~/my/cloned/posimacs";
+         inputs.nixpkgs.follows = "nixpkgs";
+       }
      };
 
      outputs = inputs:
        let
          system = "x86_64-linux";  # or x86_64-darwin etc
-         specialArgs = {inherit system inputs;};
          username = "emacslegend"; # change this to your user name
        in {
-       homeConfigurations = {
-         ${username} = inputs.home-manager.lib.homeManagerConfiguration {
-           import username system;
-           homeDirectory = "/home/${username}";
-           configuration.imports = [ ./home.nix ];
-           extraSpecialArgs = specialArgs;
+         homeConfigurations = {
+           ${username} = inputs.home-manager.lib.homeManagerConfiguration {
+             import username system;
+             homeDirectory = "/home/${username}";
+             configuration.imports = [
+               import ./home.nix { posimacs = inputs.posimacs.nixosModules.${system}.default; }
+             ];
+           };
          };
        };
-     };
    }
 
  #+end_src
 
- The flake sets up =specialArgs= which contains the posimacs module for
-  inclusion in =home.nix=
+ Your =home.nix= should be a function that accepts the various inputs and
+ returns a module function.
 
 #+BEGIN_SRC nix ~/.config/nixpkgs/home.nix
+  { posimacs }:
   { pkgs, specialArgs, ... }:
 
   {
     imports = [
-      specialArgs.posimacs
+      posimacs
     ];
 
     # Module configuration via options (found in top level default.nix)
