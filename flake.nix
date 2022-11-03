@@ -30,7 +30,7 @@
       inputs.cargo2nix.inputs.rust-overlay.follows = "rust-overlay";
     };
     emacs-vterm = {
-      url = "path:./vterm/emacs-vterm";
+      url = "path:./vterm";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

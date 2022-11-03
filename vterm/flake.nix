@@ -1,4 +1,6 @@
 {
+  description = "Home manager module for Emacs vterm dependencies & integration.";
+
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs?ref=release-22.05";
@@ -18,6 +20,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
+        # The dependency for our home manager module
         emacs-vterm = pkgs.stdenv.mkDerivation {
           name = "emacs-vterm";
           src = emacs-vterm-src;
@@ -50,11 +53,14 @@
             cp ../vterm.el $out
          '';
         };
-      in rec {
-        packages = {
-          emacs-vterm = emacs-vterm;
-        };
 
-        defaultPackage = packages.emacs-vterm;
+        # Create the module and inject its dependency we declared above
+        module = import ./vterm.nix { inherit emacs-vterm; };
+
+      in rec {
+        nixosModules = {
+          emacs-vterm = module;
+          default = nixosModules.emacs-vterm;
+        };
       });
 }
