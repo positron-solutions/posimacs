@@ -150,7 +150,7 @@ There are three parts to implement the full scheme:
 
 #+BEGIN_SRC nix ~/.config/nixpkgs/home.nix
   { posimacs }:
-  { pkgs, specialArgs, ... }:
+  { pkgs, ... }:
 
   {
     imports = [

@@ -1,8 +1,7 @@
 { emacs-vterm, rust, emacs-overlay }:
-{ config, pkgs, lib, specialArgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
-  posimacs = specialArgs.inputs.posimacs;
   cfg = config.posimacs;
 in {
   options.posimacs = {

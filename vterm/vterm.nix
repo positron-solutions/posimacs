@@ -1,4 +1,4 @@
-{ emacs-vterm }: { config, pkgs, lib, specialArgs, ... }:
+{ emacs-vterm }: { config, pkgs, lib, ... }:
 
 let
   cfg = config.posimacs;

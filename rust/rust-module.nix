@@ -1,5 +1,5 @@
 { rust-analyzer, cargo2nix, rust-overlay}:
-{ config, pkgs, lib, specialArgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   cfg = config.posimacs-options;
