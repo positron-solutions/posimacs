@@ -157,7 +157,7 @@ There are three parts to implement the full scheme:
       posimacs
     ];
 
-    # Module configuration via options (found in top level default.nix)
+    # Module configuration via options (found in each module.nix file)
     #
     # Use the emacs daemon, enabling `emacsclient` aliases if aliases are turned on
     # services.emacs.enable = true;
