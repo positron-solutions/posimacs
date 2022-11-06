@@ -39,7 +39,7 @@ determine the exact padding."
    (widget     '("#1F2133" "color-232" "brightblack"  ))
    (base0      '("#0F1019" "color-234" "black"        ))
    (base1      '("#121212" "color-233" "brightblack"  ))
-   (base2      '("#1E1E33" "color-236" "brightblack"  ))
+   (base2      '("#28233B" "color-236" "brightblack"  ))
    (base3      '("#464A56" "color-240" "brightblack"  ))
    (base4      '("#585C6C" "color-60"  "brightblack"  ))
    (base5      '("#767676" "color-243" "brightblack"  ))
@@ -69,6 +69,7 @@ determine the exact padding."
    (blue       '("#51A2E0" "color-117" "blue"         ))
    (spark      '("#1983D4" "color-117" "blue"         ))
    (dark-spark '("#0D446E" "color-75"  "blue"         ))
+   (light-spark'("#90BDE0" "color-75"  "brightblue"   ))
    (shock      '("#FF6933" "color-202" "yellow"       ))
    (cyan       '("#36D8BD" "color-79"  "cyan"         ))
    (raw        '("#B272C4" "color-134" "magenta"      ))
@@ -78,6 +79,8 @@ determine the exact padding."
    (orange     '("#D85F00" "color-166" "yellow"       ))
    (teal       '("#2D9574" "color-29"  "brightcyan"   ))
    (magenta    '("#8041D8" "color-98"  "magenta"      ))
+   (match2     '("#8845E6" "color-98" "magenta"       ))
+   (dmatch2    '("#0F081A" "color-17" "magenta"       ))
    (violet     '("#AB11D8" "color-128" "magenta"      ))
 
    (bg-hl      '("#143666" "color-19"  "brightblack"  ))
@@ -257,8 +260,11 @@ determine the exact padding."
    (whitespace-big-indent :inherit 'default)
 
 ;;;;; ivy-mode
-   (ivy-current-match :background bg-blue :distant-foreground base0 :weight 'normal)
+   (ivy-current-match :background light-spark :foreground bg :distant-foreground spark :weight 'normal)
    (ivy-posframe :background base1 :foreground fg)
+   (ivy-minibuffer-match-face-1 :distant-foreground dark-spark :foreground spark)
+   (ivy-minibuffer-match-face-2 :distant-foreground dmatch2 :foreground match2)
+   (ivy-minibuffer-match-face-3 :distant-foreground ddlime :foreground lime)
    (internal-border :background base7)
 
 ;;;;; tooltips for company & lsp ui
