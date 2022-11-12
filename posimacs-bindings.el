@@ -160,8 +160,8 @@
 
   (general-unbind "C-<up>") ; backward-paragraph
   (general-unbind "C-<down>") ; forward-paragraph
-  (general-def "M-c" 'forward-paragraph)
-  (general-def "M-d" 'backward-paragraph)
+  (general-def 'global-map "M-p" #'backward-paragraph)
+  (general-def 'global-map "M-n" #'forward-paragraph)
 
   ;; Allow best keys in vterm
   (general-unbind 'vterm-mode-map "M-a")
@@ -228,10 +228,12 @@
   (general-def 'help-mode-map  "q" 'kill-this-buffer)
   (general-def 'Info-mode-map  "q" 'kill-this-buffer)
   (general-def 'dired-mode-map  "q" 'kill-this-buffer)
+  (general-def 'shortdoc-mode-map "q" 'kill-this-buffer)
 
   ;; Modes that interfere with other-window
   (general-unbind 'dired-mode-map "M-o")
   (general-unbind 'ibuffer-mode-map "M-o")
+  (general-unbind 'ibuffer-mode-map "M-s")
 
   (general-unbind 'ibuffer-mode-map "M-j")
 
