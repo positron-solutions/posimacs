@@ -41,14 +41,41 @@
 ;; COMPlete ANYthing
 (use-package company
   :custom
-  (company-idle-delay 0.2) ;; how long to wait until popup
+  (company-idle-delay 0.04) ;; how long to wait until popup
+  (company-tooltip-minimum 10)
+  (company-tooltip-limit 16)
+
+  ;; This binding strategy, together with default behavior, achieves the following points:
+  ;; - completions present themselves automatically
+  ;; - space and enter both abort completions for the current word
+  ;; - tab attempts to complete up to the final value
   :bind ((:map company-active-map
 	       ("M-n". company-select-next)
 	       ("M-p". company-select-previous)
-               ("<tab>". company-complete-or-common)
-	       ("TAB". company-complete-or-common)))
+               ("RET" . nil) ; pass-through newlines even if selections available
+               ("<return>" . nil)
+               ("<tab>". company-complete)
+	       ("TAB". company-complete)))
+  :init
+  (setq-default company-minimum-prefix-length 1
+                tab-always-indent 'complete)
+  (add-hook 'after-init-hook 'global-company-mode) ; thank me later
   :config
-  (add-hook 'after-init-hook #'global-company-mode)) ; thank me later
+  ;; Orderless was really bad at sorting matches for company.  Not using it for
+  ;; autocomplete matches until some better priority system is found.
+  (defun company-completion-styles (capf-fn &rest args)
+  (let ((completion-styles '(basic partial-completion)))
+    (apply capf-fn args)))
+
+  (advice-add 'company-capf :around #'company-completion-styles))
+
+(use-package orderless
+  :custom
+  (orderless-matching-styles '(orderless-literal orderless-prefixes))
+  (orderless-component-separator " +-")
+  (completion-cycle-threshold 16)
+  ;; File completion has been fine with orderless.
+  (completion-category-overrides nil))
 
 (use-package yasnippet
   :config
