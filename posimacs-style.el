@@ -20,6 +20,19 @@
 ;; XXX believe this can be declared once without resorting to hook
 (add-hook 'server-after-make-frame-hook #'pmx--setup-fonts)
 
+;; Make lambda expressions shorter for easier reading in lisp code
+;; Thanks Oleg Pavliv
+;; https://unix.stackexchange.com/questions/30039/emacs-how-to-insert-%CE%BB-instead-of-lambda-in-scheme-mode
+(defun pmx-greek-lambda ()
+  (font-lock-add-keywords
+   nil
+   `(("\\<lambda\\>"
+      (0 (progn (compose-region (match-beginning 0) (match-end 0)
+                                ,(make-char 'greek-iso8859-7 107))
+                nil))))))
+
+(add-hook 'emacs-lisp-mode-hook 'pmx-greek-lambda)
+
 (use-package doom-themes
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
