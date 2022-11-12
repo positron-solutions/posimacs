@@ -77,6 +77,59 @@
   ;; File completion has been fine with orderless.
   (completion-category-overrides nil))
 
+;; (use-package corfu
+;;   :after lsp orderless
+;;   :bind ((:map corfu-map
+;;                ("M-n" . corfu-next)
+;;                ("M-p" . corfu-previous)
+;;                ("M-s" . corfu-insert-seperator)
+;;                ("C-n" . corfu-next)
+;;                ("C-p" . corfu-previous)
+;;                ("C-g" . corfu-quit)
+;;                ("RET" . corfu-insert)
+;;                ("TAB" . corfu-insert)
+;;                ("SPC" . corfu-insert-seperator)
+;;                ("M-d" . corfu-show-documentation)
+;;                ("M-l" . corfu-show-location)))
+;;   :config
+;;   (setq corfu-quit-at-boundary 'separator) ; a non-nil value is necessary
+;;   (setq corfu-separator ?\s)               ; Use space
+;;   (setq corfu-quit-no-match 'separator)    ; Don't quit if there is `corfu-separator' inserted
+;;   (setq corfu-preview-current 'insert)
+
+;;   ;; non-corfu variables
+;;   (setq tab-always-indent 'complete)
+;;   (setq completion-cycle-threshold nil)
+;;   (setq lsp-completion-provider :none) ; allow passthrough to corfu behavior
+
+;;   (defun corfu-enable-in-minibuffer ()
+;;     "Enable Corfu in the minibuffer if `completion-at-point' is bound."
+;;     (when (where-is-internal #'completion-at-point (list (current-local-map)))
+;;         (corfu-mode 1)))
+;;   (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+
+;;   ;; TODO had to hack this in.. not sure if it's a bug or because I made dirty state.
+;;   (setq corfu-global-mode global-corfu-mode)
+
+;;   (defun corfu-lsp-setup ()
+;;     (setq-local completion-styles '(orderless basic)
+;;                 completion-category-defaults nil))
+;;   (add-hook 'lsp-mode-hook #'corfu-lsp-setup)
+
+;;   (global-corfu-mode 1))
+
+;; (use-package kind-icon
+;;   :after corfu
+;;   :custom
+;;   (kind-icon-use-icons t)
+;;   (kind-icon-default-face 'corfu-default) ; Have background color be the same as `corfu' face background
+;;   (kind-icon-blend-background nil)  ; Use midpoint color between foreground and background colors ("blended")?
+;;   (kind-icon-blend-frac 0.08)
+
+;;   (svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/")) ; Change cache dir
+;;   :config
+;;   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)) ; Enable `kind-icon'
+
 (use-package yasnippet
   :config
   (setq yas/root-directory (list (expand-file-name "etc/yasnippet/snippets" user-emacs-directory)))
