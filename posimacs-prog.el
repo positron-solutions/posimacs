@@ -79,10 +79,10 @@
 
 (use-package yasnippet
   :config
+  (setq yas/root-directory (list (expand-file-name "etc/yasnippet/snippets" user-emacs-directory)))
   (yas-reload-all)
   (add-hook 'prog-mode-hook 'yas-minor-mode)
-  (add-hook 'text-mode-hook 'yas-minor-mode)
-  (add-hook 'after-init-hook #'yas-global-mode))
+  (add-hook 'text-mode-hook 'yas-minor-mode))
 
 (use-package flycheck
   :custom (flycheck-display-errors-delay 10 "Reduce error noise while typing")
