@@ -185,6 +185,13 @@ observed."
 (use-package beacon
   :delight beacon-mode
   :config
+  (setq beacon-color "#33DB12"
+        beacon-blink-duration 0.5
+        beacon-size 60
+        beacon-blink-when-point-moves-vertically t
+        beacon-dont-blink-major-modes nil
+        beacon-blink-when-focused t)
+
   (beacon-mode))
 
 ;; When do we ever want to confirm after requesting execution?
