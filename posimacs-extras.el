@@ -69,6 +69,9 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
              (ielm-change-working-buffer target-buffer))
       (user-error "Target buffer %s is already an ielm buffer" (buffer-name target-buffer)))))
 
+(setq ielm-prompt "λ: ")
+(setq ielm-dynamic-multiline-inputs nil) ; multi-line expression indent nicely
+(setq ielm-header "Superior Emacs Lisp Mode.  M-x `ielm-change-working-buffer' to hack on some live buffer.\n\n") ; for real
 
 
 ;;; posimacs-extras.el ends here
