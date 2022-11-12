@@ -9,21 +9,11 @@
 
 ;;; Code:
 
-;; TODO write org and elisp grammars
-(use-package tree-sitter
-  :config
-  ;; (add-hook 'rust-mode-hook #'tree-sitter-mode)
-  ;; (add-hook 'emacs-lisp-mode-hook #'tree-sitter-mode))
-  )
-
-(use-package tree-sitter-langs)
-
 (use-package nix-mode)
 (use-package list-environment) ; specificaly for inspecting nix envs
 
 ;; LSP may send messages that are fairly large
 (setq read-process-output-max (* (* 1024 1024) 32)) ;; 32mb
-
 
 (use-package lsp-mode
   :commands lsp
