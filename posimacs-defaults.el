@@ -203,10 +203,9 @@ observed."
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
 
-
-
 (defvar pmx-help-modes '(helpful-mode
                          help-mode
+                         shortdoc-mode
                          Man-mode
                          woman-mode
                          Info-mode))
