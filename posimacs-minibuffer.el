@@ -27,26 +27,39 @@
   :config
   (ivy-mode)
   ;; Always ignore buffers set in `ivy-ignore-buffers'
-  (setq ivy-use-ignore-default 'always)
+  (setq ivy-use-ignore-default t)
   (setq ivy-wrap t)
-  (setq ivy-ignore-buffers '("\\` " "\\`\\*"))
+  (setq ivy-height 16)
+  (setq ivy-ignore-buffers
+        '("magit[\-:]"
+          "*Flycheck"
+          "*straight"
+          "*Backtrace*"
+          "*Completions*"
+          "auto-commit-org-files-log"
+          "TAGS"
+          "*Compile-log*"
+          "*Native-compile-log*"
+          "*Warnings*"
+          "*Messages*"
+          "*Async-native-compile-log*"))
+  (setq ivy-re-builders-alist
+      '((t . ivy--regex-ignore-order))) ; orderless
 
-  (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
+  (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial-or-done)
+
+  ;; prefer alt key more often
+  (define-key ivy-minibuffer-map (kbd "M-n") 'ivy-next-line)
+  (define-key ivy-minibuffer-map (kbd "M-p") 'ivy-previous-line)
+  (define-key ivy-minibuffer-map (kbd "C-n") nil)
+  (define-key ivy-minibuffer-map (kbd "C-p") nil)
 
   :custom
   (ivy-use-virtual-buffers t))
 
-(use-package ivy-rich  ; More informative ivy completions
+(use-package ivy-rich  ; More informative ivy completionsq
   :after (ivy counsel)
   :config
-
-  ;; (ivy-virtual-abbreviate 'full
-  ;;                         ivy-rich-switch-buffer-align-virtual-buffer t
-  ;;                         ivy-rich-path-style 'abbrev)
-  ;; (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  ;; (ivy-set-display-transformer 'ivy-switch-buffer
-                                        ; 'ivy-rich-switch-buffer-transformer)
-
   (ivy-rich-mode +1)
   (ivy-rich-project-root-cache-mode +1))
 
@@ -110,7 +123,7 @@
   (counsel-projectile-mode))
 
 ;; https://github.com/domtronn/all-the-icons.el
-;; File & other icons used by company-box, ivy, dired, and other packages to
+;; File & other icons used by ivy, dired, and other packages to
 ;; give more visual cues about completion options and lists of items
 (use-package all-the-icons)
 (use-package all-the-icons-dired
