@@ -24,8 +24,8 @@
 
 ;; Load no-littering just after boostrapping straight.  Otherwise, packages may
 ;; initialize to weird locations.
-(use-package 'no-littering
-  :config
+(use-package no-littering
+  :init
   (require 'no-littering))
 
 
