@@ -18,8 +18,11 @@
 
 ;; tracking command usage to measure pain
 (use-package keyfreq
-  :init (progn (add-hook 'after-init-hook 'keyfreq-mode t)
-               (add-hook 'after-init-hook 'keyfreq-autosave-mode t)))
+  :init
+  (setq keyfreq-file (expand-file-name "etc/keyfreq/keyfreq" user-emacs-directory))
+  (setq keyfreq-excluded-commands '(self-insert-command))
+  (keyfreq-mode t)
+  (keyfreq-autosave-mode t))
 
 (use-package vlf ; view large files
   :config (require 'vlf-setup))
