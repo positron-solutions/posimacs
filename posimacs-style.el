@@ -29,6 +29,7 @@
                 nil))))))
 
 (add-hook 'emacs-lisp-mode-hook 'pmx-greek-lambda)
+(add-hook 'inferior-emacs-lisp-mode-hook 'pmx-greek-lambda)
 
 (use-package doom-themes
   :config
