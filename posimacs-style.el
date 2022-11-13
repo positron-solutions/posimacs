@@ -8,7 +8,7 @@
 
 ;;; Code:
 
-(defun pmx--setup-fonts (&rest args)
+(defun pmx--setup-fonts (&rest _)
   "Nice fonts for nice people (and robots)."
   (set-face-attribute 'default nil
                       :font (font-spec :family "Roboto Mono"
@@ -16,9 +16,6 @@
   (set-face-attribute 'fixed-pitch-serif nil
                       :font (font-spec :family "Roboto Mono"
                                        :size 20)))
-
-;; XXX believe this can be declared once without resorting to hook
-(add-hook 'server-after-make-frame-hook #'pmx--setup-fonts)
 
 ;; Make lambda expressions shorter for easier reading in lisp code
 ;; Thanks Oleg Pavliv
@@ -37,11 +34,16 @@
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
   (load-theme 'posimacs-dark t)
-
   (pmx--setup-fonts)
-
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+  (let ((pmx-setup-style
+         (lambda ()
+           (load-theme 'posimacs-dark t)
+           (pmx--setup-fonts)
+           ;; Corrects (and improves) org-mode's native fontification.
+           (doom-themes-org-config))))
+    (if (daemonp)
+        (add-hook 'server-after-make-frame-hook pmx-setup-style)
+      (add-hook 'after-init-hook pmx-setup-style))))
 
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
