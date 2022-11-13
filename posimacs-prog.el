@@ -54,19 +54,22 @@
 	       ("M-p". company-select-previous)
                ("RET" . nil) ; pass-through newlines even if selections available
                ("<return>" . nil)
-               ("<tab>". company-complete)
-	       ("TAB". company-complete)))
+               ; ("SPC" . nil)
+               ; ("<space>" . nil)
+               ("<tab>". company-complete-selection)
+	       ("TAB". company-complete-selection)))
   :init
   (setq-default company-minimum-prefix-length 1
-                tab-always-indent 'complete)
+                tab-always-indent 'complete
+                tab-first-completion 'word-or-paren-or-punct)
   (add-hook 'after-init-hook 'global-company-mode) ; thank me later
+  (add-hook 'text-mode-hook (lambda () (setq-local company-minimum-prefix-length 5)))
   :config
   ;; Orderless was really bad at sorting matches for company.  Not using it for
   ;; autocomplete matches until some better priority system is found.
   (defun company-completion-styles (capf-fn &rest args)
   (let ((completion-styles '(basic partial-completion)))
     (apply capf-fn args)))
-
   (advice-add 'company-capf :around #'company-completion-styles))
 
 (use-package orderless
