@@ -33,10 +33,42 @@
                       buffer-read-only t))
         (switch-to-buffer-other-window dribble-buffer)))))
 
+  ;;; Thanks glucas
+;; https://emacs.stackexchange.com/questions/7409/is-there-a-generic-toggle-previous-window-function
+(defun pmx--switch-to-last-window ()
+  (let ((win (get-mru-window t t t)))
+    (unless win (error "Last window not found"))
+    (let ((frame (window-frame win)))
+      (select-frame-set-input-focus frame)
+      (select-window win))))
+
+(defun pmx-switch-to-last-window ()
+  "Switch to previous window"
+  (interactive)
+  (pmx--switch-to-last-window))
+
+(defun pmx-switch-window ()
+  "Other window.  On repeat, window controls"
+  (interactive)
+  (if (string= (symbol-name last-command) "pmx-switch-window")
+      (progn (if (<= (count-windows) 2) (pmx--switch-to-last-window)
+               (switch-window)))
+    (pmx-switch-to-last-window)))
+
+(defun pmx-keyboard-quit ()
+  "Quit, but if minibuffer is open and not focused, quit it."
+  (interactive)
+  (declare-function minibuffer-keyboard-quit "delsel" ())
+  (if (active-minibuffer-window)
+      (progn (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
+             (select-window (active-minibuffer-window))
+             (minibuffer-keyboard-quit))
+    (keyboard-quit)))
+
 (use-package general)
 
 (use-package transient
-  :after (general)
+  :after (general vterm avy)
   :config
   (transient-define-prefix posimacs-help-transient ()
     "A combination of the actually useful help commands "
@@ -68,27 +100,7 @@
       ("M" "Emacs manual (bad)" info-emacs-manual)
       ("g" "Glossary" search-emacs-glossary)]])
 
-  ;;; Thanks glucas
-  ;; https://emacs.stackexchange.com/questions/7409/is-there-a-generic-toggle-previous-window-function
-  (defun pmx--switch-to-last-window ()
-  (let ((win (get-mru-window t t t)))
-    (unless win (error "Last window not found"))
-    (let ((frame (window-frame win)))
-      (select-frame-set-input-focus frame)
-      (select-window win))))
 
-  (defun pmx-switch-to-last-window ()
-    "Switch to previous window"
-    (interactive)
-    (pmx--switch-to-last-window))
-
-  (defun pmx-switch-window ()
-    "Other window.  On repeat, window controls"
-    (interactive)
-    (if (string= (symbol-name last-command) "pmx-switch-window")
-        (progn (if (<= (count-windows) 2) (pmx--switch-to-last-window)
-                 (switch-window)))
-      (pmx-switch-to-last-window)))
 
   (general-unbind 'org-mode-map "M-h")
 
@@ -152,16 +164,6 @@
   ;; detect if minibuffer is open or not to avoid closing buffers
   ;; (general-def "M-g" 'keyboard-escape-quit)
   ;; (general-unbind "C-g") ; keyboard-quit
-
-  (defun pmx-keyboard-quit ()
-    "Quit, but if minibuffer is open and not focused, quit it."
-    (interactive)
-    (declare-function minibuffer-keyboard-quit "delsel" ())
-    (if (active-minibuffer-window)
-        (progn (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
-               (select-window (active-minibuffer-window))
-               (minibuffer-keyboard-quit))
-      (keyboard-quit)))
 
   (general-def 'global-map "C-g" 'pmx-keyboard-quit)
 
