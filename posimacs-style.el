@@ -31,6 +31,18 @@
 (add-hook 'emacs-lisp-mode-hook 'pmx-greek-lambda)
 (add-hook 'inferior-emacs-lisp-mode-hook 'pmx-greek-lambda)
 
+;; https://github.com/domtronn/all-the-icons.el
+;; File & other icons used by ivy, dired, and other packages to
+;; give more visual cues about completion options and lists of items
+(use-package all-the-icons
+  :config
+  (setq ielm-prompt (concat (all-the-icons-fileicon "emacs") ": "))
+  (setq ielm-dynamic-multiline-inputs nil) ; multi-line expression indent nicely
+  (setq ielm-header "Inferior Emacs Lisp Mode.  M-x `ielm-change-working-buffer' to hack on some live buffer.\n\n") ; for real)
+
+(use-package all-the-icons-dired
+  :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+
 (use-package doom-themes
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))

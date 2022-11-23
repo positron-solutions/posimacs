@@ -122,11 +122,4 @@
   :config
   (counsel-projectile-mode))
 
-;; https://github.com/domtronn/all-the-icons.el
-;; File & other icons used by ivy, dired, and other packages to
-;; give more visual cues about completion options and lists of items
-(use-package all-the-icons)
-(use-package all-the-icons-dired
-  :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
-
 ;;; posimacs-minibuffer.el ends here
