@@ -60,7 +60,7 @@
 	       ("TAB". company-complete-selection)))
   :init
   (setq-default company-minimum-prefix-length 1
-                tab-always-indent 'complete
+                tab-always-indent t
                 tab-first-completion 'word-or-paren-or-punct)
   (add-hook 'after-init-hook 'global-company-mode) ; thank me later
   (add-hook 'text-mode-hook (lambda () (setq-local company-minimum-prefix-length 5)))
