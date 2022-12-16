@@ -37,6 +37,12 @@
 
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 
+;; idle garbage collection
+(use-package gcmh
+  :demand t
+  :config
+  (add-hook 'emacs-startup-hook (lambda () (gcmh-mode 1))))
+
 ;;; Code:
 (let ((posimacs-files '("posimacs-bindings.el"
                         "posimacs-defaults.el"

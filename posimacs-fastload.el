@@ -19,13 +19,14 @@
 (setq gc-cons-threshold most-positive-fixnum
       file-name-handler-alist nil)
 
-(defun reset-gc-threshold ()
-  "Set threshold of garbage collector to a better permanent value and invoke garbage colletion now."
+(defun pmx--reset-gc-threshold ()
+  "Revert fast-load settings.
+Note, `gcmh' package will modify this at will."
   (setq gc-cons-threshold 100000000 ; 100MB
         file-name-handler-alist file-name-handler-alist-old)
   (garbage-collect))
 
-(add-hook 'emacs-startup-hook #'reset-gc-threshold)
+(add-hook 'emacs-startup-hook #'pmx--reset-gc-threshold)
 
 (setq inhibit-startup-message t) ; GNU's Not Unix
 (menu-bar-mode -1)
