@@ -3,7 +3,7 @@
 
 ;;; Variables
 (defgroup posimacs-dark-theme nil
-  "Options for doom-themes"
+  "Options for doom-themes."
   :group 'doom-themes)
 
 (defcustom posimacs-dark-brighter-modeline nil
@@ -84,6 +84,7 @@ determine the exact padding."
    (violet     '("#AB11D8" "color-128" "magenta"      ))
 
    (bg-hl      '("#143666" "color-19"  "brightblack"  ))
+   (alt-hl     '("#592512" "color-19"  "brightblack"  ))
    (bg-blue    '("#0C213E" "color-17"  "brightblack"  ))
    (dark-blue  bg-blue)
    (bg-cyan    '("#092D27" "color-23"  "brightblack"  ))
@@ -147,6 +148,9 @@ determine the exact padding."
 ;;;;; line-number
    ((line-number &override) :foreground base4)
    ((line-number-current-line &override) :foreground orange :bold bold)
+
+;;;;; selections
+   ((secondary-selection &override) :background alt-hl)
 
 ;;;;; comments and doc
    (font-lock-comment-face
