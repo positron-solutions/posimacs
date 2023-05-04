@@ -25,7 +25,8 @@
 ;; focus help window so that it can be closed immediately with 'q'
 (setq help-window-select t)
 
-(setq-default fill-column 100) ; How wide to auto-fill paragraphs
+(setq-default fill-column 70) ; How wide to auto-fill paragraphs
+
 
 (setq-default indent-tabs-mode nil) ; tabs are not real
 
