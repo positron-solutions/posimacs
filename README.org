@@ -136,7 +136,7 @@ There are three parts to implement the full scheme:
              import username system;
              homeDirectory = "/home/${username}";
              configuration.imports = [
-               import ./home.nix { posimacs = inputs.posimacs.nixosModules.${system}.default; }
+               import ./home.nix { posimacs = inputs.posimacs.homeConfigurations.${system}.default; }
              ];
            };
          };

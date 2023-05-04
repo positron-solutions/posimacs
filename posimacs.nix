@@ -21,7 +21,18 @@ in {
   ];
 
   config = {
-    nixpkgs.overlays = [ emacs-overlay.overlays.default ];
+
+    # customizing the build or version of an Emacs package
+    nixpkgs.overlays = [ 
+          emacs-overlay.overlays.default 
+          (final : prev: {
+            emacs29 = prev.emacsGit.overrideAttrs (old: {
+              name = "emacs29";
+              version = emacs29-src.shortRev;
+              src = emacs29-src;
+          });
+       })
+    ];
 
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
@@ -33,7 +44,7 @@ in {
     ];
 
     programs.emacs = {
-      package = pkgs.emacsUnstable;
+      package = pkgs.emacs29;
       enable = true;
     };
 

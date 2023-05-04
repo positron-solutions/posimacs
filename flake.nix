@@ -12,11 +12,15 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-22.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-22.11";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+    };
+    emacs29-src = {
+      url = "github:emacs-mirror/emacs/emacs-29.0.90";
+      flake = false;
     };
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
@@ -53,12 +57,13 @@
           emacs-vterm = inputs.emacs-vterm.homeConfigurations.${system}.default;
           emacs-jinx = inputs.emacs-jinx.homeConfigurations.${system}.default;
           emacs-overlay = inputs.emacs-overlay;
+	  emacs29-src = inputs.emacs29-src;
         };
 
       in rec {
-        nixosModules = {
+        homeConfigurations = {
           posimacs = module;
-          default = nixosModules.posimacs;
+          default = homeConfigurations.posimacs;
         };
       });
 }
