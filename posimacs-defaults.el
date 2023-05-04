@@ -35,6 +35,9 @@
 ;; Use recycle bin or whatever
 (setq delete-by-moving-to-trash t)
 
+;; Move to bottom
+(setq-default comint-scroll-to-bottom-on-input t)
+
 ;; LISP
 (setq load-prefer-newer t)
 
