@@ -27,6 +27,8 @@
 
 (setq-default fill-column 70) ; How wide to auto-fill paragraphs
 
+(put 'list-timers 'disabled nil) ; yes I would like to see timers
+
 
 (setq-default indent-tabs-mode nil) ; tabs are not real
 
