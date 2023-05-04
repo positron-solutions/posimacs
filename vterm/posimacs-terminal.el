@@ -2,16 +2,15 @@
 
 ;;; Commentary:
 ;;
-;; To do more in Emacs, it is convenient to be able to lean back on external
-;; CLI's without frontends or unfamiliar shells with limitations such as eshell.
-;; Vterm is adopted as the standard way to open a shell in this configuration.
-;;
+;; Loads a dynamic module that was installed via home manager module declared in
+;; ./flake.nix & ./vterm.nix and included in ../posimacs.nix
 
 ;;; Code:
 
-
+;; TODO path is duplicated with home manager module.
 (use-package vterm
+   :elpaca nil
    :load-path  "~/.emacs.d/vendor/emacs-vterm")
 
-
-;;; posimacs-terminal ends here
+(provide 'posimacs-terminal)
+;;; posimacs-terminal.el ends here
