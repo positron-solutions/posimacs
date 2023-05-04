@@ -29,6 +29,13 @@
 
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
 
+;; Accumulate history of buffers automatically.  Saves mental effort enormously.
+(use-package recentf
+  :demand t
+  :elpaca t
+  :config
+  (recentf-load-list)
+  (run-at-time nil (* 5 60) 'recentf-save-list))
 
 (setq-default indent-tabs-mode nil) ; tabs are not real
 
