@@ -52,6 +52,7 @@
                         "posimacs-style.el"
                         "posimacs-vc.el"
 
+                        "jinx/posimacs-jinx.el"
                         "rust/posimacs-rust.el"
                         "vterm/posimacs-terminal.el")))
   (dolist (file-name posimacs-files)

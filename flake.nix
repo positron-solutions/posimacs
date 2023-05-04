@@ -36,6 +36,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    emacs-jinx = {
+      url = "path:./jinx";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs = inputs:
@@ -44,8 +49,9 @@
       let
         # Submodules from our inputs are injected into the home manager module
         module = import ./posimacs.nix {
-          rust = inputs.rust.nixosModules.${system}.default;
-          emacs-vterm = inputs.emacs-vterm.nixosModules.${system}.default;
+          rust = inputs.rust.homeConfigurations.${system}.default;
+          emacs-vterm = inputs.emacs-vterm.homeConfigurations.${system}.default;
+          emacs-jinx = inputs.emacs-jinx.homeConfigurations.${system}.default;
           emacs-overlay = inputs.emacs-overlay;
         };
 

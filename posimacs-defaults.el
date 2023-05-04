@@ -32,8 +32,6 @@
 ;; Use recycle bin or whatever
 (setq delete-by-moving-to-trash t)
 
-(setq flyspell-mode t)
-
 ;; LISP
 (setq load-prefer-newer t)
 
