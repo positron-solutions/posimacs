@@ -150,7 +150,7 @@ determine the exact padding."
    ((line-number-current-line &override) :foreground orange :bold bold)
 
 ;;;;; selections
-   ((secondary-selection &override) :background alt-hl)
+   (secondary-selection :background alt-hl)
 
 ;;;;; comments and doc
    (font-lock-comment-face
