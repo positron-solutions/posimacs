@@ -1,9 +1,10 @@
 ;;; init.el --- You know -*- lexical-binding: t -*-
-
 ;;; Commentary:
 ;; Load the code
 ;;
 ;; Load only parts of it if you must.
+
+(defvar native-comp-deferred-compilation-deny-list nil)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
