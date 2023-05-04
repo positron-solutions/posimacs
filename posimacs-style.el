@@ -38,7 +38,7 @@
   :config
   (setq ielm-prompt (concat (all-the-icons-fileicon "emacs") ": "))
   (setq ielm-dynamic-multiline-inputs nil) ; multi-line expression indent nicely
-  (setq ielm-header "Inferior Emacs Lisp Mode.  M-x `ielm-change-working-buffer' to hack on some live buffer.\n\n") ; for real)
+  (setq ielm-header "Inferior Emacs Lisp Mode.  M-x `ielm-change-working-buffer' to hack on some live buffer.\n\n")) ; for real
 
 (use-package all-the-icons-dired
   :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
