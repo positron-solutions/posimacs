@@ -24,8 +24,6 @@
   :after magit
   :hook (magit-mode-hook . magit-todos-mode))
 
-(use-package git-timemachine
-  :config)
 
 (use-package git-messenger)
 
