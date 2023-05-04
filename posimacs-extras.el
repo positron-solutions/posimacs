@@ -42,6 +42,31 @@ Saves to a temp file and puts the filename in the kill ring."
     (message filename)))
 
 
+;; Surprised this isn't in core already
+;; https://emacs.stackexchange.com/questions/24657/unadvise-a-function-remove-all-advice-from-it
+(defun pmx-advice-unadvice (sym)
+  "Remove all advices from symbol SYM."
+  (interactive "aFunction symbol: ")
+  (advice-mapc (lambda (advice _props) (advice-remove sym advice)) sym))
+
+(defun pmx-dump-object-string (obj)
+  "Return a string contents of slots of an object."
+  (mapconcat
+   (lambda (i) (format "%s: %s" i
+                  (if (slot-boundp obj i)
+                      (eieio-oref obj i)
+                    eieio--unbound)))
+   (object-slots obj) "\n"))
+
+(defun pmx-dump-object (obj)
+  "Return a plist of slot-value pairs of eieio object."
+   (->>
+    (object-slots obj)
+    (--map (list it (if (slot-boundp obj it)
+                        (eieio-oref obj it)
+                      eieio--unbound)))
+    (-concat)))
+
 (defun pmx--mru-buffer ()
   "Get the buffer of the most recently used window."
   (window-buffer (get-mru-window t t t)))
