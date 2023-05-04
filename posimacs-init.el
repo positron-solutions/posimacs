@@ -47,6 +47,7 @@
 ;;; Code:
 (let ((posimacs-files '("posimacs-bindings.el"
                         "posimacs-defaults.el"
+                        "posimacs-elisp.el"
                         "posimacs-extras.el"
                         "posimacs-minibuffer.el"
                         "posimacs-prog.el"
