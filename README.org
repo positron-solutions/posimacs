@@ -8,7 +8,7 @@ Emacs using [[https://nixos.org/download.html][Nix]] and [[https://github.com/ni
 Maintain all of your dependencies and dotfiles for Emacs, reproducibly, portably.
 
 This style does not require =home-manager switch= just to pick up changes in
-your elisp files.  It does not rely on Nix to manage elisp packages.  Straight
+your elisp files.  It does not rely on Nix to manage elisp packages.  Elpaca
 is used for package locking.
 
 ** The Big Picture Scheme
@@ -16,9 +16,9 @@ is used for package locking.
 Different tools are appropriate for different aspects of propagating configuring
 for Emacs and your home environment around Emacs.
 
-*** [[https://github.com/raxod502/straight.el][Straight.el]] elisp dependency management
+*** [[https://github.com/progfolio/elpaca][Elpaca]] elisp dependency management
 
-  Straight is used to obtain elisp dependencies and freeze versions into
+  Elpaca is used to obtain elisp dependencies and freeze versions into
   reproducible lock files
 
 *** [[https://github.com/nix-community/home-manager][Home Manager]] dotfile integration
@@ -58,11 +58,12 @@ for Emacs and your home environment around Emacs.
 *** Nix flake expressions for 3rd party dependencies
 
   Nix is really good at managing non-elisp dependencies.  Instead of downloading
-  binaries from some CI server, you can build and modify packages for your
-  platform however you need.  Nixpkgs has roughly everything and changing any
-  dependency is usually quite straightforward.  Public caches are available for
-  many popular packages and most packages from nixpkgs itself will be returned
-  from a cache by default.
+  binaries from some CI server that may or may not be compatible or even link
+  correctly, you can build and modify packages for your platform however you
+  need.  Nixpkgs has roughly everything and changing any dependency is usually
+  quite straightforward.  Public caches are available for many popular packages
+  and most packages from nixpkgs itself will be returned from a cache by
+  default.
 
   Modifying the version of guile scheme available in nixpkgs:
 
@@ -102,8 +103,7 @@ There are three parts to implement the full scheme:
 - Setting up home manager and including this repository as a flake input (local
   development style against a clone is strongly recommended).
 - Loading the posimacs shims into =init.el= and =early-init.el=
-- Symlinking (or copying) the Straight lockfile into place to synchronize Emacs
-  package versions.  Optional.
+- Rehydrating package versions from the elpaca lock file.  Optional.
 
 *** Including Home Manager Module
 
@@ -186,18 +186,21 @@ shims or do something similar to their contents.
 ;; buffer with M-x eval-region etc and customize the rest of the owl
 #+END_SRC
 
-*** Using Straight's Package Lock
+*** Using Elpaca's Package Lock
 
-To use initialize with the frozen versions of packages that this repository
-uses, symlink the =default.el= into straight's version directory.
+Elpaca does provide facilities to lock packages at the recipe level.
 
-#+begin_src bash
-link -s ~/.emacs.d/posimacs/default.el ~/.emacs.d/straight/versions/
-#+end_src
+You can also freeze and rehydrate versions from a lock file.  The versions used
+at the time of this update are in the lock file distributed with these files.
+Call =elpaca-load-lockfile= and point to [[./elpaca-lock.el][elpaca-lock.el]].
 
-This just provides reproducibility in the event that there are bugs or some
-packages need to be maintained on slightly different sources or branches etc.
+*Because these packages are across a whole Emacs session, you will want to
+maintain your own lock file.*
 
+TODO it's currently not automatic to use a lock file for installation, so
+versions will float, meaning you could pick up unwanted supply chain contents
+until you feed the lockfile to Elpaca.  Further work is needed on checking how
+Elpaca behaves when new versions are available.
 
 *** Home Manager
 
@@ -207,9 +210,10 @@ Tell home manager to update your nix environment
   home-manager switch --flake ~/.config/nixpkgs
 #+END_SRC
 
-If the daemon is enabled (default) it will start and, if the =~/.emacs.d/=
-straight cache is cold, =straight.el= will begin downloading your dependencies
-and building packages.  Connect to the daemon with =emacsclient=.
+If the daemon is enabled (default) it will start and, if the
+=~/.emacs.d/= elpaca cache is cold, =elpaca= will begin downloading
+your dependencies and building packages.  Connect to the daemon with
+=emacsclient=.
 
 Otherwise you can just run =emacs= to watch the process manually.
 
@@ -275,9 +279,10 @@ don't need to fix it in source.
 
 *** When blocked by a config, try to make it /more/ flexible
 
-If something is in your way, attempt to extract it to a new `.el` file or
-parameterize it.  Maintaining an independent branch may become too painful over
-time, but could be viable if you are doing local development on posimacs
-(recommended for faster iteration).  If your lisp files grow into a first-class
-package, of course try to publish it on Melpa or where straight can use it from
-git source.  For the last-mile configuration, bare =.el= files are appropriate.
+If something is in your way, attempt to extract it to a new `.el` file
+or parameterize it.  Maintaining an independent branch may become too
+painful over time, but could be viable if you are doing local
+development on posimacs (recommended for faster iteration).  If your
+lisp files grow into a first-class package, of course try to publish
+it on Melpa or where elpaca can use it from git source.  For the
+last-mile configuration, bare =.el= files are appropriate.

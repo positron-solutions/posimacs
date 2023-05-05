@@ -12,6 +12,7 @@
 ;;; Code:
 
 (use-package ielm
+  :elpaca nil
   :config
   ;; When the output is huge, ielm can slow down.  Instead, let's just get rid
   ;; of large output since there are other ways to handle this better.

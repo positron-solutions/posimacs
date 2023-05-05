@@ -1,4 +1,4 @@
-;;; posimacs-fastload --- Posimacs
+;;; posimacs-fastload.el --- standard speedups & bootstrap -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;
@@ -7,9 +7,7 @@
 
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Startup Optimizations ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq package-enable-at-startup nil) ; prevent package.el so we can use elpaca
 
 ;; Every file opened and loaded by Emacs will run through this list to check for
 ;; a proper handler for the file, but during startup, it won’t need any of them.
@@ -26,15 +24,20 @@ Note, `gcmh' package will modify this at will."
         file-name-handler-alist file-name-handler-alist-old)
   (garbage-collect))
 
+;; TODO delay gc until after Elpaca queues?
 (add-hook 'emacs-startup-hook #'pmx--reset-gc-threshold)
 
-(setq inhibit-startup-message t) ; GNU's Not Unix
+;; Turn off graphics features that would slow down initial startup.
+(setq inhibit-startup-message t)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(column-number-mode 1) ; show columns in modeline
 
-(setq package-enable-at-startup nil) ; straight
-
-
+(provide 'posimacs-fastload)
 ;;; posimacs-fastload.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; no-native-compile: t
+;; no-update-autoloads: t
+;; End:

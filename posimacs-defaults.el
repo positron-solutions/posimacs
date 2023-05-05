@@ -74,6 +74,7 @@
 
 (use-package subword ; camel case counts as words boundaries when navigating
   :delight
+  :elpaca nil ; built-in package
   :config
   (global-subword-mode 1))
 
@@ -134,6 +135,7 @@ observed."
 ;;;;;;;;;;;;;;;;;;;;;
 
 (use-package windmove
+  :elpaca nil
   :config
   (setq windmove-wrap-around t))
 

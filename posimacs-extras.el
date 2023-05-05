@@ -11,10 +11,9 @@
 ;; when defining bindings and themes via non-custom paths, `restart-emacs` is convenient
 (use-package restart-emacs)
 
-(straight-use-package
- '(snow :type git :host github :repo "alphapapa/snow.el"))
+(use-package snow
+  :elpaca (snow :host github :repo "alphapapa/snow.el"))
 
-; (use-package no-littering) ; organize ~/.emacs.d
 
 ;; tracking command usage to measure pain
 (use-package keyfreq

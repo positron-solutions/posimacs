@@ -100,6 +100,7 @@
   (eq (buffer-local-value 'major-mode (get-buffer buf)) 'ert-results-mode))
 
 (use-package ert
+  :elpaca nil
   :config
   (add-to-list 'display-buffer-alist
                `(pmx-buffer-ert-p         ;predicate
