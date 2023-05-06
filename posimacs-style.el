@@ -58,6 +58,23 @@
         (add-hook 'server-after-make-frame-hook pmx-setup-style)
       (add-hook 'after-init-hook pmx-setup-style))))
 
+;; nice countdown timers
+(use-package champagne
+   :elpaca (champagne
+           :type git :host github
+           :repo "positron-solutions/champagne"))
+
+;; animated parrots and nyancat whenever you finish org todo's or push code
+(use-package parrot
+  :elpaca  (parrot :host github :repo "positron-solutions/parrot" :files (:defaults "img"))
+  :custom
+  (parrot-animate 'hide-static)
+  (parrot-rotate-animate-after-rotation nil)
+  (parrot-num-rotations 10)
+  (parrot-type 'nyan)
+  (parrot-animate-on-load t)
+  (parrot-mode t)) ;; enables the mode
+
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
   :config
