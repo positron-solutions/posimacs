@@ -29,10 +29,13 @@
 
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
 
+(setq use-dialog-box nil)
+
+(fset 'yes-or-no-p 'y-or-n-p)    ; don't ask to spell out "yes"
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
   :demand t
-  :elpaca t
+  :elpaca nil
   :config
   (recentf-load-list)
   (run-at-time nil (* 5 60) 'recentf-save-list))
@@ -59,6 +62,7 @@
 
 (delete-selection-mode 1) ; Actions on active region will delete
 
+(column-number-mode 1) ; show columns in modeline
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Basic packages ;;
