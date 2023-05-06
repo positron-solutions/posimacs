@@ -110,4 +110,5 @@
 
   (dashboard-setup-startup-hook))
 
-;;; posimacs-doom-themes.el ends here.
+(provide 'posimacs-style)
+;;; posimacs-style.el ends here.
