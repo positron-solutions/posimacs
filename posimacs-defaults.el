@@ -201,14 +201,19 @@ observed."
 ;; When you scroll, the cursor highlights very loudly
 (use-package beacon
   :delight beacon-mode
+  :custom
+  (beacon-color "#33DB12")
+  (beacon-blink-duration 0.5)
+  (beacon-size 60)
+  (beacon-blink-when-point-moves-vertically t)
+  (beacon-blink-when-window-changes t)
+  (beacon-blink-when-focused t)
   :config
-  (setq beacon-color "#33DB12"
-        beacon-blink-duration 0.5
-        beacon-size 60
-        beacon-blink-when-point-moves-vertically t
-        beacon-dont-blink-major-modes '(dashboard-mode)
-        beacon-blink-when-focused t)
-  (beacon-mode))
+  (beacon-mode)
+  ;; blink after switching windows.
+  (if window-selection-change-functions
+      (push (lamdba (_) (beacon-blink-automated)) window-selection-change-functions)
+    (setq window-selection-change-functions '((lambda (_) (beacon-blink-automated))))))
 
 ;; When do we ever want to confirm after requesting execution?
 (setq org-confirm-babel-evaluate nil)
