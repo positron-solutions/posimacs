@@ -32,12 +32,22 @@
 (setq use-dialog-box nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)    ; don't ask to spell out "yes"
+
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
   :demand t
+  :after no-littering
   :elpaca nil
   :config
   (recentf-load-list)
+
+  ;; bookmarks are a workaround for fine-grained history for files in these
+  ;; directories
+  (add-to-list 'recentf-exclude
+               (recentf-expand-file-name no-littering-var-directory))
+  (add-to-list 'recentf-exclude
+               (recentf-expand-file-name no-littering-etc-directory))
+
   (run-at-time nil (* 5 60) 'recentf-save-list))
 
 (setq-default indent-tabs-mode nil) ; tabs are not real
