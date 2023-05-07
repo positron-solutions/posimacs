@@ -115,6 +115,12 @@
       (push (lamdba (_) (beacon-blink-automated)) window-selection-change-functions)
     (setq window-selection-change-functions '((lambda (_) (beacon-blink-automated))))))
 
+;; https://github.com/tarsius/hl-todo
+;; highlight TODO keywords in code
+(use-package hl-todo
+  :config
+  (global-hl-todo-mode))
+
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
   :after all-the-icons
