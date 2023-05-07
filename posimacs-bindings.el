@@ -64,7 +64,7 @@
 (use-package general)
 
 (use-package transient
-  :after (general vterm avy)
+  :after (general vterm avy helpful)
   :config
   (transient-define-prefix posimacs-help-transient ()
     "A combination of the actually useful help commands "
@@ -82,7 +82,7 @@
       ("b" "Active Bindings" counsel-descbinds)]
 
      ["Watch"
-      ;; ("wc" "Commands" clm-toggle)
+      ("wc" "Commands" command-log-toggle)
       ("wm" "Messages" view-echo-area-messages)
       ("wd" "Dribble (raw inputs)" pmx-toggle-tail-dribble)
       ;; TODO this is not a watch.  CLM needs to do this, and better.

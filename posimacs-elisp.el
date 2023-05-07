@@ -26,6 +26,37 @@
 
 (use-package macrostep) ; macro inspection
 
+;; This package makes all help buffers much more informative and easier to read.
+;; This makes it much easier to introspect emacs state and elisp code.
+(use-package helpful
+  :bind (([remap describe-function] . helpful-callable)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-key] . helpful-key))
+  :demand t
+  :config
+  ;; patch apropos buttons to call helpful instead of help
+  (with-eval-after-load 'apropos
+    (dolist (fun-bt '(apropos-function apropos-macro apropos-command))
+      (button-type-put
+       fun-bt 'action
+       (lambda (button)
+         (helpful-callable (button-get button 'apropos-symbol)))))
+    (dolist (var-bt '(apropos-variable apropos-user-option))
+      (button-type-put
+       var-bt 'action
+       (lambda (button)
+         (helpful-variable (button-get button 'apropos-symbol))))))
+
+  ;; override regular help menu
+  (global-set-key (kbd "C-h f") #'helpful-callable)
+  (global-set-key (kbd "C-h v") #'helpful-variable)
+  (global-set-key (kbd "C-h k") #'helpful-key)
+  (global-set-key (kbd "C-h x") #'helpful-command)
+
+  (with-eval-after-load 'counsel
+    (setq counsel-describe-function-function #'helpful-callable)
+    (setq counsel-describe-variable-function #'helpful-variable)))
+
 (defun pmx-buffer-ert-p (buf act)
   "BUF is an ert results buffer, ignore ACT."
   (eq (buffer-local-value 'major-mode (get-buffer buf)) 'ert-results-mode))
