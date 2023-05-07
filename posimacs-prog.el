@@ -40,37 +40,54 @@
 
 ;; COMPlete ANYthing
 (use-package company
+  :demand t
   :custom
-  (company-idle-delay 0.04) ;; how long to wait until popup
+  (company-idle-delay 0.3) ;; how long to wait until popup
   (company-tooltip-minimum 10)
   (company-tooltip-limit 16)
+  (company-tooltip-flip-when-above t)
+  (company-tooltip-width-grow-only t)
+  (company-minimum-prefix-length 3)
+  :config
+
+  ;; TODO possibly upstream this
+  (defun pmx-company-complete-common-or-finish ()
+    "Insert the common part of current candidates or finish."
+    (interactive)
+    (when (company-manual-begin)
+      (let ((tick (buffer-chars-modified-tick)))
+        (call-interactively 'company-complete-common)
+        (when (eq tick (buffer-chars-modified-tick))
+          (let ((result (nth company-selection company-candidates)))
+            (company-finish result))))))
 
   ;; This binding strategy, together with default behavior, achieves the following points:
   ;; - completions present themselves automatically
-  ;; - space and enter both abort completions for the current word
-  ;; - tab attempts to complete up to the final value
-  :bind ((:map company-active-map
-	       ("M-n". company-select-next)
-	       ("M-p". company-select-previous)
-               ("RET" . nil) ; pass-through newlines even if selections available
-               ("<return>" . nil)
-               ; ("SPC" . nil)
-               ; ("<space>" . nil)
-               ("<tab>". company-complete-selection)
-	       ("TAB". company-complete-selection)))
-  :init
-  (setq-default company-minimum-prefix-length 1
-                tab-always-indent t
+  ;; - enter aborts completions for the current word
+  ;; - tab will either complete the common part or just finish with the first
+  ;;   candidate if this further common completion accomplished nothing.
+  (define-key company-active-map (kbd "M-n") #'company-select-next)
+  (define-key company-active-map (kbd "M-p") #'company-select-previous)
+  (define-key company-active-map (kbd "<return>") nil) ; abort & pass through to newline etc
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "<space>") nil) ; abort & pass through
+  (define-key company-active-map (kbd "SPC") nil)
+  (define-key company-active-map (kbd "<tab>") #'pmx-company-complete-common-or-finish)
+  (define-key company-active-map (kbd "TAB") #'pmx-company-complete-common-or-finish)
+
+  (setq-default tab-always-indent t
                 tab-first-completion 'word-or-paren-or-punct)
-  (add-hook 'after-init-hook 'global-company-mode) ; thank me later
-  (add-hook 'text-mode-hook (lambda () (setq-local company-minimum-prefix-length 5)))
-  :config
-  ;; Orderless was really bad at sorting matches for company.  Not using it for
-  ;; autocomplete matches until some better priority system is found.
-  (defun company-completion-styles (capf-fn &rest args)
-  (let ((completion-styles '(basic partial-completion)))
-    (apply capf-fn args)))
-  (advice-add 'company-capf :around #'company-completion-styles))
+
+  (add-hook 'prog-mode-hook #'company-mode)
+
+  ;; use company for ielm completions and unhook the oppressive built-in
+  ;; completions on tab
+  (with-eval-after-load 'ielm
+    (add-hook 'ielm-mode-hook #'company-mode)
+    (define-key ielm-map (kbd "<tab>") #'company-indent-or-complete-common))
+
+  ;; use less aggressive completion when in text mode
+  (add-hook 'text-mode-hook (lambda () (setq-local company-minimum-prefix-length 5))))
 
 (use-package orderless
   :custom
