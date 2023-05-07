@@ -1,4 +1,4 @@
-;;; posimacs-bindings --- Things are looking up -*- lexical-binding: t -*-
+;;; posimacs-extras --- Things are looking up -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -16,7 +16,7 @@
 (use-package keyfreq
   :init
   (setq keyfreq-file (expand-file-name "etc/keyfreq/keyfreq" user-emacs-directory))
-  (setq keyfreq-excluded-commands '(self-insert-command))
+  (setq keyfreq-excluded-commands '(self-insert-command org-self-insert-command))
   (keyfreq-mode t)
   (keyfreq-autosave-mode t))
 
@@ -26,7 +26,7 @@
 (use-package sudo-edit) ; upgrade perms to write read-only file
 
 ;;;###autoload
-(defun screenshot-svg ()
+(defun pmx-screenshot-svg ()
   "Save a screenshot of the current frame as an SVG image.
 Saves to a temp file and puts the filename in the kill ring."
   (interactive)
@@ -59,8 +59,6 @@ Saves to a temp file and puts the filename in the kill ring."
                        zi (+ (* (* zr zi) 2) cy))))))
             (insert-char (floor (* 256 (/ v 1.0 d))) 3)))))
     (image-mode)))
-
-
 
 (provide 'posimacs-extras)
 ;;; posimacs-extras.el ends here
