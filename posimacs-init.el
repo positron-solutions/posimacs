@@ -90,6 +90,7 @@
                         "posimacs-elisp.el"
                         "posimacs-extras.el"
                         "posimacs-minibuffer.el"
+                        "posimacs-org.el"
                         "posimacs-prog.el"
                         "posimacs-style.el"
                         "posimacs-vc.el"

@@ -119,8 +119,6 @@
 
 (setq reb-re-syntax 'read)
 
-(setq org-mouse-1-follows-link nil)
-(setq org-return-follows-link  t)
 ;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
 
 (setq-default fill-column 80)
@@ -185,9 +183,6 @@ observed."
   (setq avy-escape-chars '(?\e ?\C-g))
   :config
   (setq avy-all-windows 'all-frames)) ; avy can switch frames
-
-;; When do we ever want to confirm after requesting execution?
-(setq org-confirm-babel-evaluate nil)
 
 ;; Fill while typing by default in text modes
 (add-hook 'text-mode-hook #'auto-fill-mode)
