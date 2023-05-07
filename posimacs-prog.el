@@ -1,4 +1,4 @@
-;;; posimacs-prog --- Prog modes
+;;; posimacs-prog --- Programming mode  -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -107,41 +107,11 @@
 (use-package flycheck
   :custom (flycheck-display-errors-delay 10 "Reduce error noise while typing")
   :config
-  (add-hook 'after-init-hook #'global-flycheck-mode))
+  (global-flycheck-mode))
 
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
 
-(defun pmx-buffer-ert-p (buf act)
-  "BUF is an ert results buffer, ignore ACT."
-  (eq (buffer-local-value 'major-mode (get-buffer buf)) 'ert-results-mode))
 
-(use-package ert
-  :elpaca nil
-  :config
-  (add-to-list 'display-buffer-alist
-               `(pmx-buffer-ert-p         ;predicate
-                 (display-buffer-reuse-mode-window) ;functions to try
-                 (inhibit-same-window . nil))))
-
-(use-package auto-compile)
-
-(use-package dap-mode
-  :config
-  (dap-ui-mode)
-  (dap-ui-controls-mode 1)
-
-  (require 'dap-lldb)
-  (require 'dap-gdb-lldb)
-  ;; installs .extension/vscode
-  ; (dap-gdb-lldb-setup)
-  (dap-register-debug-template
-   "Rust::LLDB Run Configuration"
-   (list :type "lldb"
-         :request "launch"
-         :name "LLDB::Run"
-	 :gdbpath "rust-lldb"
-         :target nil
-         :cwd nil)))
-
+(provide 'posimacs-prog)
 ;;; posimacs-prog.el ends here
