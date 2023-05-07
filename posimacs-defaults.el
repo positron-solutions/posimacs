@@ -113,6 +113,20 @@
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
 (use-package project :elpaca nil)
 
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
+
+(setq reb-re-syntax 'read)
+
+(setq org-mouse-1-follows-link nil)
+(setq org-return-follows-link  t)
+;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
+
+(setq-default fill-column 80)
+(setq ediff-split-window-function 'split-window-horizontally)
+(put 'erase-buffer 'disabled nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
