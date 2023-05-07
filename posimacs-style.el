@@ -77,6 +77,7 @@
 
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
+  :after all-the-icons
   :config
 
   ;; top stuff
@@ -125,7 +126,7 @@
 
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
-  (dashboard-setup-startup-hook))
+  (add-hook 'elpaca-after-init-hook #'dashboard-open))
 
 (provide 'posimacs-style)
 ;;; posimacs-style.el ends here.
