@@ -99,18 +99,17 @@
   :config
   (global-subword-mode 1))
 
-;; has a binding in help
-(use-package command-log-mode
+(use-package command-log
+  :elpaca (command-log
+           :host github
+           :repo "positron-solutions/command-log")
   :custom
-  (clm-window-text-scale 2 "Command log two steps higher text scale")
-  (clm-logging-shows-buffer t "Toggling will show the buffer.")
-  (clm-hiding-disables-logging t "Toggling visible buffer turns off logging.")
-  (clm-disabling-logging-kills-buffer t "The buffer will be new when displayed again.")
-  (clm-log-globally t "Auto-enable with global minor mode (including minibuffer)")
-  (clm-exceptions '(self-insert-command) "Be chatty.
-        Show everything besides self-insert-command"))
-
-;; TODO find other packages that are not being managed by straight and bring them under the law
+  (command-log-window-text-scale 2 "Command log two steps higher text scale")
+  (command-log-logging-shows-buffer t "Toggling will show the buffer.")
+  (command-log-hiding-disables-logging t "Toggling visible buffer turns off logging.")
+  (command-log-disabling-logging-kills-buffer t "The buffer will be new when displayed again.")
+  (command-log-log-globally t "Auto-enable with global minor mode (including minibuffer)")
+  (command-log-filter-commands '(self-insert-command) "Be chatty. Show everything besides self-insert-command"))
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
 (use-package project)
 
