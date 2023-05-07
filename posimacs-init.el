@@ -2,9 +2,10 @@
 
 ;;; Commentary:
 ;;
-;; Load any packages that affect downstream packages, and then include
-;; other modules of configuration, relying mostly on use-package
-;; declarations to properly order dependencies.
+;; Load any packages that affect downstream packages, cleanup loading tricks
+;; from early init, and then include other modules of configuration which rely
+;; mostly on use-package declarations to properly order downstream
+;; initialization.
 
 ;;; Code
 
@@ -53,22 +54,35 @@
   ;; Assume :elpaca t unless otherwise specified.
   (setq elpaca-use-package-by-default t))
 
-;; Load no-littering just after boostrapping elpaca.  Otherwise,
-;; downstream packages may initialize to weird locations.
+;; Load no-littering just after bootsrapping elpaca.  Otherwise, downstream
+;; packages may initialize to weird locations, often resulting in missing
+;; history and unwanted file littering
 (elpaca no-littering
   (require 'no-littering))
 
-(elpaca-wait) ; basically ensure elpaca is loaded before continuing
+(elpaca-wait) ; ensure elpaca finishes queues before continuing
 
-;; Load persisted user custom variables after elpaca queues run.
-(setq custom-file (expand-file-name "customs.el" user-emacs-directory))
-(add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
+;; See posimacs-early-init.el for initial replacement.
+(defun pmx--elpaca-after-init ()
+  "Undo filename handler trick and delete self for fun."
+
+  ;; load user's persisted customize values.
+  (load
+   (setq custom-file (expand-file-name "customs.el" user-emacs-directory))
+   'noerror)
+
+  (setq file-name-handler-alist file-name-handler-alist--old)
+  (remove-hook 'elpaca-after-init-hook #'pmx--elpaca-after-init)
+  (fmakunbound #'pmx--elpaca-after-init)
+  (makunbound 'file-name-handler-alist--old))
+
+(add-hook 'elpaca-after-init-hook #'pmx--elpaca-after-init)
 
 ;; Idle garbage collection
 (use-package gcmh
   :demand t
   :config
-  (add-hook 'emacs-startup-hook (lambda () (gcmh-mode 1))))
+  (add-hook 'elpaca-after-init-hook (lambda () (gcmh-mode 1))))
 
 ;;; Load modules.
 (let ((posimacs-files '("posimacs-defaults.el"
