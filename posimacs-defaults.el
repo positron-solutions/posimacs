@@ -118,7 +118,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Auto-balancing and less aggressive automatic window splitting are a
-;; pre-requisite for any sane window management strategy.
+;; prerequisite for any sane window management strategy.
 
 ;; Windows are only eligible to be split horizontally
 (setq split-height-threshold nil)
@@ -150,10 +150,6 @@ observed."
 
 (setq split-window-preferred-function #'pmx-split-window-conservatively)
 
-;;;;;;;;;;;;;;;;;;;;;
-;; Window Controls ;;
-;;;;;;;;;;;;;;;;;;;;;
-
 (use-package windmove
   :elpaca nil
   :config
@@ -175,54 +171,6 @@ observed."
   (setq avy-escape-chars '(?\e ?\C-g))
   :config
   (setq avy-all-windows 'all-frames)) ; avy can switch frames
-
-;;;;;;;;;;;;;;
-;; Controls ;;
-;;;;;;;;;;;;;;
-
-(use-package default-text-scale
-  :delight default-text-scale-mode
-  :config
-  (default-text-scale-mode)) ;C-M-= and C-M-- for larger and smaller text
-
-;;;;;;;;;;;;;;
-;; Modeline ;;
-;;;;;;;;;;;;;;
-
-(use-package doom-modeline
-  :init
-  (doom-modeline-mode 1)
-  (add-hook 'after-make-frame-functions #'graphical-frame-icons)
-  :custom
-  (doom-modeline-buffer-encoding nil "Nobody reads encoding.")
-  (doom-modeline-major-mode-icon t "This is probably default.")
-  (doom-modeline-env-version nil "Rust 1.45.whocares."))
-
-(defun graphical-frame-icons (frame)
-  "Activate doom-modeline icons if FRAME has graphics."
-  (select-frame frame)
-  (setq doom-modeline-icon (display-graphic-p frame)))
-
-;; A slightly more informative scratch buffer
-(setq initial-scratch-message nil)
-
-;; https://github.com/Malabarba/beacon
-;; When you scroll, the cursor highlights very loudly
-(use-package beacon
-  :delight beacon-mode
-  :custom
-  (beacon-color "#33DB12")
-  (beacon-blink-duration 0.5)
-  (beacon-size 60)
-  (beacon-blink-when-point-moves-vertically t)
-  (beacon-blink-when-window-changes t)
-  (beacon-blink-when-focused t)
-  :config
-  (beacon-mode)
-  ;; blink after switching windows.
-  (if window-selection-change-functions
-      (push (lamdba (_) (beacon-blink-automated)) window-selection-change-functions)
-    (setq window-selection-change-functions '((lambda (_) (beacon-blink-automated))))))
 
 ;; When do we ever want to confirm after requesting execution?
 (setq org-confirm-babel-evaluate nil)

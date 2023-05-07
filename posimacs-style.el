@@ -17,6 +17,11 @@
                       :font (font-spec :family "Roboto Mono"
                                        :size 20)))
 
+(use-package default-text-scale
+  :delight default-text-scale-mode
+  :config
+  (default-text-scale-mode)) ;C-M-= and C-M-- for larger and smaller text
+
 ;; Make lambda expressions shorter for easier reading in lisp code
 ;; Thanks Oleg Pavliv
 ;; https://unix.stackexchange.com/questions/30039/emacs-how-to-insert-%CE%BB-instead-of-lambda-in-scheme-mode
@@ -74,6 +79,41 @@
   (parrot-type 'nyan)
   (parrot-animate-on-load t)
   (parrot-mode t)) ;; enables the mode
+
+(use-package doom-modeline
+  :init
+  (doom-modeline-mode 1)
+  (add-hook 'after-make-frame-functions #'graphical-frame-icons)
+  :custom
+  (doom-modeline-buffer-encoding nil "Nobody reads encoding.")
+  (doom-modeline-major-mode-icon t "This is probably default.")
+  (doom-modeline-env-version nil "Rust 1.45.whocares."))
+
+(defun graphical-frame-icons (frame)
+  "Activate doom-modeline icons if FRAME has graphics."
+  (select-frame frame)
+  (setq doom-modeline-icon (display-graphic-p frame)))
+
+;; A slightly more informative scratch buffer
+(setq initial-scratch-message nil)
+
+;; https://github.com/Malabarba/beacon
+;; When you scroll, the cursor highlights very loudly
+(use-package beacon
+  :delight beacon-mode
+  :custom
+  (beacon-color "#33DB12")
+  (beacon-blink-duration 0.5)
+  (beacon-size 60)
+  (beacon-blink-when-point-moves-vertically t)
+  (beacon-blink-when-window-changes t)
+  (beacon-blink-when-focused t)
+  :config
+  (beacon-mode)
+  ;; blink after switching windows.
+  (if window-selection-change-functions
+      (push (lamdba (_) (beacon-blink-automated)) window-selection-change-functions)
+    (setq window-selection-change-functions '((lambda (_) (beacon-blink-automated))))))
 
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
