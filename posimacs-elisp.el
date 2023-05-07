@@ -24,6 +24,21 @@
               (unless (memq #'comint-truncate-buffer comint-output-filter-functions)
                 (push #'comint-truncate-buffer comint-output-filter-functions)))))
 
+(use-package macrostep) ; macro inspection
+
+(defun pmx-buffer-ert-p (buf act)
+  "BUF is an ert results buffer, ignore ACT."
+  (eq (buffer-local-value 'major-mode (get-buffer buf)) 'ert-results-mode))
+
+(use-package ert
+  :elpaca nil
+  :config
+  (add-to-list 'display-buffer-alist
+               `(pmx-buffer-ert-p         ;predicate
+                 (display-buffer-reuse-mode-window) ;functions to try
+                 (inhibit-same-window . nil))))
+
+(use-package auto-compile)
 ;; pmx-ielm-this-buffer is a shortcut to open an ielm buffer for introspective
 ;; hacking on that buffer.  This is often faster than the scratch buffer
 ;; workflow, which both accumulates broken forms and requires manually
@@ -48,7 +63,7 @@ If the TARGET-BUFFER is already an ielm buffer, warn instead.
 When TARGET-BUFFER is nil, use the result of `current-buffer'"
   (interactive)
   (let* ((target-buffer (or target-buffer (current-buffer)))
-        (new-buffer-name (format "*ielm-<%s>*" target-buffer)))
+         (new-buffer-name (format "*ielm-<%s>*" target-buffer)))
     (if (pmx--not-ielm-buffer-p target-buffer)
       (progn (pop-to-buffer (get-buffer-create new-buffer-name))
              (ielm new-buffer-name)
