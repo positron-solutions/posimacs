@@ -111,7 +111,7 @@
   (command-log-log-globally t "Auto-enable with global minor mode (including minibuffer)")
   (command-log-filter-commands '(self-insert-command) "Be chatty. Show everything besides self-insert-command"))
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
-(use-package project)
+(use-package project :elpaca nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
