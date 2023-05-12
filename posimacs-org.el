@@ -21,6 +21,10 @@
   (setq org-agenda-prefer-last-repeat t)
   (setq org-adapt-indentation t)
 
+  ;; https://github.com/bastibe/org-journal/issues/392
+  ;; having cycling issues
+  (setq org-fold-core-style 'overlays)
+
   (setq org-mouse-1-follows-link nil)
   (setq org-return-follows-link  t)
 
