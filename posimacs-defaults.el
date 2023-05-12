@@ -25,7 +25,7 @@
 ;; focus help window so that it can be closed immediately with 'q'
 (setq help-window-select t)
 
-(setq-default fill-column 70) ; How wide to auto-fill paragraphs
+(setq-default fill-column 80) ; How wide to auto-fill paragraphs
 
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
 
@@ -121,7 +121,6 @@
 
 ;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
 
-(setq-default fill-column 80)
 (setq ediff-split-window-function 'split-window-horizontally)
 (put 'erase-buffer 'disabled nil)
 
