@@ -124,6 +124,8 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (put 'erase-buffer 'disabled nil)
 
+(setq show-trailing-whitespace t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
