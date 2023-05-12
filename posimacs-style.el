@@ -112,7 +112,7 @@
   (beacon-mode)
   ;; blink after switching windows.
   (if window-selection-change-functions
-      (push (lamdba (_) (beacon-blink-automated)) window-selection-change-functions)
+      (push (lambda (_) (beacon-blink-automated)) 'window-selection-change-functions)
     (setq window-selection-change-functions '((lambda (_) (beacon-blink-automated))))))
 
 ;; https://github.com/tarsius/hl-todo
