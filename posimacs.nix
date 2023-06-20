@@ -24,13 +24,13 @@ in {
 
     # customizing the build or version of an Emacs package
     nixpkgs.overlays = [ 
-          emacs-overlay.overlays.default 
-          (final : prev: {
-            emacs29 = prev.emacsGit.overrideAttrs (old: {
-              name = "emacs29";
-              version = emacs29-src.shortRev;
-              src = emacs29-src;
-          });
+      emacs-overlay.overlays.default
+      (final : prev: {
+        emacs = prev.emacs.overrideAttrs (old: {
+          name = "emacs29";
+          version = emacs29-src.shortRev;
+          src = emacs29-src;
+        });
        })
     ];
 
@@ -44,7 +44,7 @@ in {
     ];
 
     programs.emacs = {
-      package = pkgs.emacs29;
+      package = pkgs.emacsWithPackages (epkgs: [pkgs.emacsPackages.tree-sitter-langs]);
       enable = true;
     };
 
