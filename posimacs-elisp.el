@@ -24,17 +24,8 @@
               (unless (memq #'comint-truncate-buffer comint-output-filter-functions)
                 (push #'comint-truncate-buffer comint-output-filter-functions)))))
 
-(use-package paredit
-  :hook ((lisp-mode emacs-lisp-mode))
-  :config
-  ;; TODO publish user-keys
-  (dolist (key '("M-s" "M-j" "M-;" "M-<down>" "M-<up>"
-                 "C-M-<left>" "C-M-<right>" "C-M-d" "C-M-f"
-                 "C-M-n" "C-M-p" "C-M-u" "C-<left>" "C-<right>"
-                 "C-M-b" "C-c C-M-l" "C-j" "C-{" "C-}" "ESC <down>"
-                 "ESC <up>" "ESC C-<left>" "ESC C-<right>"
-                 "M-)" "M-(" "M-;" "M-?" "M-d" "M-r" "M-J" "M-S" "M-\""))
-    (define-key paredit-mode-map (kbd key) nil t)))
+(use-package lispy
+  :hook ((lisp-mode emacs-lisp-mode)))
 
 ;; Seeing delimiter balance at all times is pretty useful.
 (use-package rainbow-delimiters
@@ -48,6 +39,7 @@
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-key] . helpful-key))
+
   :demand t
   :config
   ;; patch apropos buttons to call helpful instead of help
