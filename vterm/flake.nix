@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-23.05";
     emacs-vterm-src = {
       url = "github:akermu/emacs-libvterm?rev=94e2b0b2b4a750e7907dacd5b4c0584900846dd1";
       flake = false;

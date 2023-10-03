@@ -4,7 +4,7 @@
   inputs = {
     cargo2nix.url = "github:cargo2nix/cargo2nix/?ref=release-0.11.0";
     rust-overlay.url = "github:oxalica/rust-overlay";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-23.05";
     rust-analyzer = {
       url = "path:./rust-analyzer";
       inputs.nixpkgs.follows = "nixpkgs";
