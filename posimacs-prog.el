@@ -50,6 +50,14 @@
   (company-minimum-prefix-length 3)
   :config
 
+  ;; replace company-capf with merged company and dabbrev :-)
+  (setq company-backends
+        (mapcar (lambda (b)
+                  (if (eq b 'company-capf)
+                      '(company-capf :with company-dabbrev-code)
+                    b))
+                company-backends))
+
   ;; TODO possibly upstream this
   (defun pmx-company-complete-common-or-finish ()
     "Insert the common part of current candidates or finish."
