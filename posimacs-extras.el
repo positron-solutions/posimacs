@@ -62,3 +62,8 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (provide 'posimacs-extras)
 ;;; posimacs-extras.el ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
+;; End:

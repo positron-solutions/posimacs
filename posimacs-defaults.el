@@ -247,5 +247,5 @@ observed."
 
 ;; Local Variables:
 ;; flycheck-disabled-checkers: (emacs-lisp)
-;; jinx-mode: nil
+;; eval: (jinx-mode -1)
 ;; End:

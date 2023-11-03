@@ -113,3 +113,8 @@
   (counsel-projectile-mode))
 
 ;;; posimacs-minibuffer.el ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
+;; End:

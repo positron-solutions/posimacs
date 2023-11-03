@@ -139,3 +139,8 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
 
 (provide 'posimacs-elisp)
 ;;; posimacs-elisp.el ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
+;; End:

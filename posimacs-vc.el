@@ -32,3 +32,8 @@
   (global-git-gutter-mode +1))
 
 ;;; posimacs-vc.el ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
+;; End:

@@ -123,3 +123,8 @@
 
 (provide 'posimacs-prog)
 ;;; posimacs-prog.el ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
+;; End:

@@ -44,7 +44,6 @@
 ;;; posimacs-early-init.el ends here
 
 ;; Local Variables:
-;; no-byte-compile: t
-;; no-native-compile: t
-;; no-update-autoloads: t
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
 ;; End:
