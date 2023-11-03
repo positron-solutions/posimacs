@@ -116,19 +116,21 @@
   (parrot-animate-on-load t)
   (parrot-mode t)) ;; enables the mode
 
+
+(use-package nerd-icons)
 (use-package doom-modeline
+  :after nerd-icons
   :init
-  (doom-modeline-mode 1)
-  (add-hook 'after-make-frame-functions #'graphical-frame-icons)
+  (add-hook 'elpaca-after-init-hook #'doom-modeline-mode)
+  ;; (defun graphical-frame-icons (frame)
+  ;;   "Activate doom-modeline icons if FRAME has graphics."
+  ;;   (select-frame frame)
+  ;;   (setq doom-modeline-icon (display-graphic-p frame)))
+  ;; (add-hook 'after-make-frame-functions #'graphical-frame-icons)
   :custom
   (doom-modeline-buffer-encoding nil "Nobody reads encoding.")
   (doom-modeline-major-mode-icon t "This is probably default.")
   (doom-modeline-env-version nil "Rust 1.45.whocares."))
-
-(defun graphical-frame-icons (frame)
-  "Activate doom-modeline icons if FRAME has graphics."
-  (select-frame frame)
-  (setq doom-modeline-icon (display-graphic-p frame)))
 
 ;; A slightly more informative scratch buffer
 (setq initial-scratch-message ";; Only The Future Is Certain.")
