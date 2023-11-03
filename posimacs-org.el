@@ -19,24 +19,27 @@
   (setq org-habit-show-habits-only-for-today t)
   (setq org-agenda-show-future-repeats 'next)
   (setq org-agenda-prefer-last-repeat t)
-  (setq org-adapt-indentation t)
+  (setq org-adapt-indentation nil)
 
   ;; https://github.com/bastibe/org-journal/issues/392
   ;; having cycling issues
-  (setq org-fold-core-style 'overlays)
+  ;; (setq org-fold-core-style 'overlays)
 
   (setq org-mouse-1-follows-link nil)
-  (setq org-return-follows-link  t)
+  (setq org-return-follows-link t)
 
   (setq org-startup-folded 'show2levels)
-
-  (setq org-agenda-window-setup 'current-window) ;; don't kill window layout
+  (setq org-list-indent-offset 2)             ; bullet lists
+  (setq org-insert-heading-respect-content t) ; don't let me screw up structure
+  (setq org-agenda-window-setup 'current-window) ; don't kill window layout
+  (setq org-auto-align-tags nil)                 ; whitespace is the devil
 
   ;; load org files from ~/.org/
   (setq org-directory "~/.org")
   (setq org-agenda-files (list org-directory))
   (setq org-archive-location "~/.org/archive.org::* From %s")
 
+  ;; TODO force captures to go somewhere
   ;; orphan captures will go here
   (setq org-default-notes-file (concat org-directory "/notes.org"))
 
@@ -46,16 +49,29 @@
   ;; show filename at head of refile suggestions
   (setq org-refile-use-outline-path 'file)
   (setq org-outline-path-complete-in-steps nil) ;; give ivy all suggestions
+
   ;; move to file itself for top-level
   (setq org-refile-allow-creating-parent-nodes 'confirm)
-
   (setq org-log-done 'time)
 
   ;; don't let ancestor TODO's be toggled unless all descendents are marked done
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-enforce-todo-dependencies t)
   (setq org-archive-reversed-order t) ;; newest first in archive
+  (setq org-habit-show-habits-only-for-today t)
+  (setq org-agenda-show-future-repeats nil)
+  (setq org-blank-before-new-entry '((heading . t)
+                                     (plain-list-item . auto)))
+  (setq org-cycle-separator-lines 2)
 
+  ;; export settings
+  (setq org-html-postamble nil)
+  (setq org-html-doctype "html5")
+  (setq org-hide-emphasis-markers t)
+  (setq org-hide-drawer-startup t)
+
+  ;; line spacing
+  (add-hook 'org-mode-hook (lambda () (setq-local line-spacing 0.6)))
 
   ;; Set timer to save org buffers and write a commit at midnight
   (defun pmx-commit-agenda-files ()
@@ -119,12 +135,30 @@
 (use-package org-modern
   :hook ((org-mode                 . org-modern-mode)
          (org-agenda-finalize-hook . org-modern-agenda))
-  :custom ((org-modern-todo t)
-           (org-modern-table nil)
-           (org-modern-variable-pitch nil)
-           (org-modern-block-fringe nil))
+  :custom
+  ((org-modern-todo t)
+   (org-modern-table nil)
+   (org-modern-variable-pitch t)
+   (org-modern-hide-stars 'leading)
+
+   ;; I like to change up my stars
+   (org-modern-star '("∯" "∮" "∇" "Σ" "∞" "∴"))
+   ;; (org-modern-star '("♨" "✈" "✲" "⍟" "✰" "▻" "▸")
+   ;; (org-modern-star '("◩" "⬙" "◲" "◇" "▿"))
+   ;; (org-modern-star '("█" "▟" "▞" "▄" "▘" "▗" "▁"))
+   ;; (org-modern-star '("☀" "☉" "☾" "☄" "❉" "✵" "✰" "✩"))
+   ;; (org-modern-star '("∀" "∋" "∃" "≡" "∩"))
+   ;; (org-modern-star '("🂡" "🂼" "🃇" "🃋" "🃕" "🂿" "🃒"))
+   ;; (org-modern-star '("☰" "☲" "☵" "☷" "⚌" "⚏" "⚋"))
+
+
+   (org-modern-block-fringe t))
   :commands (org-modern-mode org-modern-agenda)
-  :init (global-org-modern-mode))
+  :config
+  (add-hook 'org-modern-mode-hook #'pmx-setup-org-fonts)
+  :init
+  (global-org-modern-mode))
+
 
 ;; for regenerating toc's in Posimacs packages
 (use-package org-make-toc)
