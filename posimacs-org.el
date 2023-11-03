@@ -100,6 +100,15 @@
   (setq idle-org-agenda-interval 900)
   (idle-org-agenda-mode))
 
+;; show things when cursor gets there
+(use-package org-appear
+  :config
+  (setq org-appear-autolinks t)
+  (setq org-appear-trigger 'always)
+  (setq org-appear-autosubmarkers t)
+  (setq org-appear-autoentities t)
+  (add-hook 'org-mode-hook #'org-appear-mode))
+
 
 (defun pmx-setup-org-fonts ()
   "Org mode needs it's font's set up after every document load."
@@ -169,6 +178,154 @@
   (setq visual-fill-column-adjust-for-text-scale nil)
   (setq visual-fill-column-width 120)
   (setq visual-fill-column-center-text t))
+
+(use-package hide-mode-line)
+
+(defun pmx-screencap-setup ()
+  "Make it good for video."
+  (interactive)
+  ;; I was going to praise this function until I needed the 16 pixel width
+  ;; correction lol.  Stop wasting my time.
+  (when (frame-parameter (selected-frame) 'fullscreen)
+    (set-frame-parameter (selected-frame) 'fullscreen nil))
+  (set-frame-size (selected-frame) (- 2560 16) 1440 t))
+
+
+(defvar-local pmx-hide-org-meta-line-cookie nil)
+
+(defun pmx-hide-org-meta-line ()
+  "Hide meta keywords."
+  (interactive)
+  (unless pmx-hide-org-meta-line-cookie
+    (setq pmx-hide-org-meta-line-cookie
+          (face-remap-add-relative 'org-meta-line :foreground
+                                   (face-attribute 'org-meta-line :background)))))
+
+(defun pmx-show-org-meta-line ()
+  "Show meta keywords."
+  (interactive)
+  (when pmx-hide-org-meta-line-cookie
+    (face-remap-remove-relative pmx-hid-org-meta-line-cookie)))
+
+(defun pmx-toggle-org-meta-line ()
+  "Toggle visibility of meta lines."
+  (interactive)
+  (if pmx-meta-line-hidden
+      (pmx-show-org-meta-line)
+    (pmx-hide-org-meta-line)))
+
+(defvar-local pmx-presentation-text-scale 2)
+(defvar-local pmx-presentation-full-screen t
+  "Set this within a buffer in order to ask for full-screen display.")
+(defvar-local pmx-old-window-configuration nil "Restore after tree slide exit.")
+(defvar-local pmx--header-line-cookie nil "Restore header line face.")
+
+(defun pmx-presentation-start ()
+  "Make tree slide nice."
+  (setq-local blink-cursor-alist '(((hbar . 0) . bar)))
+  (setq-local cursor-type '(hbar . 0))
+  (setq-local blink-cursor-blinks 4)
+  (setq-local pmx--header-line-cookie (face-remap-add-relative 'header-line :height 2.0))
+  (setq header-line-format " ")
+  (org-appear-mode 1)
+  (pmx-hide-org-meta-line)
+  (text-scale-set pmx-presentation-text-scale)
+  (org-display-inline-images nil t (point-min) (point-max))
+  (visual-line-mode 1)
+  (when pmx-presentation-full-screen
+    (fringe-mode '(0 . 0))
+    (setq pmx-old-window-configuration (current-window-configuration))
+    (delete-other-windows)
+    (visual-fill-column-mode 1))
+  (git-gutter-mode -1)
+  (when (featurep 'jinx)
+    (jinx-mode -1))
+  ;; claims to be deprecated
+  (read-only-mode 1)
+  (hide-mode-line-mode 1))
+
+(defun pmx-presentation-stop ()
+  "Make tree slide nice."
+  (hide-mode-line-mode -1)
+  (visual-line-mode -1)
+  (when pmx-presentation-full-screen
+    (visual-fill-column-mode -1)
+    (fringe-mode nil)
+    (when pmx-old-window-configuration
+      (set-window-configuration pmx-old-window-configuration)
+      (setq pmx-old-window-configuration nil)))
+  (read-only-mode -1)
+  (git-gutter-mode 1)
+  (org-display-inline-images nil t (point-min) (point-max))
+  (text-scale-set 0)
+  (when (featurep 'jinx)
+    (jinx-mode 1))
+  (pmx-show-org-meta-line)
+  (org-appear-mode -1)
+  (face-remap-remove-relative pmx--header-line-cookie)
+  (setq header-line-format nil)
+
+  (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
+  (setq-local cursor-type (default-value 'cursor-type))
+  (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
+
+;; presenting
+(use-package org-tree-slide
+  :after hide-mode-line
+  :config
+  (setq org-tree-slide-never-touch-face t)
+  (setq org-tree-slide-header t)
+  (setq org-tree-slide-slide-in-effect t)
+  (setq org-tree-slide-slide-in-blank-lines 4)
+  (setq org-tree-slide-content-margin-top 1)
+  (setq org-tree-slide-breadcrumbs
+        (propertize " 🢒 "
+                    ;; 'display '(raise 0.1)
+                    'height 0.2
+                    'face '(inherit 'org-level-1)))
+  (setq org-tree-slide-skip-outline-level 0)
+  (setq org-tree-slide-fold-subtrees-skipped t)
+
+  (defun pmx-org-tree-slide-quit ()
+    "Lol, guys, could we have a quit command? Oh."
+    (interactive)
+    (org-tree-slide-mode -1))
+
+  (defun pmx-org-tree-slide-toggle-full-screen ()
+    "When tree slide mode is active, run's teardown hook and set up again."
+    (interactive)
+    (when org-tree-slide-mode
+      (pmx-presentation-stop))
+    (setq-local pmx-presentation-full-screen
+                (not pmx-presentation-full-screen))
+    (when org-tree-slide-mode
+      (pmx-presentation-start)))
+
+  (define-key org-tree-slide-mode-map (kbd "<right>") #'org-tree-slide-move-next-tree)
+  (define-key org-tree-slide-mode-map (kbd "<left>") #'org-tree-slide-move-previous-tree)
+  (define-key org-tree-slide-mode-map (kbd "<up>") #'org-tree-slide-content)
+  (define-key org-tree-slide-mode-map (kbd "<down>") #'pmx-org-tree-slide-quit)
+
+  ;; hack to clear gutter during presentation
+  (add-hook 'org-tree-slide-after-narrow-hook #'git-gutter:clear-gutter)
+
+  (add-hook 'org-tree-slide-play-hook #'pmx-presentation-start)
+  (add-hook 'org-tree-slide-stop-hook #'pmx-presentation-stop))
+
+(use-package org-present
+  :config
+  (defun pmx-org-present-prepare-slide (buffer-name heading)
+    ;; Show only top-level headlines
+    (org-overview)
+
+    ;; Unfold the current entry
+    (org-show-entry)
+
+    ;; Show only direct subheadings of the slide but don't expand them
+    (org-show-children))
+  (add-hook 'org-present-mode-hook 'pmx-presentation-start)
+  (add-hook 'org-present-mode-quit-hook 'pmx-presentation-end)
+  (add-hook 'org-present-after-navigate-functions 'pmx-org-present-prepare-slide))
 
 ;; A pure library for manipulating & consuming org buffers.  This is really
 ;; useful for org hacking, but you can also use the built-in API's with the

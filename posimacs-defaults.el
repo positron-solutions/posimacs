@@ -25,6 +25,8 @@
 ;; focus help window so that it can be closed immediately with 'q'
 (setq help-window-select t)
 
+(setq frame-resize-pixelwise t)
+
 (setq-default fill-column 80) ; How wide to auto-fill paragraphs
 
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
