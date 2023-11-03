@@ -25,13 +25,13 @@ in {
     # customizing the build or version of an Emacs package
     nixpkgs.overlays = [ 
       emacs-overlay.overlays.default
-      (final : prev: {
-        emacs = prev.emacs.overrideAttrs (old: {
-          name = "emacs29";
-          version = emacs29-src.shortRev;
-          src = emacs29-src;
-        });
-       })
+      # (final : prev: {
+      #   emacs = prev.emacs.overrideAttrs (old: {
+      #     name = "emacs29";
+      #     version = emacs29-src.shortRev;
+      #     src = emacs29-src;
+      #   });
+      #  })
     ];
 
     # Install packages from the top level package set if your module depends on them
@@ -46,8 +46,8 @@ in {
     ];
 
     programs.emacs = {
-      package = pkgs.emacsWithPackages (epkgs: [pkgs.emacsPackages.tree-sitter-langs]);
-      enable = true;
+      package = (pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
+        (epkgs: [pkgs.emacsPackages.tree-sitter-langs]);
     };
 
     # Fontconfig will ensure that fonts installed in home.packages
