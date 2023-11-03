@@ -29,8 +29,10 @@
 ;; Turn off graphics features that would slow down initial startup.
 ;; https://github.com/Gavinok/emacs.d
 (setq-default
+ frame-inhibit-implied-resize t
  package-native-compile t
  inhibit-startup-message t
+ mode-line-format nil
  default-frame-alist
  '((tool-bar-lines . 0)
    (menu-bar-lines . 0)

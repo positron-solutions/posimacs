@@ -131,7 +131,7 @@
   (setq doom-modeline-icon (display-graphic-p frame)))
 
 ;; A slightly more informative scratch buffer
-(setq initial-scratch-message nil)
+(setq initial-scratch-message ";; Only The Future Is Certain.")
 
 ;; https://github.com/Malabarba/beacon
 ;; When you scroll, the cursor highlights very loudly

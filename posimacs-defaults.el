@@ -33,7 +33,27 @@
 
 (setq use-dialog-box nil)
 
-(fset 'yes-or-no-p 'y-or-n-p)    ; don't ask to spell out "yes"
+;; intermittent issues with multibyte characters?
+;; https://www.reddit.com/r/emacs/comments/kgv4fj/problems_in_org_trello_error_requestcurlsync/
+(setq request-backend 'url-retrieve)
+
+;; Most links you see in Emacs don't need full browsers
+(setq browse-url-browser-function 'eww-browse-url)
+
+(setq message-strip-special-text-properties nil)
+(setq minibuffer-message-properties nil)
+
+;; don't ask to spell out "yes"
+(setopt use-short-answers t)
+
+(setopt native-comp-async-report-warnings-errors 'silent)
+
+;; don't show transient commands in M-x completions?
+;; (setq read-extended-command-predicate
+;;       'command-completion-default-include-p)
+
+;; add to transient package
+(setq transient-hide-during-minibuffer-read t)
 
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
@@ -96,9 +116,11 @@
   :delight
   :config (ws-butler-global-mode t))
 
-(use-package subword ; camel case counts as words boundaries when navigating
+;; camel case counts as words boundaries when navigating.  symbol navigation
+;; still leaps by whole words.
+(use-package subword
   :delight
-  :elpaca nil ; built-in package
+  :elpaca nil                           ; built-in package
   :config
   (global-subword-mode 1))
 
@@ -128,6 +150,13 @@
 (put 'erase-buffer 'disabled nil)
 
 (setq show-trailing-whitespace t)
+
+(setq blink-cursor-interval 0.2
+      blink-cursor-delay 0.2
+      blink-cursor-blinks 150)
+
+;; Thanks Steve Purcell
+(global-set-key (kbd "RET") 'newline-and-indent)
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window Management ;;
@@ -171,6 +200,9 @@ observed."
   :config
   (setq windmove-wrap-around t))
 
+;; rotate window layouts
+(use-package rotate)
+
 (use-package switch-window
   :config
   (setq switch-window-threshold 2)
@@ -180,13 +212,12 @@ observed."
   (setq switch-window-background nil)
   (setq switch-window-qwerty-shortcuts '("p" "o" "s" "i" "t" "r" "a" "c" "x" "y" "v" "u")))
 
-(use-package rotate) ; rotate windows and layouts
-
 (use-package avy ; fast-cursor-jumping in buffer visible area
   :custom
   (setq avy-escape-chars '(?\e ?\C-g))
   :config
   (setq avy-all-windows 'all-frames)) ; avy can switch frames
+
 
 ;; Fill while typing by default in text modes
 (add-hook 'text-mode-hook #'auto-fill-mode)
@@ -194,23 +225,27 @@ observed."
 (add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
 
-(defvar pmx-help-modes '(helpful-mode
-                         help-mode
-                         shortdoc-mode
-                         Man-mode
-                         woman-mode
-                         Info-mode))
+;; Make help buffers attempt to re-use a window when popping
+(defvar pmx-other-win-modes
+  '(helpful-mode help-mode shortdoc-mode Man-mode woman-mode
+                 Info-mode elpaca-ui-log elisp-compile))
 
 (defun pmx-buffer-help-p (buf act)
   "BUF is a help buffer, ignore ACT."
-  (member (buffer-local-value 'major-mode (get-buffer buf)) pmx-help-modes))
+  (member (buffer-local-value 'major-mode (get-buffer buf)) pmx-other-win-modes))
 
 (add-to-list 'display-buffer-alist
-             `(pmx-buffer-help-p         ;predicate
+             `(pmx-buffer-help-p        ;predicate
                (display-buffer--maybe-same-window
                 display-buffer-reuse-window
                 display-buffer-reuse-mode-window) ;functions to try
-               (mode . ,pmx-help-modes)
+               (mode . ,pmx-other-win-modes)
                (inhibit-same-window . nil)))
 
-;;; posimacs-defaults ends here
+
+;;; posimacs-defaults.el ends here.
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; jinx-mode: nil
+;; End:
