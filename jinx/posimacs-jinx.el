@@ -10,7 +10,7 @@
 (use-package jinx
   :elpaca nil
   :load-path  "~/.emacs.d/vendor/emacs-jinx/"
-  :hook (emacs-startup . global-jinx-mode)
+  :hook (elpaca-after-init-hook . global-jinx-mode)
   :bind ([remap ispell-word] . jinx-correct))
 
 (provide 'posimacs-jinx)
