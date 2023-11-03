@@ -145,7 +145,10 @@
 (put 'upcase-region 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 
+;; nicer regex
 (setq reb-re-syntax 'read)
+;; visually replace with overlays
+(use-package visual-regexp)
 
 ;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
 
