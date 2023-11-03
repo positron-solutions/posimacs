@@ -84,6 +84,37 @@
   (setq idle-org-agenda-interval 900)
   (idle-org-agenda-mode))
 
+
+(defun pmx-setup-org-fonts ()
+  "Org mode needs it's font's set up after every document load."
+  (interactive)
+  (set-face-attribute 'org-level-8 nil
+                      :inherit 'default
+                      :family "Roboto Slab")
+
+  ;; These are not getting set after the doc is in org modern.
+  (set-face-attribute 'org-modern-label nil
+                      :inherit 'default
+                      :family "Roboto Condensed")
+  (set-face-attribute 'org-document-info-keyword nil
+                      :inherit 'default
+                      :family "Noto Sans Mono CJK KR")
+  (set-face-attribute 'org-special-keyword nil
+                      :inherit 'default
+                      :family "Noto Sans Mono CJK KR")
+  (set-face-attribute 'org-document-info nil
+                      :inherit 'default
+                      :family "Noto Sans Mono CJK KR")
+  (set-face-attribute 'org-meta-line nil
+                      :inherit 'default
+                      :family "Noto Sans Mono CJK KR")
+  (set-face-attribute 'org-block-begin-line nil
+                      :inherit 'default
+                      :family "Noto Sans Mono CJK KR")
+  (set-face-attribute 'org-drawer nil
+                      :inherit 'default
+                      :family "Noto Sans Mono CJK KR"))
+
 ;; just get the basics out of the way
 (use-package org-modern
   :hook ((org-mode                 . org-modern-mode)
@@ -97,6 +128,13 @@
 
 ;; for regenerating toc's in Posimacs packages
 (use-package org-make-toc)
+
+(use-package visual-fill-column
+  :after visual-fill-column
+  :config
+  (setq visual-fill-column-adjust-for-text-scale nil)
+  (setq visual-fill-column-width 120)
+  (setq visual-fill-column-center-text t))
 
 ;; A pure library for manipulating & consuming org buffers.  This is really
 ;; useful for org hacking, but you can also use the built-in API's with the

@@ -56,24 +56,31 @@ determine the exact padding."
 
    (red        '("#FF293A" "color-167" "red"          ))
    (neon       '("#F43E87" "color-207" "brightmagenta"))
+   (sub-neon   '("#CC1F64" "color-207" "brightmagenta"))
    (lneon      '("#FF599C" "color-170" "brightmagenta"))
    (dneon      '("#330D1C" "color-052" "brightblack"  ))
    (ddneon     '("#2E0214" "color-052" "brightblack"  ))
    (green      '("#6EC248" "color-113" "green"        ))
    (lime       '("#33DB12" "color-46"  "lightgreen"   ))
    (llime      '("#4FFF9B" "color-48"  "lightgreen"   ))
+   (sub-lime   '("#1fCC6A" "color-48"  "lightgreen"   ))
    (dlime      '("#061A02" "color-22"  "brightblack"  ))
    (ddlime     '("#051402" "color-22"  "brightblack"  ))
 
    (yellow     '("#FFD000" "color-179" "brightyellow" ))
    (blue       '("#51A2E0" "color-117" "blue"         ))
-   (spark      '("#1983D4" "color-117" "blue"         ))
+   (spark      '("#0A71BF" "color-117" "blue"         ))
+   (sub-spark  '("#0260A8" "color-117" "blue"         ))
    (dark-spark '("#0D446E" "color-75"  "blue"         ))
+   (ml-spark   '("#65ABE0" "color-75"  "brightblue"   ))
    (light-spark'("#90BDE0" "color-75"  "brightblue"   ))
+   (light-shock'("#FF7C4D" "color-202" "yellow"       ))
    (shock      '("#FF6933" "color-202" "yellow"       ))
+   (dark-shock '("#D95221" "color-202" "yellow"       ))
    (cyan       '("#36D8BD" "color-79"  "cyan"         ))
    (raw        '("#B272C4" "color-134" "magenta"      ))
    (chill      '("#0CC74A" "color-121" "green"        ))
+   (sub-chill  '("#00B33C" "color-121" "green"        ))
    (ill        '("#1D823E" "color-29"  "green"        ))
 
    (orange     '("#D85F00" "color-166" "yellow"       ))
@@ -289,6 +296,7 @@ determine the exact padding."
 
 ;;;; --- dashboard --------------------------
    (dashboard-banner-logo-title :foreground lime :height 128)
+   (widget-button :inherit 'fixed-pitch) ; dashboard-items-face
 
 ;;;;; markdown-mode
    (markdown-markup-face :foreground base5)
@@ -301,6 +309,28 @@ determine the exact padding."
    ((org-quote &override) :background base1)
    ((org-done &override) :foreground llime)
    ((org-todo &override) :foreground shock)
+
+
+   (org-level-1 :inherit 'org-level-8 :foreground chill :weight 'bold :height 1.64)
+   (org-level-2 :inherit 'org-level-8 :foreground ml-spark :weight 'bold :height 1.48)
+   (org-level-3 :inherit 'org-level-8 :foreground neon :weight 'bold :height 1.32)
+   (org-level-4 :inherit 'org-level-8 :foreground raw :weight 'bold :height 1.24)
+   (org-level-5 :inherit 'org-level-8 :foreground dark-shock :weight 'bold :height 1.16)
+   (org-level-6 :inherit 'org-level-8 :foreground sub-neon :weight 'bold :height 1.08)
+   (org-level-7 :inherit 'org-level-8 :foreground sub-spark :weight 'bold :height 1.04)
+   (org-level-8 :inherit 'variable-pitch :foreground violet :weight 'bold :height 1.24)
+
+   (org-document-title :inherit 'org-level-1 :weight 'bold
+                       :height 1.42 :foreground light-spark)
+
+   ;; Ivy is using this in completions
+   (ivy-org :inherit 'default :foreground chill)
+
+   (org-block :inherit 'fixed-pitch)
+   (org-block-begin-line :inherit 'org-block :height 0.6 :foreground grey)
+   (org-verbatim :inherit 'fixed-pitch)
+   (org-link :inherit 'org-block :underline t :foreground orange)
+   ;; (org-modern-label :inherit 'fixed-pitch-serif :height 1.0)
 
    (org-hide :foreground hidden))
 

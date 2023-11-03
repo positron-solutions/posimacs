@@ -37,6 +37,8 @@ in {
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
       ripgrep # projectile-ripgrep function relies on this
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
       roboto
       roboto-mono
       roboto-slab
@@ -81,5 +83,10 @@ in {
     home.file.".local/share/fonts/material-design-icons.ttf".source = ./fonts/material-design-icons.ttf;
     home.file.".local/share/fonts/octicons.ttf".source = ./fonts/octicons.ttf;
     home.file.".local/share/fonts/weathericons.ttf".source = ./fonts/weathericons.ttf;
+
+    # some more Korean fonts for extra nice looking Org mode
+    home.file.".local/share/fonts/GowunBatang-Bold.ttf".source = ./fonts/GowunBatang-Bold.ttf;
+    home.file.".local/share/fonts/GowunBatang-Regular.ttf".source = ./fonts/GowunBatang-Regular.ttf;
+    home.file.".local/share/fonts/GowunDodum-Regular.ttf".source = ./fonts/GowunDodum-Regular.ttf;
   };
 }

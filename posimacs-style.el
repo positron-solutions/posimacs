@@ -8,24 +8,15 @@
 
 ;;; Code:
 
-(defun pmx--setup-fonts (&rest _)
-  "Nice fonts for nice people (and robots)."
-  (set-face-attribute 'default nil
-                      :font (font-spec :family "Roboto Mono"
-                                       :size 20))
-  (set-face-attribute 'fixed-pitch-serif nil
-                      :font (font-spec :family "Roboto Mono"
-                                       :size 20)))
-
 (use-package default-text-scale
   :delight default-text-scale-mode
   :config
   (default-text-scale-mode)) ;C-M-= and C-M-- for larger and smaller text
 
-;; Make lambda expressions shorter for easier reading in lisp code
 ;; Thanks Oleg Pavliv
 ;; https://unix.stackexchange.com/questions/30039/emacs-how-to-insert-%CE%BB-instead-of-lambda-in-scheme-mode
 (defun pmx-greek-lambda ()
+  "Make lambda expressions shorter for easier reading in Lisp code."
   (font-lock-add-keywords
    nil
    `(("\\<lambda\\>"
@@ -48,7 +39,48 @@
 (use-package all-the-icons-dired
   :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
+;; Better Korean langauge support
+(defun pmx--setup-korean-fonts ()
+  "Configure Korean chars to be more 아름답지."
+  (set-fontset-font t 'korean-ksc5601
+                    (font-spec :family "Gowun Dodum"
+                               :inherit 'default)))
+
+(defun pmx--setup-fonts (&rest _)
+  "Nice fonts for nice people (and robots)."
+  ;; Base fonts
+  (set-face-attribute 'default nil :family "Roboto Mono" :height 132 :weight 'normal)
+  (set-face-attribute 'fixed-pitch-serif nil :family "Roboto Mono")
+  (set-face-attribute 'variable-pitch nil  :family "Noto Serif CJK KR")
+  (set-face-attribute 'header-line nil
+                      :background (face-attribute 'default :background))
+  (set-face-attribute 'italic nil
+                      :slant 'italic :family "Roboto Mono")
+
+  ;; TODO check if these can be fixed via override chains
+  (set-face-attribute 'font-lock-doc-face nil
+                      :family "Roboto Mono")
+  (set-face-attribute 'font-lock-comment-face nil
+                      :family "Roboto Mono")
+  (set-face-attribute 'font-lock-keyword-face nil
+                      :family "Roboto Mono")
+
+  (set-face-attribute 'info-title-4 nil
+                      :family "Roboto Slab"
+                      :height 1.5
+                      :inherit 'default)
+  (set-face-attribute 'info-menu-header nil
+                      :family "Roboto Slab"
+                      :height 1.5
+                      :inherit 'default)
+  (set-face-attribute 'helpful-heading nil
+                      :family "Roboto Slab"
+                      :height 1.3
+                      :inherit 'default))
+
 (use-package doom-themes
+  ;; TODO see if you can leave the loading order independent
+  :after org-modern
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
   (load-theme 'posimacs-dark t)
@@ -57,11 +89,15 @@
          (lambda ()
            (load-theme 'posimacs-dark t)
            (pmx--setup-fonts)
+           (pmx--setup-korean-fonts)
+           ;; after org-modern
+           (pmx-setup-org-fonts)
+
            ;; Corrects (and improves) org-mode's native fontification.
            (doom-themes-org-config))))
     (if (daemonp)
         (add-hook 'server-after-make-frame-hook pmx-setup-style)
-      (add-hook 'after-init-hook pmx-setup-style))))
+      (add-hook 'elpaca-after-init-hook pmx-setup-style))))
 
 ;; nice countdown timers
 (use-package champagne
