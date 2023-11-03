@@ -70,6 +70,9 @@
   (setq org-hide-emphasis-markers t)
   (setq org-hide-drawer-startup t)
 
+
+  ;; variable is configured, but I only use it sometimes manually
+  ;; (add-hook 'org-mode-hook #'variable-pitch-mode)
   ;; line spacing
   (add-hook 'org-mode-hook (lambda () (setq-local line-spacing 0.6)))
 
@@ -169,7 +172,7 @@
   (global-org-modern-mode))
 
 
-;; for regenerating toc's in Posimacs packages
+;; for regenerating tocs (deprecated in favor of export TOCs)
 (use-package org-make-toc)
 
 (use-package visual-fill-column

@@ -33,15 +33,13 @@
   (setq ivy-ignore-buffers
         '("magit[\-:]"
           "*Flycheck"
-          "*straight"
+          "*straight" ; not in use
           "*Backtrace*"
           "*Completions*"
           "auto-commit-org-files-log"
           "TAGS"
           "*Compile-log*"
           "*Native-compile-log*"
-          "*Warnings*"
-          "*Messages*"
           "*Async-native-compile-log*"))
   (setq ivy-re-builders-alist
       '((t . ivy--regex-ignore-order))) ; orderless

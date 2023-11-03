@@ -8,7 +8,6 @@
 ;;
 
 ;;; Code:
-
 (add-hook 'prog-mode-hook (lambda () (setq truncate-lines t))) ;; only truncate prog-mode, wrap-text mode
 (setq truncate-partial-width-windows nil) ; interacts with truncate-lines
 
@@ -101,6 +100,7 @@
 ;; Basic packages ;;
 ;;;;;;;;;;;;;;;;;;;;
 
+;; TODO use envrc
 (use-package direnv ; direnv integration
   :after lsp
   :delight 'direnv-mode
@@ -124,6 +124,7 @@
   :config
   (global-subword-mode 1))
 
+;; TODO move this to a package of enhancements to baseline behavior
 (use-package command-log
   :elpaca (command-log
            :host github
@@ -135,6 +136,8 @@
   (command-log-disabling-logging-kills-buffer t "The buffer will be new when displayed again.")
   (command-log-log-globally t "Auto-enable with global minor mode (including minibuffer)")
   (command-log-filter-commands '(self-insert-command) "Be chatty. Show everything besides self-insert-command"))
+
+;; TODO find other packages that are not being managed by elpaca and bring them under the law
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
 (use-package project :elpaca nil)
 

@@ -9,6 +9,8 @@
 
 ;;; Code:
 
+;; TODO check on this
+;; https://github.com/purcell/emacs.d/blob/master/lisp/init-nix.el
 (use-package nix-mode)
 (use-package list-environment) ; specificaly for inspecting nix envs
 

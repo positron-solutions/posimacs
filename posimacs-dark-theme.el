@@ -1,6 +1,13 @@
 ;;; posimacs-dark-theme.el --- Posimacs dark theme -*- no-byte-compile: t; -*-
 (require 'doom-themes)
 
+;;; Commentary:
+;; I copied this theme at some point.  I find them rather difficult to maintain.
+;; It works, but every single fix is just 1:1 and not really fitting into any
+;; scheme of more abstract description.
+
+;;; Code:
+
 ;;; Variables
 (defgroup posimacs-dark-theme nil
   "Options for doom-themes."
@@ -17,13 +24,13 @@
   :type 'boolean)
 
 (defcustom posimacs-dark-comment-bg posimacs-dark-brighter-comments
-  "If non-nil, comments will have a subtle, darker background. Enhancing their
-legibility."
+  "If non-nil, comments will have a subtle, darker background."
   :group 'posimacs-dark-theme
   :type 'boolean)
 
 (defcustom posimacs-dark-padded-modeline doom-themes-padded-modeline
-  "If non-nil, adds a 4px padding to the mode-line. Can be an integer to
+  "If non-nil, adds a 4px padding to the mode-line.
+Can be an integer to
 determine the exact padding."
   :group 'posimacs-dark-theme
   :type '(or integer boolean))
