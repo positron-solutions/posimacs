@@ -86,6 +86,7 @@
 
 ;;; Load modules.
 (let ((posimacs-files '("posimacs-defaults.el"
+                        "posimacs-ai.el"
                         "posimacs-bindings.el"
                         "posimacs-elisp.el"
                         "posimacs-extras.el"
