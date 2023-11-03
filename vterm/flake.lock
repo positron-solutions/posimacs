@@ -17,22 +17,6 @@
         "type": "github"
       }
     },
-    "flake-compat": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1650374568,
-        "narHash": "sha256-Z+s0J8/r907g149rllvwhb4pKi8Wam5ij0st8PwAh+E=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "b4a34015c698c7793d592d66adbab377907a2be8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "locked": {
         "lastModified": 1667077288,
@@ -50,16 +34,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1682745931,
-        "narHash": "sha256-rMTSVmhXUbb4dF1NFYNchfhi5vvSgBvQmwuc5LbzU30=",
+        "lastModified": 1687246156,
+        "narHash": "sha256-Yg2xCBXmZaIb8yO2oZJgltRkpLd4qHeP2cGPcv4rD0w=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2d05b5fb6e5eade3c4d0744b90d8a93d3c0a07f1",
+        "rev": "2f5b6acb472b2f74c332d1af77dcee0704fe07ba",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-22.11",
+        "ref": "release-23.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -67,7 +51,6 @@
     "root": {
       "inputs": {
         "emacs-vterm-src": "emacs-vterm-src",
-        "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       }
