@@ -47,7 +47,7 @@ in {
 
     programs.emacs = {
       package = (pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
-        (epkgs: [pkgs.emacsPackages.tree-sitter-langs]);
+        (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 
     # Fontconfig will ensure that fonts installed in home.packages
