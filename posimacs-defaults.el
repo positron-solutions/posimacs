@@ -213,6 +213,23 @@ observed."
 (use-package windmove
   :elpaca nil
   :config
+
+  ;; Stack overflow was decent!
+  ;; https://stackoverflow.com/questions/25249669/emacs-windmove-move-a-buffer-without-switching
+  ;; TODO make a more DWIM solution
+  (defun pmx-slide-buffer (dir)
+    "Move current buffer into window at direction DIR.
+DIR is handled as by `windmove-other-window-loc'."
+    (interactive
+     (list (intern (completing-read "Direction: " '(left right up down)))))
+    (let ((buffer (current-buffer))
+          (target (windmove-find-other-window dir)))
+      (if (null target)
+          (user-error "There is no window %s from here" dir)
+        (switch-to-prev-buffer)
+        (select-window target)
+        (switch-to-buffer buffer nil t))))
+
   (setq windmove-wrap-around t))
 
 ;; rotate window layouts
@@ -256,7 +273,6 @@ observed."
                 display-buffer-reuse-mode-window) ;functions to try
                (mode . ,pmx-other-win-modes)
                (inhibit-same-window . nil)))
-
 
 ;;; posimacs-defaults.el ends here.
 
