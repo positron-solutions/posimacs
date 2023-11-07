@@ -243,7 +243,7 @@ observed."
 ;; Make help buffers attempt to re-use a window when popping
 (defvar pmx-other-win-modes
   '(helpful-mode help-mode shortdoc-mode Man-mode woman-mode
-                 Info-mode elpaca-ui-log elisp-compile))
+                 Info-mode elpaca-ui-log elisp-compile apropos-mode))
 
 (defun pmx-buffer-help-p (buf act)
   "BUF is a help buffer, ignore ACT."
