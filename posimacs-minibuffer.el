@@ -29,7 +29,7 @@
   ;; Always ignore buffers set in `ivy-ignore-buffers'
   (setq ivy-use-ignore-default t)
   (setq ivy-wrap t)
-  (setq ivy-height 16)
+  (setq ivy-height 12)
   (setq ivy-ignore-buffers
         '("magit[\-:]"
           "*Flycheck"
