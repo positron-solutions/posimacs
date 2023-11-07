@@ -7,7 +7,7 @@
 ;; mostly on use-package declarations to properly order downstream
 ;; initialization.
 
-;;; Code
+;;; Code:
 
 ;; Elpaca bootstrap.  Last updated 2023-5-4
 (defvar elpaca-installer-version 0.4)
@@ -53,10 +53,13 @@
   (elpaca-use-package-mode)
   ;; Assume :elpaca t unless otherwise specified.
   (setq elpaca-use-package-by-default t))
-
 ;; Load no-littering just after bootsrapping elpaca.  Otherwise, downstream
 ;; packages may initialize to weird locations, often resulting in missing
 ;; history and unwanted file littering
+
+;; Handy to keep commented
+;; (setq use-package-verbose t)
+
 (elpaca no-littering
   (require 'no-littering))
 

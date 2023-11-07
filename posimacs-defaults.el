@@ -45,6 +45,10 @@
 ;; don't ask to spell out "yes"
 (setopt use-short-answers t)
 
+;; Scroll as little as possible.  Avoid moving the point.
+(setq scroll-preserve-screen-position nil)
+(setq scroll-conservatively 101)
+
 (setopt native-comp-async-report-warnings-errors 'silent)
 
 ;; don't show transient commands in M-x completions?
@@ -144,6 +148,8 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
+
+(setq scroll-error-top-bottom t)
 
 ;; nicer regex
 (setq reb-re-syntax 'read)
