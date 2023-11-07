@@ -9,8 +9,9 @@
 
 ;; TODO path is duplicated with home manager module.
 (use-package vterm
-   :elpaca nil
-   :load-path  "~/.emacs.d/vendor/emacs-vterm")
+  :elpaca nil
+  :load-path  "~/.emacs.d/vendor/emacs-vterm"
+  :commands (vterm vterm-other-window))
 
 (provide 'posimacs-terminal)
 ;;; posimacs-terminal.el ends here
