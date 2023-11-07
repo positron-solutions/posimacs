@@ -39,6 +39,14 @@
 (use-package all-the-icons-dired
   :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
+;; 안영하세요
+(use-package mule
+  :elpaca nil
+  :config
+  (setq default-input-method "korean-hangul")
+  (define-key global-map (kbd "C-\\") nil)
+  (define-key global-map (kbd "s-SPC") #'toggle-input-method))
+
 ;; Better Korean langauge support
 (defun pmx--setup-korean-fonts ()
   "Configure Korean chars to be more 아름답지."
