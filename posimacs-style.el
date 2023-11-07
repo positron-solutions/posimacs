@@ -146,20 +146,23 @@
 ;; https://github.com/Malabarba/beacon
 ;; When you scroll, the cursor highlights very loudly
 (use-package beacon
+  :after window
   :delight beacon-mode
   :custom
   (beacon-color "#33DB12")
-  (beacon-blink-duration 0.5)
-  (beacon-size 60)
-  (beacon-blink-when-point-moves-vertically t)
+  (beacon-blink-duration 0.3)
+  (beacon-size 30)
+  ;; if a move jumps out of the 10x5 rectangle, blinks will happen
+  (beacon-blink-when-point-moves-horizontally 10)
+  (beacon-blink-when-point-moves-vertically 5)
   (beacon-blink-when-window-changes t)
   (beacon-blink-when-focused t)
   :config
-  (beacon-mode)
-  ;; blink after switching windows.
-  (if window-selection-change-functions
-      (push (lambda (_) (beacon-blink-automated)) 'window-selection-change-functions)
-    (setq window-selection-change-functions '((lambda (_) (beacon-blink-automated))))))
+  (defun pmx--beaconator (_)
+    "Run beacon on every window state change."
+    (beacon-blink-automated))
+  (push 'pmx--beaconator window-state-change-functions)
+  (beacon-mode))
 
 ;; https://github.com/tarsius/hl-todo
 ;; highlight TODO keywords in code
