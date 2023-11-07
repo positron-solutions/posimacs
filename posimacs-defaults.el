@@ -163,6 +163,9 @@
 
 (setq show-trailing-whitespace t)
 
+;; Why did I ever allow this to be set to nil?
+(setq enable-recursive-minibuffers t)
+
 (setq blink-cursor-interval 0.2
       blink-cursor-delay 0.2
       blink-cursor-blinks 150)
