@@ -208,7 +208,7 @@
   "Show meta keywords."
   (interactive)
   (when pmx-hide-org-meta-line-cookie
-    (face-remap-remove-relative pmx-hid-org-meta-line-cookie)))
+    (face-remap-remove-relative pmx-hide-org-meta-line-cookie)))
 
 (defun pmx-toggle-org-meta-line ()
   "Toggle visibility of meta lines."
@@ -267,7 +267,6 @@
   (org-appear-mode -1)
   (face-remap-remove-relative pmx--header-line-cookie)
   (setq header-line-format nil)
-
   (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
   (setq-local cursor-type (default-value 'cursor-type))
   (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
@@ -281,6 +280,9 @@
   (setq org-tree-slide-slide-in-effect t)
   (setq org-tree-slide-slide-in-blank-lines 4)
   (setq org-tree-slide-content-margin-top 1)
+  (setq org-tree-slide-activate-message nil)
+  (setq org-tree-slide-indicator
+        '(:next nil :previous nil :content nil))
   (setq org-tree-slide-breadcrumbs
         (propertize " 🢒 "
                     ;; 'display '(raise 0.1)
