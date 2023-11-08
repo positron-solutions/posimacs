@@ -11,7 +11,8 @@
   :elpaca nil
   :load-path  "~/.emacs.d/vendor/emacs-jinx/"
   :hook (elpaca-after-init-hook . global-jinx-mode)
-  :bind ([remap ispell-word] . jinx-correct))
+  :bind ([remap ispell-word] . jinx-correct)
+  :config (global-jinx-mode 1))
 
 (provide 'posimacs-jinx)
 ;;; posimacs-jinx.el ends here
