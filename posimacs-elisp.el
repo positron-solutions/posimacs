@@ -40,6 +40,10 @@
 
 (use-package macrostep) ; macro inspection
 
+(use-package info-colors
+  :config
+  (add-hook 'Info-selection-hook 'info-colors-fontify-node))
+
 ;; This package makes all help buffers much more informative and easier to read.
 ;; This makes it much easier to introspect emacs state and elisp code.
 (use-package helpful

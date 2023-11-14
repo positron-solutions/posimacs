@@ -330,6 +330,12 @@ determine the exact padding."
    (org-document-title :inherit 'org-level-1 :weight 'bold
                        :height 1.42 :foreground light-spark)
 
+   (Info-quoted :inherit 'font-lock-doc-face)
+   (info-colors-ref-item-user-option :inherit 'font-lock-keyword-face)
+   (info-colors-ref-item-type :inherit 'font-lock-type-face)
+   (info-colors-ref-item-variable :inherit 'fixed-pitch :foreground neon)
+   (info-colors-lisp-code-block :inherit 'font-lock-comment-face)
+
    ;; Ivy is using this in completions
    (ivy-org :inherit 'default :foreground chill)
 
