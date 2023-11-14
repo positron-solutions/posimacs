@@ -130,15 +130,11 @@
   :after nerd-icons
   :init
   (add-hook 'elpaca-after-init-hook #'doom-modeline-mode)
-  ;; (defun graphical-frame-icons (frame)
-  ;;   "Activate doom-modeline icons if FRAME has graphics."
-  ;;   (select-frame frame)
-  ;;   (setq doom-modeline-icon (display-graphic-p frame)))
-  ;; (add-hook 'after-make-frame-functions #'graphical-frame-icons)
-  :custom
-  (doom-modeline-buffer-encoding nil "Nobody reads encoding.")
-  (doom-modeline-major-mode-icon t "This is probably default.")
-  (doom-modeline-env-version nil "Rust 1.45.whocares."))
+  :config
+  (setopt doom-modeline-buffer-encoding nil)
+  (setopt doom-modeline-major-mode-icon t)
+  (setopt doom-modeline-env-version nil)
+  (setopt doom-modeline-height 34))
 
 ;; A slightly more informative scratch buffer
 (setq initial-scratch-message ";; Only The Future Is Certain.")
