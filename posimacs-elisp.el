@@ -12,6 +12,8 @@
 
 ;;; Code:
 
+(use-package package-lint)
+
 (use-package ielm
   :elpaca nil
   :config
@@ -25,7 +27,12 @@
                 (push #'comint-truncate-buffer comint-output-filter-functions)))))
 
 (use-package lispy
-  :hook ((lisp-mode emacs-lisp-mode)))
+  :hook ((lisp-mode emacs-lisp-mode))
+  :config
+  (unbind-key (kbd "M-o") lispy-mode-map) ; lispy....i-forgot
+  (unbind-key (kbd "M-j") lispy-mode-map) ; lispy-join
+  (unbind-key (kbd "M-i") lispy-mode-map) ; lispy-iedit
+  (unbind-key (kbd "b") lispy-mode-map)) ; special-lispy-back
 
 ;; Seeing delimiter balance at all times is pretty useful.
 (use-package rainbow-delimiters
