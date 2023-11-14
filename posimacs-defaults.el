@@ -21,8 +21,6 @@
 (setq select-enable-clipboard t) ; yanks copy to X clipboard
 (setq scroll-step 1) ; Line by line scrolling
 
-(setq-default fill-column 80) ; How wide to auto-fill paragraphs
-
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
 
 (setq use-dialog-box nil)
@@ -49,6 +47,68 @@
 ;; add to transient package
 (setq transient-hide-during-minibuffer-read t)
 
+;; sweet
+(setq frame-resize-pixelwise t)
+
+(setq-default indent-tabs-mode nil) ; tabs are not real
+
+;; Use recycle bin or whatever
+(setq delete-by-moving-to-trash t)
+
+;; Move to bottom
+(setq-default comint-scroll-to-bottom-on-input t)
+
+;; Don't load outdated .elc files
+(setq load-prefer-newer t)
+
+;; Lock files annoying.  The extensive use of Emacs server makes it highly
+;; unlikely to wind up with two Emacs looking at the same files.  Take care with
+;; multiple Emacsen to point them to another directory.
+(setq create-lockfiles nil)
+
+;; deprecate the really crappy list-buffers mode
+;; ibuffer is more comprehensive than the filtered counsel switch buffer
+(substitute-key-definition 'list-buffers 'ibuffer global-map)
+
+(show-paren-mode 1) ; Show matching parentheses
+
+(delete-selection-mode 1) ; Actions on active region will delete
+
+(column-number-mode 1) ; show columns in modeline
+
+(setq-default fill-column 80) ; How wide to auto-fill paragraphs
+;; Fill while typing by default in text modes
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'fundamental-mode-hook #'auto-fill-mode)
+(add-hook 'org-mode-hook #'auto-fill-mode)
+(add-hook 'markdown-mode-hook #'auto-fill-mode)
+(add-hook 'emacs-lisp-mode-hook #'auto-fill-mode)
+
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
+(put 'erase-buffer 'disabled nil)
+
+(setq scroll-error-top-bottom t)
+
+;; nicer regex
+(setq reb-re-syntax 'read)
+(setq show-trailing-whitespace t)
+
+;; Why did I ever allow this to be set to nil?
+(setq enable-recursive-minibuffers t)
+
+(setq blink-cursor-interval 0.2
+      blink-cursor-delay 0.2
+      blink-cursor-blinks 150)
+
+;; Thanks Steve Purcell
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+;;;;;;;;;;;;;;;;;;;;
+;; Basic packages ;;
+;;;;;;;;;;;;;;;;;;;;
+
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
   :demand t
@@ -67,36 +127,8 @@
 
   (run-at-time nil (* 5 60) 'recentf-save-list))
 
-(setq-default indent-tabs-mode nil) ; tabs are not real
-
-;; Use recycle bin or whatever
-(setq delete-by-moving-to-trash t)
-
-;; Move to bottom
-(setq-default comint-scroll-to-bottom-on-input t)
-
-;; LISP
-(setq load-prefer-newer t)
-
-;; Lock files annoying
-(setq create-lockfiles nil)
-
-;; deprecate the really crappy list-buffers mode
-;; ibuffer is more comprehensive than the filtered counsel switch buffer
-(substitute-key-definition 'list-buffers 'ibuffer global-map)
-
-(show-paren-mode 1) ; Show matching parentheses
-
-(delete-selection-mode 1) ; Actions on active region will delete
-
-(column-number-mode 1) ; show columns in modeline
-
-;;;;;;;;;;;;;;;;;;;;
-;; Basic packages ;;
-;;;;;;;;;;;;;;;;;;;;
-
 ;; TODO use envrc
-(use-package direnv ; direnv integration
+(use-package direnv                     ; direnv integration
   :after lsp
   :delight 'direnv-mode
   :config
@@ -134,35 +166,10 @@
 
 ;; TODO find other packages that are not being managed by elpaca and bring them under the law
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
+;; See `list-load-path-shadows'.
 (use-package project :elpaca nil)
 
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
-
-(setq scroll-error-top-bottom t)
-
-;; nicer regex
-(setq reb-re-syntax 'read)
 ;; visually replace with overlays
-(use-package visual-regexp)
-
-;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
-
-(put 'erase-buffer 'disabled nil)
-
-(setq show-trailing-whitespace t)
-
-;; Why did I ever allow this to be set to nil?
-(setq enable-recursive-minibuffers t)
-
-(setq blink-cursor-interval 0.2
-      blink-cursor-delay 0.2
-      blink-cursor-blinks 150)
-
-;; Thanks Steve Purcell
-(global-set-key (kbd "RET") 'newline-and-indent)
-
 
 ;;; posimacs-defaults.el ends here.
 
