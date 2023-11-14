@@ -30,6 +30,7 @@
         (let ((dribble-file (make-temp-file "dribble")))
           (open-dribble-file dribble-file)
           (insert-file-contents dribble-file 'visit)
+          (setq-local dribble-file dribble-file)
           (add-hook 'kill-buffer-hook (lambda () (delete-file dribble-file))
                     nil 'local)
           (auto-revert-tail-mode)
