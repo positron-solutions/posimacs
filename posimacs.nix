@@ -45,7 +45,7 @@ in {
     ];
 
     programs.emacs = {
-      package = (pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
+      package = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
         (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 
