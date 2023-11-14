@@ -38,16 +38,6 @@
                       buffer-read-only t))
         (switch-to-buffer-other-window dribble-buffer)))))
 
-(defun pmx-keyboard-quit ()
-  "Quit, but if minibuffer is open and not focused, quit it."
-  (interactive)
-  (declare-function minibuffer-keyboard-quit "delsel" ())
-  (if (active-minibuffer-window)
-      (progn (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
-             (select-window (active-minibuffer-window))
-             (minibuffer-keyboard-quit))
-    (keyboard-quit)))
-
 (use-package general)
 
 ;; TODO this is such garbage
@@ -144,12 +134,6 @@
 
   (general-def "M-h" 'posimacs-help-transient)
   (general-def "M-j" 'avy-goto-word-1)
-
-  ;; Navigate to minibuffer before executing quit if necessary
-  (general-def 'global-map "C-g" 'pmx-keyboard-quit)
-
-  ;; Using M-g everywhere instead of C-g
-  (define-key key-translation-map (kbd "M-g") (kbd "C-g"))
 
   ;; Prefer kill to bury...
   (general-def 'helpful-mode-map  "q" 'kill-this-buffer)

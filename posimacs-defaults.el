@@ -103,7 +103,26 @@
       blink-cursor-blinks 150)
 
 ;; Thanks Steve Purcell
-(global-set-key (kbd "RET") 'newline-and-indent)
+(keymap-global-set "RET" 'newline-and-indent)
+
+(defun pmx-keyboard-quit ()
+  "Quit or close minibuffer if open."
+  (interactive)
+  (declare-function minibuffer-keyboard-quit "delsel" ())
+  (if (active-minibuffer-window)
+      ;; This way is generic across multiple frames but our setup isn't
+      ;; typically using multiple frames yet.
+      (progn (select-frame-set-input-focus (window-frame (active-minibuffer-window)))
+             (select-window (active-minibuffer-window))
+             (minibuffer-keyboard-quit))
+    (keyboard-quit)))
+
+;; Navigate to minibuffer before executing quit if necessary
+(keymap-global-set "C-g" 'pmx-keyboard-quit)
+
+;; Using M-g everywhere instead of C-g
+(keymap-set key-translation-map "M-g" "C-g")
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Basic packages ;;
