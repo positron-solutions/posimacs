@@ -35,11 +35,6 @@
       inputs.cargo2nix.follows = "cargo2nix";
       inputs.cargo2nix.inputs.rust-overlay.follows = "rust-overlay";
     };
-    emacs-vterm = {
-      url = "path:./vterm";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
     emacs-jinx = {
       url = "path:./jinx";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,7 +49,6 @@
         # Submodules from our inputs are injected into the home manager module
         module = import ./posimacs.nix {
           rust = inputs.rust.homeConfigurations.${system}.default;
-          emacs-vterm = inputs.emacs-vterm.homeConfigurations.${system}.default;
           emacs-jinx = inputs.emacs-jinx.homeConfigurations.${system}.default;
           emacs-overlay = inputs.emacs-overlay;
 	  emacs29-src = inputs.emacs29-src;

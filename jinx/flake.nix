@@ -1,5 +1,5 @@
 {
-  description = "Home manager module for Emacs vterm dependencies & integration.";
+  description = "Home manager module for Emacs dependencies & integration.";
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";

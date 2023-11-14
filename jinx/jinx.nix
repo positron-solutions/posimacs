@@ -8,7 +8,7 @@ in {
       emacs-jinx
     ];
 
-    # link emacs-vterm module into convenient load path
+    # link jinx module into convenient load path
     home.file.".emacs.d/vendor/emacs-jinx".source = emacs-jinx;
   };
 }

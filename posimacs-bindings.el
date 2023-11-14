@@ -42,7 +42,7 @@
 
 ;; TODO this is such garbage
 (use-package transient
-  :after (general vterm avy helpful)
+  :after (general avy helpful command-log info help-fns)
   :config
   (transient-define-prefix posimacs-help-transient ()
     "A combination of the actually useful help commands "
@@ -85,52 +85,8 @@
   (general-def 'global-map "M-p" #'backward-paragraph)
   (general-def 'global-map "M-n" #'forward-paragraph)
 
-  (defun pmx-vterm-avy-goto-word-1 ()
-    "Jump, but enable vterm copy mode first"
-    (interactive)
-    (unless vterm-copy-mode
-      (vterm-copy-mode 1))
-    (call-interactively 'avy-goto-word-1))
-
-  (defun pmx-vterm-kill-region ()
-    "Kill, but enable vterm copy mode first"
-    (interactive)
-    (unless vterm-copy-mode
-      (vterm-copy-mode 1))
-    (call-interactively 'kill-region))
-
-  (defun pmx-vterm-send-enter ()
-    "Enter, but disable vterm copy mode first"
-    (interactive)
-    (when vterm-copy-mode
-      (vterm-copy-mode -1))
-    (call-interactively 'vterm-send-enter))
-
-  (defun pmx-vterm-yank ()
-    "Yank, but disable vterm copy mode first"
-    (interactive)
-    (when vterm-copy-mode
-      (vterm-copy-mode -1))
-    (call-interactively 'vterm-yank-primary))
-
-  ;; Vterm's terminal bindings interfere with even basic text editing ;-(
-  ;; use `vterm-send-C-S-a' etc.
-  (general-unbind 'vterm-mode-map
-    "M-a"
-    "M-s"
-    "M-d"
-    "M-f"
-    "M-h"
-    "M-j"
-    "M-k")
 
   (general-unbind 'ivy-minibuffer-map "M-o")
-
-  ;; Rebind vterm with modified shortcuts that enable `vterm-copy-mode'
-  (general-def 'vterm-mode-map "M-j" 'pmx-vterm-avy-goto-word-1)
-  (general-def 'vterm-mode-map "M-w" 'pmx-vterm-kill-region)
-  (general-def 'vterm-mode-map "RET" 'pmx-vterm-send-enter)
-  (general-def 'vterm-mode-map "C-y" 'vterm-yank)
 
   (general-def "M-h" 'posimacs-help-transient)
   (general-def "M-j" 'avy-goto-word-1)

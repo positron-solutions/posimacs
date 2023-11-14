@@ -99,10 +99,10 @@
                         "posimacs-prog.el"
                         "posimacs-style.el"
                         "posimacs-vc.el"
+                        "posimacs-terminal.el"
 
                         "jinx/posimacs-jinx.el"
-                        "rust/posimacs-rust.el"
-                        "vterm/posimacs-terminal.el")))
+                        "rust/posimacs-rust.el")))
   (dolist (file-name posimacs-files)
     (load (expand-file-name
            (concat "posimacs/" file-name)
