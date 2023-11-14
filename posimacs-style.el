@@ -144,16 +144,15 @@
 (use-package beacon
   :after window
   :delight beacon-mode
-  :custom
-  (beacon-color "#33DB12")
-  (beacon-blink-duration 0.3)
-  (beacon-size 30)
-  ;; if a move jumps out of the 10x5 rectangle, blinks will happen
-  (beacon-blink-when-point-moves-horizontally 10)
-  (beacon-blink-when-point-moves-vertically 5)
-  (beacon-blink-when-window-changes t)
-  (beacon-blink-when-focused t)
   :config
+  (setopt beacon-color "#33DB12")
+  (setopt beacon-blink-duration 0.2)
+  (setopt beacon-size 20)
+  ;; if a move jumps out of the 10x5 rectangle, blinks will happen
+  (setopt beacon-blink-when-point-moves-horizontally 20)
+  (setopt beacon-blink-when-point-moves-vertically 5)
+  (setopt beacon-blink-when-window-changes nil)
+  (setopt beacon-blink-when-focused nil)
   (defun pmx--beaconator (_)
     "Run beacon on every window state change."
     (beacon-blink-automated))
