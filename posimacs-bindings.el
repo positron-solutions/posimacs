@@ -29,28 +29,6 @@
                       buffer-read-only t))
         (switch-to-buffer-other-window dribble-buffer)))))
 
-  ;;; Thanks glucas
-;; https://emacs.stackexchange.com/questions/7409/is-there-a-generic-toggle-previous-window-function
-(defun pmx--switch-to-last-window ()
-  (let ((win (get-mru-window t t t)))
-    (unless win (error "Last window not found"))
-    (let ((frame (window-frame win)))
-      (select-frame-set-input-focus frame)
-      (select-window win))))
-
-(defun pmx-switch-to-last-window ()
-  "Switch to previous window"
-  (interactive)
-  (pmx--switch-to-last-window))
-
-(defun pmx-switch-window ()
-  "Other window.  On repeat, window controls"
-  (interactive)
-  (if (string= (symbol-name last-command) "pmx-switch-window")
-      (progn (if (<= (count-windows) 2) (pmx--switch-to-last-window)
-               (switch-window)))
-    (pmx-switch-to-last-window)))
-
 (defun pmx-keyboard-quit ()
   "Quit, but if minibuffer is open and not focused, quit it."
   (interactive)
@@ -146,6 +124,8 @@
     "M-j"
     "M-k")
 
+  (general-unbind 'ivy-minibuffer-map "M-o")
+
   ;; Rebind vterm with modified shortcuts that enable `vterm-copy-mode'
   (general-def 'vterm-mode-map "M-j" 'pmx-vterm-avy-goto-word-1)
   (general-def 'vterm-mode-map "M-w" 'pmx-vterm-kill-region)
@@ -153,7 +133,6 @@
   (general-def 'vterm-mode-map "C-y" 'vterm-yank)
 
   (general-def "M-h" 'posimacs-help-transient)
-  (general-def "M-o" 'pmx-switch-window)
   (general-def "M-j" 'avy-goto-word-1)
 
   ;; Navigate to minibuffer before executing quit if necessary

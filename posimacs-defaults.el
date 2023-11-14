@@ -21,11 +21,6 @@
 (setq select-enable-clipboard t) ; yanks copy to X clipboard
 (setq scroll-step 1) ; Line by line scrolling
 
-;; focus help window so that it can be closed immediately with 'q'
-(setq help-window-select t)
-
-(setq frame-resize-pixelwise t)
-
 (setq-default fill-column 80) ; How wide to auto-fill paragraphs
 
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
@@ -44,10 +39,6 @@
 
 ;; don't ask to spell out "yes"
 (setopt use-short-answers t)
-
-;; Scroll as little as possible.  Avoid moving the point.
-(setq scroll-preserve-screen-position nil)
-(setq scroll-conservatively 101)
 
 (setopt native-comp-async-report-warnings-errors 'silent)
 
@@ -158,7 +149,6 @@
 
 ;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
 
-(setq ediff-split-window-function 'split-window-horizontally)
 (put 'erase-buffer 'disabled nil)
 
 (setq show-trailing-whitespace t)
@@ -173,106 +163,6 @@
 ;; Thanks Steve Purcell
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-;;;;;;;;;;;;;;;;;;;;;;;
-;; Window Management ;;
-;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Auto-balancing and less aggressive automatic window splitting are a
-;; prerequisite for any sane window management strategy.
-
-;; Windows are only eligible to be split horizontally
-(setq split-height-threshold nil)
-(setq split-width-threshold 120)
-
-(defun balance-windows--advice (&rest _ignored)
-  "Balance windows (intended as :after advice); any args are ignored."
-  (balance-windows))
-
-;; Balance after splits and removals
-(advice-add 'split-window-right :after #'balance-windows--advice)
-(advice-add 'split-window-below :after #'balance-windows--advice)
-(advice-add 'delete-window :after #'balance-windows--advice)
-
-(defun pmx-split-window-conservatively (&optional window)
-  "Split WINDOW only if absolutely necessary.
-Only split if there is no split, and only split into left & right
-windows.  If no window is specified then WINDOW defaults to
-output of 'selected-window'.  'split-width-threshold' is
-observed."
-  (interactive)
-  (let ((window (or window (selected-window))))
-    (if (and
-         (window-splittable-p window t)
-         (eq (length (window-list)) 1))
-        (with-selected-window window
-          (split-window-right))
-      nil)))
-
-(setq split-window-preferred-function #'pmx-split-window-conservatively)
-
-(use-package windmove
-  :elpaca nil
-  :config
-
-  ;; Stack overflow was decent!
-  ;; https://stackoverflow.com/questions/25249669/emacs-windmove-move-a-buffer-without-switching
-  ;; TODO make a more DWIM solution
-  (defun pmx-slide-buffer (dir)
-    "Move current buffer into window at direction DIR.
-DIR is handled as by `windmove-other-window-loc'."
-    (interactive
-     (list (intern (completing-read "Direction: " '(left right up down)))))
-    (let ((buffer (current-buffer))
-          (target (windmove-find-other-window dir)))
-      (if (null target)
-          (user-error "There is no window %s from here" dir)
-        (switch-to-prev-buffer)
-        (select-window target)
-        (switch-to-buffer buffer nil t))))
-
-  (setq windmove-wrap-around t))
-
-;; rotate window layouts
-(use-package rotate)
-
-(use-package switch-window
-  :config
-  (setq switch-window-threshold 2)
-  (setq switch-window-shortcut-style 'qwerty)
-  (setq switch-window-minibuffer-shortcut ?m)
-  (setq switch-window-input-style 'read-event)
-  (setq switch-window-background nil)
-  (setq switch-window-qwerty-shortcuts '("p" "o" "s" "i" "t" "r" "a" "c" "x" "y" "v" "u")))
-
-(use-package avy ; fast-cursor-jumping in buffer visible area
-  :custom
-  (setq avy-escape-chars '(?\e ?\C-g))
-  :config
-  (setq avy-all-windows 'all-frames)) ; avy can switch frames
-
-
-;; Fill while typing by default in text modes
-(add-hook 'text-mode-hook #'auto-fill-mode)
-(add-hook 'fundamental-mode-hook #'auto-fill-mode)
-(add-hook 'org-mode-hook #'auto-fill-mode)
-(add-hook 'markdown-mode-hook #'auto-fill-mode)
-
-;; Make help buffers attempt to re-use a window when popping
-(defvar pmx-other-win-modes
-  '(helpful-mode help-mode shortdoc-mode Man-mode woman-mode
-                 Info-mode elpaca-ui-log elisp-compile apropos-mode))
-
-(defun pmx-buffer-help-p (buf act)
-  "BUF is a help buffer, ignore ACT."
-  (member (buffer-local-value 'major-mode (get-buffer buf)) pmx-other-win-modes))
-
-(add-to-list 'display-buffer-alist
-             `(pmx-buffer-help-p        ;predicate
-               (display-buffer--maybe-same-window
-                display-buffer-reuse-window
-                display-buffer-reuse-mode-window) ;functions to try
-               (mode . ,pmx-other-win-modes)
-               (inhibit-same-window . nil)))
 
 ;;; posimacs-defaults.el ends here.
 

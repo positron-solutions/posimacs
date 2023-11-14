@@ -29,16 +29,18 @@
 ;; Turn off graphics features that would slow down initial startup.
 ;; https://github.com/Gavinok/emacs.d
 (setq-default
- frame-inhibit-implied-resize t
  package-native-compile t
  inhibit-startup-message t
  mode-line-format nil
  default-frame-alist
  '((tool-bar-lines . 0)
    (menu-bar-lines . 0)
+   (internal-border-width . 0)
    (undecorated . t)
    (vertical-scroll-bars . nil)
-   (horizontal-scroll-bars . nil)))
+   (horizontal-scroll-bars . nil)
+   ;; draw prettier on XFCE
+   (use-frame-synchronization . t)))
 
 (provide 'posimacs-early-init)
 ;;; posimacs-early-init.el ends here
