@@ -1,4 +1,13 @@
-;;; posimacs-bindings --- Default UI of positivity
+;;; posimacs-bindings.el --- A poorly contrived package -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2023 Positron Solutions <contact@positron.solutions>
+
+;; Author: Positron Solutions <contact@positron.solutions>
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "28.1"))
+;; Homepage: https://github.com/positron-solutions/posimacs
+
+;; This file is not part of GNU Emacs.
 
 ;;; Commentary:
 ;;
@@ -6,8 +15,7 @@
 ;; 2-3 modules in development and this is just some hacking line noise that made
 ;; it into git history to facilitate a quick machine move at some point.
 ;;
-;; Do not use this elisp.  Some of the pmx calls are however useful.
-;;
+;; ⚠️ Do not use this elisp.  Some of the pmx calls are however useful.
 
 ;;; Code:
 
@@ -41,6 +49,7 @@
 
 (use-package general)
 
+;; TODO this is such garbage
 (use-package transient
   :after (general vterm avy helpful)
   :config
@@ -164,4 +173,9 @@
   (general-unbind "C-<right>")) ; next-buffer
 
 (provide 'posimacs-bindings)
-;;; posimacs-bindings.el ends here
+;;; posimacs-bindings ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (jinx-mode -1)
+;; End:
