@@ -9,6 +9,7 @@
 
 (use-package jinx
   :elpaca nil
+  :demand t
   :load-path  "~/.emacs.d/vendor/emacs-jinx/"
   :hook (elpaca-after-init-hook . global-jinx-mode)
   :bind ([remap ispell-word] . jinx-correct)
