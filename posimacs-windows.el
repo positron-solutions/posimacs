@@ -154,7 +154,7 @@ call unless there's a ton of windows for some reason."
          ;; We are repeating.  Continue going in the established direction.
          (other-window pmx--direction))))
 
-(global-set-key (kbd "M-o") #'pmx-other-window)
+(keymap-global-set "M-o" #'pmx-other-window)
 
 ;; For all arbitrary text navigation and window changes, avy is used
 (use-package avy
