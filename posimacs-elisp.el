@@ -40,6 +40,8 @@
 
 (use-package macrostep) ; macro inspection
 
+(use-package sicp)
+
 (use-package info-colors
   :config
   (set-face-attribute 'Info-quoted nil :inherit 'font-lock-doc-face)
