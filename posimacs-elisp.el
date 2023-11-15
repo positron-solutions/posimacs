@@ -42,6 +42,11 @@
 
 (use-package info-colors
   :config
+  (set-face-attribute 'Info-quoted nil :inherit 'font-lock-doc-face)
+  (set-face-attribute 'info-colors-ref-item-user-option nil :inherit 'font-lock-keyword-face)
+  (set-face-attribute 'info-colors-ref-item-type nil :inherit 'font-lock-type-face)
+  (set-face-attribute 'info-colors-ref-item-variable nil :inherit 'fixed-pitch :foreground "#F43E87")
+  (set-face-attribute 'info-colors-lisp-code-block nil :inherit 'font-lock-comment-face)
   (add-hook 'Info-selection-hook 'info-colors-fontify-node))
 
 ;; This package makes all help buffers much more informative and easier to read.
