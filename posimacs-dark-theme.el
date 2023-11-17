@@ -41,7 +41,7 @@ determine the exact padding."
 
 ;;;; Colors
   ;; name        default   256         16
-  ((bg         '("#0D0E16" "color-233" "black"        ))
+  ((bg         '("#01060A" "color-233" "black"        ))
    (bg-alt     '("#040408" "color-232" "brightblack"  ))
    (widget     '("#1F2133" "color-232" "brightblack"  ))
    (base0      '("#0F1019" "color-234" "black"        ))
@@ -79,6 +79,7 @@ determine the exact padding."
    (spark      '("#0A71BF" "color-117" "blue"         ))
    (sub-spark  '("#0260A8" "color-117" "blue"         ))
    (dark-spark '("#0D446E" "color-75"  "blue"         ))
+   (hl-line    '("#010F0E"  "color-75"  "blue"        ))
    (ml-spark   '("#65ABE0" "color-75"  "brightblue"   ))
    (light-spark'("#90BDE0" "color-75"  "brightblue"   ))
    (light-shock'("#FF7C4D" "color-202" "yellow"       ))
@@ -97,7 +98,7 @@ determine the exact padding."
    (dmatch2    '("#0F081A" "color-17" "magenta"       ))
    (violet     '("#AB11D8" "color-128" "magenta"      ))
 
-   (bg-hl      '("#143666" "color-19"  "brightblack"  ))
+   (bg-hl      '("#010F1A" "color-19"  "brightblack"  ))
    (alt-hl     '("#592512" "color-19"  "brightblack"  ))
    (bg-blue    '("#0C213E" "color-17"  "brightblack"  ))
    (dark-blue  bg-blue)
@@ -164,6 +165,8 @@ determine the exact padding."
    ((line-number-current-line &override) :foreground orange :bold bold)
 
 ;;;;; selections
+   (hl-line :background hl-line :extend t)
+   (cursor :background lime)
    (secondary-selection :background alt-hl)
 
 ;;;;; comments and doc
