@@ -124,6 +124,7 @@ DIR is handled as by `windmove-other-window-loc'."
 
 ;; The ultimate DWIM other window command.
 (defvar pmx--direction -1)
+(defvar pmx--last-win nil)
 (defun pmx-other-window ()
   "Switch window, with DWIM behavior to split window or go back to previous window.
 When called without any windows to switch to, split and select.
@@ -138,8 +139,11 @@ call unless there's a ton of windows for some reason."
          ;; If there is no window or even minibuffer open, split window.  Change
          ;; the direction so that we go back to the source window on repeat or
          ;; next call.
-         (let ((source (selected-window)))
-           (select-window (split-window-right))
+         (let ((source (selected-window))
+               (tall (> (frame-pixel-height) (frame-pixel-width))))
+           (select-window (if tall
+                              (split-window-below)
+                            (split-window-right)))
            (if (eq source (next-window))
                (setq pmx--direction 1)
              (setq pmx--direction -1)
@@ -148,11 +152,15 @@ call unless there's a ton of windows for some reason."
         ((not (eq last-command 'pmx-other-window))
          ;; If we are not repeating an other-window command, reverse the
          ;; direction and select in that direction.
-         (setq pmx--direction (- pmx--direction))
+         (if (eq pmx--last-win (selected-window))
+             (setq pmx--direction (- pmx--direction))
+           ;;  we changed windows out of band. Reverse directions.
+           (setq pmx--direction -1))
          (other-window pmx--direction))
         (t
          ;; We are repeating.  Continue going in the established direction.
-         (other-window pmx--direction))))
+         (other-window pmx--direction)))
+  (setq pmx--last-win (selected-window)))
 
 (keymap-global-set "M-o" #'pmx-other-window)
 
