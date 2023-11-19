@@ -14,6 +14,124 @@
 
 (use-package package-lint)
 
+;; Lightweight persistent scratch...okay, we made it support multiple files.  No
+;; longer lightweight.
+(with-eval-after-load 'no-littering
+
+  (defvar pmx--scratch-dir (no-littering-expand-var-file-name "scratch")
+    "Where scratches are saved.")
+
+  (defvar pmx-scratch-template "\
+;;; %1$s.el ---  -*- lexical-binding: t; -*-
+;;
+;;; Commentary:
+;; good luck!
+;;; Code:
+
+(message \"Only the future is certain.\")
+
+(provide 'scratch%1$s)
+;;; %1$s.el ends here
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp)
+;; eval: (when (featurep 'jinx) (jinx-mode -1))
+;; End:"
+    "Template for file backed scratch.")
+
+  (setq-default initial-scratch-message
+                (format pmx-scratch-template "scratch"))
+
+  (unless (file-directory-p pmx--scratch-dir)
+    (make-directory pmx--scratch-dir))
+
+  (defun pmx--scratch-message (buffer)
+    "Insert's a motivational passage."
+    (switch-to-buffer buffer)
+    (insert (format pmx-scratch-template
+                    (file-name-base (buffer-file-name buffer)))))
+
+  ;; TODO customize
+  (defvar pmx--scratch-init #'pmx--scratch-message
+    "Function to run on each new scratch buffer.")
+
+  (defun pmx--scratch-file-name (buffer-name)
+    "Just find the number."
+    (if (string= buffer-name "*scratch*")
+        "scratch.el"
+      (string-match (rx line-start
+                        (literal "*scratch*<")
+                        (group numeric)
+                        (literal ">")
+                        line-end)
+                    buffer-name)
+      (format "scratch-%s.el" (match-string 1 buffer-name))))
+
+  (defun pmx--scratch-buffer-name (file-name)
+    "Just find the number."
+    (if (string= file-name "scratch.el")
+        "*scratch*"
+      (string-match (rx line-start
+                        (literal "scratch-")
+                        (group numeric)
+                        (literal ".el")
+                        line-end)
+                    file-name)
+      (format "*scratch*<%s>" (match-string 1 file-name))))
+
+  (defun pmx--scratch-only-elisp-files (dir)
+    "Return just normal elisp files in DIR."
+    (let ((match-elisp (rx line-start
+                           (+ not-newline)
+                           (literal ".el")
+                           line-end))
+          (match-flycheck (rx line-start
+                              (literal "flycheck_")
+                              (+ not-newline)
+                              (literal ".el"))))
+      (save-match-data
+        (seq-filter
+         (lambda (f) (not (string-match-p match-flycheck f)))
+         (directory-files dir nil match-elisp)))))
+
+  (defun pmx--read-scratch ()
+    "Read a file in the scratch dir if there are files."
+    (when-let* ((_ (file-directory-p pmx--scratch-dir))
+                (files (pmx--scratch-only-elisp-files pmx--scratch-dir)))
+      (completing-read "Choose existing scratch file: " files nil t)))
+
+  (defun pmx-scratch (&optional file-name)
+    "Open an old scratch FILE-NAME."
+    (interactive (list (pmx--read-scratch)))
+    (if file-name
+        (let* ((name (pmx--scratch-buffer-name file-name))
+               (file-path (expand-file-name file-name pmx--scratch-dir))
+               (buffer (find-file-noselect file-path)))
+          (unless (string= (buffer-name buffer) name)
+            (rename-buffer name))
+          (switch-to-buffer buffer))
+      (pmx-scratch-new)))
+
+  (defun pmx-scratch-new ()
+    "Use a regular file-backed scratch.
+It doesn't look like a file-backed buffer, but it is file backed, so Emacs will
+ask if you want to save it and other default file behaviors.
+
+TODO make proper well-formed package so that byte compiling and flycheck just
+work."
+    (interactive)
+    (let* ((name (generate-new-buffer-name "*scratch*"))
+           (file-name (pmx--scratch-file-name name))
+           (buffer (get-buffer-create name)))
+      (switch-to-buffer buffer)
+      (set-visited-file-name (no-littering-expand-var-file-name
+                              (format  "scratch/%s" file-name)))
+      (rename-buffer name)
+      (funcall pmx--scratch-init buffer)
+      (emacs-lisp-mode)))
+
+  (defalias 'scratch-buffer #'pmx--scratch))
+
 (use-package ielm
   :elpaca nil
   :config
