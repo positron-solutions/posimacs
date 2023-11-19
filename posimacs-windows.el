@@ -125,16 +125,18 @@ DIR is handled as by `windmove-other-window-loc'."
 ;; The ultimate DWIM other window command.
 (defvar pmx--direction -1)
 (defvar pmx--last-win nil)
-(defun pmx-other-window ()
-  "Switch window, with DWIM behavior to split window or go back to previous window.
+(defun pmx-other-window (frame)
+  "Switch window, with DWIM behavior.
+Prefix argument FRAME will unconditionally switch frames.
 When called without any windows to switch to, split and select.
 If called not in repeat, reverse directions and switch back to
 usually the most recent window (though not `get-mru-window').
 Finally, when called in repeat, continue in the same direction so
 that we can usually get to the right window faster than an `avy'
 call unless there's a ton of windows for some reason."
-  (interactive)
-  (cond ((equal 1 (length (window-list
+  (interactive "P")
+  (cond (frame (other-frame 1))          ; unconditional with prefix arg
+        ((equal 1 (length (window-list
                            (selected-frame))))
          ;; If there is no window or even minibuffer open, split window.  Change
          ;; the direction so that we go back to the source window on repeat or
