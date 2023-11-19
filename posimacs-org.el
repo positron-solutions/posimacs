@@ -275,21 +275,22 @@
 (use-package org-tree-slide
   :after hide-mode-line
   :config
-  (setq org-tree-slide-never-touch-face t)
-  (setq org-tree-slide-header t)
-  (setq org-tree-slide-slide-in-effect t)
-  (setq org-tree-slide-slide-in-blank-lines 4)
-  (setq org-tree-slide-content-margin-top 1)
-  (setq org-tree-slide-activate-message nil)
-  (setq org-tree-slide-indicator
+  (setopt org-tree-slide-never-touch-face t)
+  (setopt org-tree-slide-header t)
+  (setopt org-tree-slide-date nil)
+  (setopt org-tree-slide-slide-in-effect t)
+  (setopt org-tree-slide-slide-in-blank-lines 4)
+  (setopt org-tree-slide-content-margin-top 1)
+  (setopt org-tree-slide-activate-message nil)
+  (setopt org-tree-slide-indicator
         '(:next nil :previous nil :content nil))
-  (setq org-tree-slide-breadcrumbs
+  (setopt org-tree-slide-breadcrumbs
         (propertize " 🢒 "
                     ;; 'display '(raise 0.1)
                     'height 0.2
                     'face '(inherit 'org-level-1)))
-  (setq org-tree-slide-skip-outline-level 0)
-  (setq org-tree-slide-fold-subtrees-skipped t)
+  (setopt org-tree-slide-skip-outline-level 0)
+  (setopt org-tree-slide-fold-subtrees-skipped t)
 
   (defun pmx-org-tree-slide-quit ()
     "Lol, guys, could we have a quit command? Oh."
