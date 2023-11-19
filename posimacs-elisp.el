@@ -150,7 +150,8 @@ work."
   (unbind-key (kbd "M-o") lispy-mode-map) ; lispy....i-forgot
   (unbind-key (kbd "M-j") lispy-mode-map) ; lispy-join
   (unbind-key (kbd "M-i") lispy-mode-map) ; lispy-iedit
-  (unbind-key (kbd "b") lispy-mode-map)) ; special-lispy-back
+  (unbind-key (kbd "x") lispy-mode-map)   ; special-lispy-x
+  (unbind-key (kbd "b") lispy-mode-map))  ; special-lispy-back
 
 ;; Seeing delimiter balance at all times is pretty useful.
 (use-package rainbow-delimiters
