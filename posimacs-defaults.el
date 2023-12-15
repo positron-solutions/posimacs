@@ -150,18 +150,6 @@
 
   (run-at-time nil (* 5 60) 'recentf-save-list))
 
-;; TODO use envrc
-(use-package direnv                     ; direnv integration
-  :after lsp
-  :delight 'direnv-mode
-  :config
-  ;; Ensures that external dependencies are available before they are called.
-  (add-hook 'prog-mode-hook #'direnv--maybe-update-environment)
-  ;; XXX cargo culted.  Investigate
-  (add-to-list 'direnv-non-file-modes 'vterm-mode)
-  (setq direnv-always-show-summary nil)
-  (direnv-mode 1))
-
 (use-package ws-butler ; Cleanup whitespace at end of lines
   :delight
   :config (ws-butler-global-mode t))

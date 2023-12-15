@@ -107,6 +107,13 @@
            (concat "posimacs/" file-name)
            user-emacs-directory))))
 
+;; TODO check loading order and possibly find a better solution for maintaining
+;; the hook position at the head.
+(use-package envrc
+  :config
+  (add-hook 'elpaca-after-init-hook
+            (lambda () (envrc-global-mode 1))))
+
 (provide 'posimacs-init)
 ;;; posimacs-init.el ends here.
 
