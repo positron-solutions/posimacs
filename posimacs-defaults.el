@@ -14,6 +14,10 @@
 ;; Even if no buffers have unsaved changes, prompt before quitting
 (setq confirm-kill-emacs 'y-or-n-p)
 
+(with-eval-after-load 'server
+  (unless (server-running-p)
+    (server-start)))
+
 ;; Unbind Pesky Sleep Button
 (global-unset-key [(control z)])
 (global-unset-key [(control x)(control z)])

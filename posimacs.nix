@@ -3,6 +3,7 @@
 
 let
   cfg = config.posimacs;
+  client-or-server = "emacsclient --create-frame -a '/usr/bin/env emacs'";
 in {
   options.posimacs = {
     aliases = lib.mkOption {
@@ -54,11 +55,13 @@ in {
     fonts.fontconfig.enable = true;
 
     programs.bash.shellAliases = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
-      "nano" = "emacsclient --create-frame";  # How to break a nano habit
-      # "nano" = "emacsclient -nw --create-frame";  # Terminal version of above
-      "emacs" = "emacsclient --create-frame"; # Don't re-use frames
-      "vi" = "emacsclient --create-frame";
-      "vim" = "emacsclient --create-frame";
+      # How to break a nano habit
+      "nano" = client-or-server;
+      # Terminal version of above
+      # "nano" = "emacsclient -nw --create-frame";
+      "emacs" = client-or-server;
+      "vi" = client-or-server;
+      "vim" = client-or-server;
     } else {
       "nano" = "emacs";
       "vi" = "emacs";
@@ -67,7 +70,7 @@ in {
 
     home.sessionVariables = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
       # Use a new client window and fall back to terminal standalone if client fails
-      EDITOR = "emacsclient --create-frame";
+      EDITOR = client-or-server;
       ALTERNATE_EDITOR = "TERM=xterm-256color emacs -nw";
     } else {
       # Use standalone GUI emacs and fall back to terminal if GUI cannot load
