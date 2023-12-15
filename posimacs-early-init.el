@@ -31,6 +31,7 @@
 (setq-default
  package-native-compile t
  inhibit-startup-message t
+ frames-inhibit-implied-resize t         ; please don't mess up screencasts
  mode-line-format nil
  default-frame-alist
  '((tool-bar-lines . 0)
