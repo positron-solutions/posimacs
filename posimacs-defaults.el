@@ -4,7 +4,7 @@
 ;;
 ;; These options are mostly independent little tweaks or packages that are not
 ;; themselves very interactive, such as ws-butler, or are basically essential
-;; but not that dependent on other packages, such as direnv
+;; but not that dependent on other packages, such as envrc
 ;;
 
 ;;; Code:
@@ -102,9 +102,9 @@
 ;; Why did I ever allow this to be set to nil?
 (setq enable-recursive-minibuffers t)
 
-(setq blink-cursor-interval 0.2
-      blink-cursor-delay 0.2
-      blink-cursor-blinks 150)
+(setq blink-cursor-interval 0.14
+      blink-cursor-delay 0.5
+      blink-cursor-blinks 300)
 
 ;; Thanks Steve Purcell
 (keymap-global-set "RET" 'newline-and-indent)

@@ -39,7 +39,6 @@
    (undecorated . t)
    (vertical-scroll-bars . nil)
    (horizontal-scroll-bars . nil)
-   ;; draw prettier on XFCE
    (use-frame-synchronization . t)))
 
 (provide 'posimacs-early-init)

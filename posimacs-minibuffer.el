@@ -33,7 +33,7 @@
   (setq ivy-ignore-buffers
         '("magit[\-:]"
           "*Flycheck"
-          "*straight" ; not in use
+          "*straight"                   ; not in use
           "*Backtrace*"
           "*Completions*"
           "auto-commit-org-files-log"
@@ -42,7 +42,7 @@
           "*Native-compile-log*"
           "*Async-native-compile-log*"))
   (setq ivy-re-builders-alist
-      '((t . ivy--regex-ignore-order))) ; orderless
+        '((t . ivy--regex-ignore-order))) ; orderless
 
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial-or-done)
 
