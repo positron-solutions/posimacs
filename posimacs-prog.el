@@ -11,8 +11,19 @@
 
 ;; TODO check on this
 ;; https://github.com/purcell/emacs.d/blob/master/lisp/init-nix.el
-(use-package nix-mode)
-(use-package list-environment) ; specificaly for inspecting nix envs
+(use-package nix-ts-mode
+  :elpaca (nix-ts-mode
+           :fetcher github
+           :repo "remi-gelinas/nix-ts-mode")
+  ;; :hook (nix-ts-mode . lsp-deferred)
+  :mode "\\.nix\\'")
+
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil")))
+  :hook (nix-ts-mode . eglot-ensure))
+
+(use-package nixpkgs-fmt)
 
 ;; LSP may send messages that are fairly large
 (setq read-process-output-max (* (* 1024 1024) 32)) ;; 32mb

@@ -36,6 +36,8 @@ in {
 
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
+      nixpkgs-fmt
+      nil
       ripgrep # projectile-ripgrep function relies on this
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
@@ -46,7 +48,7 @@ in {
     ];
 
     programs.emacs = {
-      package = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
+      package = (pkgs.emacsPackagesFor pkgs.emacs29-gtk3).emacsWithPackages
         (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 
