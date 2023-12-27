@@ -38,6 +38,9 @@
    (menu-bar-lines . 0)
    (internal-border-width . 0)
    (undecorated . t)
+   (background-color . "#000000")       ; said to reduce startup flicker on theme
+   (ns-appearance . dark)               ; darwin
+   (ns-transparent-titlebar . t)        ; darwin
    (vertical-scroll-bars . nil)
    (horizontal-scroll-bars . nil)
    (use-frame-synchronization . t)))
