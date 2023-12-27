@@ -52,12 +52,13 @@
   "Configure Korean chars to be more 아름답지."
   (set-fontset-font t 'korean-ksc5601
                     (font-spec :family "Gowun Dodum"
-                               :inherit 'default)))
+                               :inherit 'default
+                               :height 100)))
 
 (defun pmx--setup-fonts (&rest _)
   "Nice fonts for nice people (and robots)."
   ;; Base fonts
-  (set-face-attribute 'default nil :family "Roboto Mono" :height 132 :weight 'normal)
+  (set-face-attribute 'default nil :family "Roboto Mono" :height 144 :weight 'normal)
   (set-face-attribute 'fixed-pitch-serif nil :family "Roboto Mono")
   (set-face-attribute 'variable-pitch nil  :family "Noto Serif CJK KR")
   (set-face-attribute 'header-line nil
@@ -109,9 +110,11 @@
 
 ;; nice countdown timers
 (use-package champagne
-   :elpaca (champagne
+  :elpaca (champagne
            :type git :host github
-           :repo "positron-solutions/champagne"))
+           :repo "positron-solutions/champagne")
+  :config
+  (setopt champagne-alpha-background 100))
 
 ;; animated parrots and nyancat whenever you finish org todo's or push code
 (use-package parrot
