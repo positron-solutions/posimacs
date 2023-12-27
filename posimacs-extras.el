@@ -25,7 +25,45 @@
 
 (use-package sudo-edit) ; upgrade perms to write read-only file
 
-;;;###autoload
+(defun pmx--keypression-ignore (cmd)
+  "Ignore bad CMD."
+  (or (member cmd '(self-insert-command
+                    org-tree-slide-move-next-tree
+                    org-tree-slide-move-previous-tree
+                    org-self-insert-comand
+                    pmx-org-tree-slide-quit
+                     ;; counsel-M-x
+                    ivy-done))
+      ;; todo filter if pre-command, but not post-command
+      (string-match-p (rx line-start (literal "special-lispy-"))
+                      (symbol-name cmd))
+      (string-match-p (rx line-start (literal "lispy-"))
+                      (symbol-name cmd))))
+
+(use-package keypression
+  :config
+  (setopt keypression-combine-same-keystrokes t)
+  (setopt keypression-foreground-for-dark-mode "#000000")
+  (setopt keypression-background-for-dark-mode "#FFD000")
+  ;; TODO roll into youtube setup
+  (setopt keypression-y-offset 100)
+  (setopt keypression-fade-out-fps 60)
+  (setopt keypression-fade-out-delay 1.0)
+  (setopt keypression-font-face-attribute
+          '(:width normal :height 300 :weight bold))
+  (setopt keypression-cast-command-name t)
+  (setopt keypression-frames-maxnum 6)
+  (setopt keypression-pre-or-post-command 'post-command)
+  (setopt keypression-ignored-commands #'pmx--keypression-ignore)
+  (setopt keypression-use-child-frame nil) ; child frames have no opacity :-(
+  (setopt keypression-concat-self-insert nil)
+  (setopt keypression-frame-background-mode 'dark))
+
+;; (use-package keypression
+;;   :elpaca (keypression :host github :repo "chuntaro/emacs-keypression"
+;;                        :remotes ("positron" :repo "chuntaro/emacs-keypression")))
+
+;;;###Autoload
 (defun pmx-screenshot-svg ()
   "Save a screenshot of the current frame as an SVG image.
 Saves to a temp file and puts the filename in the kill ring."
