@@ -204,6 +204,21 @@
   (set-frame-size (selected-frame) (- 2560 16) 1440 t))
 
 
+
+(defvar-local pmx-subtle-cursor-active nil)
+
+(defun pmx-toggle-subtle-cursor ()
+  "Turn subtle cursor on or off."
+  (interactive)
+  (if pmx-subtle-cursor-active
+      (progn  (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
+              (setq-local cursor-type (default-value 'cursor-type))
+              (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
+    (setq-local blink-cursor-alist '(((hbar . 0) . bar)))
+    (setq-local cursor-type '(hbar . 0))
+    (setq-local blink-cursor-blinks 4))
+  (setq-local pmx-subtle-cursor-active (not pmx-subtle-cursor-active)))
+
 (defvar-local pmx-hide-org-meta-line-cookie nil)
 
 (defun pmx-hide-org-meta-line ()
@@ -235,12 +250,10 @@
 
 (defun pmx-presentation-start ()
   "Make tree slide nice."
-  (setq-local blink-cursor-alist '(((hbar . 0) . bar)))
-  (setq-local cursor-type '(hbar . 0))
-  (setq-local blink-cursor-blinks 4)
+  (pmx-toggle-subtle-cursor)
   (setq-local pmx--header-line-cookie (face-remap-add-relative 'header-line :height 2.0))
   (setq header-line-format " ")
-  (org-appear-mode 1)
+  (org-appear-mode -1)
   (pmx-hide-org-meta-line)
   (text-scale-set pmx-presentation-text-scale)
   (org-display-inline-images nil t (point-min) (point-max))
@@ -274,9 +287,10 @@
   (when (featurep 'jinx)
     (jinx-mode 1))
   (pmx-show-org-meta-line)
-  (org-appear-mode -1)
+  (org-appear-mode 1)
   (face-remap-remove-relative pmx--header-line-cookie)
   (setq header-line-format nil)
+  (pmx-toggle-subtle-cursor)
   (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
   (setq-local cursor-type (default-value 'cursor-type))
   (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
@@ -293,12 +307,12 @@
   (setopt org-tree-slide-content-margin-top 1)
   (setopt org-tree-slide-activate-message nil)
   (setopt org-tree-slide-indicator
-        '(:next nil :previous nil :content nil))
+          '(:next nil :previous nil :content nil))
   (setopt org-tree-slide-breadcrumbs
-        (propertize " 🢒 "
-                    ;; 'display '(raise 0.1)
-                    'height 0.2
-                    'face '(inherit 'org-level-1)))
+          (propertize " 🢒 "
+                      ;; 'display '(raise 0.1)
+                      'height 0.2
+                      'face '(inherit 'org-level-1)))
   (setopt org-tree-slide-skip-outline-level 0)
   (setopt org-tree-slide-fold-subtrees-skipped t)
 
@@ -324,6 +338,9 @@
 
   ;; hack to clear gutter during presentation
   (add-hook 'org-tree-slide-after-narrow-hook #'git-gutter:clear-gutter)
+  (add-hook 'org-tree-slide-before-move-next-hook #'moc-unhide-notes)
+  (add-hook 'org-tree-slide-before-move-prev-hook #'moc-unhide-notes)
+  (add-hook 'org-tree-slide-after-narrow-hook #'moc-hide-notes)
 
   (add-hook 'org-tree-slide-play-hook #'pmx-presentation-start)
   (add-hook 'org-tree-slide-stop-hook #'pmx-presentation-stop))
