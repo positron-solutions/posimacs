@@ -41,7 +41,7 @@ determine the exact padding."
 
 ;;;; Colors
   ;; name        default   256         16
-  ((bg         '("#01060A" "color-233" "black"        ))
+  ((bg         '("#01060F" "color-233" "black"        ))
    (bg-alt     '("#040408" "color-232" "brightblack"  ))
    (widget     '("#1F2133" "color-232" "brightblack"  ))
    (base0      '("#0F1019" "color-234" "black"        ))
@@ -79,7 +79,8 @@ determine the exact padding."
    (spark      '("#0A71BF" "color-117" "blue"         ))
    (sub-spark  '("#0260A8" "color-117" "blue"         ))
    (dark-spark '("#0D446E" "color-75"  "blue"         ))
-   (hl-line    '("#010F0E"  "color-75"  "blue"        ))
+   ;; "#010F0E"
+   (hl-line    '("#010f0C" "color-75"  "blue"         ))
    (ml-spark   '("#65ABE0" "color-75"  "brightblue"   ))
    (light-spark'("#90BDE0" "color-75"  "brightblue"   ))
    (light-shock'("#FF7C4D" "color-202" "yellow"       ))
@@ -94,8 +95,8 @@ determine the exact padding."
    (orange     '("#D85F00" "color-166" "yellow"       ))
    (teal       '("#2D9574" "color-29"  "brightcyan"   ))
    (magenta    '("#8041D8" "color-98"  "magenta"      ))
-   (match2     '("#8845E6" "color-98" "magenta"       ))
-   (dmatch2    '("#0F081A" "color-17" "magenta"       ))
+   (match2     '("#8845E6" "color-98"  "magenta"      ))
+   (dmatch2    '("#0F081A" "color-17"  "magenta"      ))
    (violet     '("#AB11D8" "color-128" "magenta"      ))
 
    (bg-hl      '("#010F1A" "color-19"  "brightblack"  ))
@@ -267,6 +268,8 @@ determine the exact padding."
    (doom-modeline-buffer-path :inherit 'mode-line-emphasis :weight 'bold)
    (doom-modeline-buffer-project-root :foreground green :weight 'bold)
 
+   (header-line :inherit 'mode-line :background bg)
+
    (solaire-mode-line-face
     :inherit 'mode-line
     :background modeline-bg-l
@@ -312,6 +315,10 @@ determine the exact padding."
    (markdown-markup-face :foreground base5)
    (markdown-header-face :inherit 'bold :foreground neon)
    ((markdown-code-face &override) :background (doom-lighten tooltip-bg 0.05))
+;;;;; ediff-mode
+   (ediff-odd-diff-A :distant-foreground "#FFFFFF" :background "#00291B")
+   (ediff-even-diff-A :distant-foreground "#FFFFFF" :background "#3D0136")
+   ;; B and C inherit A
 
 ;;;;; org-mode
    ((org-block &override) :background bg-alt)
@@ -330,6 +337,8 @@ determine the exact padding."
    (org-level-7 :inherit 'org-level-8 :foreground sub-spark :weight 'bold :height 1.04)
    (org-level-8 :inherit 'variable-pitch :foreground violet :weight 'bold :height 1.24)
 
+   (org-verbatim :inherit 'fixed-pitch :foreground grey :weight 'bold)
+
    (org-document-title :inherit 'org-level-1 :weight 'bold
                        :height 1.42 :foreground light-spark)
 
@@ -338,7 +347,6 @@ determine the exact padding."
 
    (org-block :inherit 'fixed-pitch)
    (org-block-begin-line :inherit 'org-block :height 0.6 :foreground grey)
-   (org-verbatim :inherit 'fixed-pitch)
    (org-link :inherit 'org-block :underline t :foreground orange)
    ;; (org-modern-label :inherit 'fixed-pitch-serif :height 1.0)
 

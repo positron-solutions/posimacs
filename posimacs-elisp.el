@@ -22,7 +22,7 @@
     "Where scratches are saved.")
 
   (defvar pmx-scratch-template "\
-;;; %1$s.el ---  -*- lexical-binding: t; -*-
+;;; %1$s.el --- Scatch Package -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;; good luck!
@@ -30,7 +30,7 @@
 
 (message \"Only the future is certain.\")
 
-(provide 'scratch%1$s)
+(provide '%1$s)
 ;;; %1$s.el ends here
 
 ;; Local Variables:
@@ -46,7 +46,7 @@
     (make-directory pmx--scratch-dir))
 
   (defun pmx--scratch-message (buffer)
-    "Insert's a motivational passage."
+    "A motivational passage to start your package."
     (switch-to-buffer buffer)
     (insert (format pmx-scratch-template
                     (file-name-base (buffer-file-name buffer)))))
