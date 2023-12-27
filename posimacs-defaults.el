@@ -8,8 +8,39 @@
 ;;
 
 ;;; Code:
-(add-hook 'prog-mode-hook (lambda () (setq truncate-lines t))) ;; only truncate prog-mode, wrap-text mode
+
+;;; Some settings more pertinant to Elisp
+;; Info walks all nodes
+(setopt Info-scroll-prefer-subnodes t)
+(setq-default comint-scroll-to-bottom-on-input t)
+(show-paren-mode 1) ; Show matching parentheses
+;;; End Elisp settings.  See posimacs-elisp.el
+
+;;; Filling and truncation
+;; Always truncate in prog modes, never in any other mode.
+(setopt truncate-lines nil)
 (setq truncate-partial-width-windows nil) ; interacts with truncate-lines
+(defun pmx--truncate-prog ()
+  "Hook function."
+  (setq-local truncate-lines t))
+(add-hook 'prog-mode-hook #'pmx--truncate-prog)
+
+;; Text modes use visual fill to 100 chars
+;; Using hard newlines and other forms of filling interacts poorly with variable
+;; pitch faces, and variable pitch faces are hat and possibly in use by others,
+;; so I've adopted this setting to move towards org files that can be properly
+;; displayed by clients.
+(setopt visual-fill-column-width 100)
+(add-hook 'text-mode-hook #'visual-line-mode)
+
+(setq-default fill-column 80) ; How wide to auto-fill paragraphs
+;; Fill while typing by default in these modes
+(add-hook 'fundamental-mode-hook #'auto-fill-mode)
+(add-hook 'markdown-mode-hook #'auto-fill-mode)
+(add-hook 'emacs-lisp-mode-hook #'auto-fill-mode)
+;;; End filling & truncation
+
+(pixel-scroll-precision-mode 1)
 
 ;; Even if no buffers have unsaved changes, prompt before quitting
 (setq confirm-kill-emacs 'y-or-n-p)
@@ -22,11 +53,10 @@
 (global-unset-key [(control z)])
 (global-unset-key [(control x)(control z)])
 
+
 (setq select-enable-clipboard t) ; yanks copy to X clipboard
 (setq scroll-step 1) ; Line by line scrolling
-
 (put 'list-timers 'disabled nil) ; yes I would like to see timers
-
 (setq use-dialog-box nil)
 
 ;; intermittent issues with multibyte characters?
@@ -36,6 +66,7 @@
 ;; Most links you see in Emacs don't need full browsers
 (setq browse-url-browser-function 'eww-browse-url)
 
+;; TODO need to check on faster workflows to display formatted text for development.
 (setq message-strip-special-text-properties nil)
 (setq minibuffer-message-properties nil)
 
@@ -47,7 +78,7 @@
 ;;       'command-completion-default-include-p)
 
 ;; add to transient package
-(setq transient-hide-during-minibuffer-read t)
+(setopt transient-hide-during-minibuffer-read t)
 
 ;; sweet
 (setq frame-resize-pixelwise t)
@@ -73,14 +104,6 @@
 (delete-selection-mode 1) ; Actions on active region will delete
 
 (column-number-mode 1) ; show columns in modeline
-
-(setq-default fill-column 80) ; How wide to auto-fill paragraphs
-;; Fill while typing by default in text modes
-(add-hook 'text-mode-hook #'auto-fill-mode)
-(add-hook 'fundamental-mode-hook #'auto-fill-mode)
-(add-hook 'org-mode-hook #'auto-fill-mode)
-(add-hook 'markdown-mode-hook #'auto-fill-mode)
-(add-hook 'emacs-lisp-mode-hook #'auto-fill-mode)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -121,6 +144,8 @@
 ;; Using M-g everywhere instead of C-g
 (keymap-set key-translation-map "M-g" "C-g")
 
+;; visit files at same position
+(save-place-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Basic packages ;;
@@ -144,9 +169,10 @@
 
   (run-at-time nil (* 5 60) 'recentf-save-list))
 
-(use-package ws-butler ; Cleanup whitespace at end of lines
-  :delight
-  :config (ws-butler-global-mode t))
+(use-package ws-butler                  ; Cleanup whitespace at end of lines
+  :config
+  ;; TODO upstream a fix to make this more aggressive after yanks
+  (ws-butler-global-mode t))
 
 ;; camel case counts as words boundaries when navigating.  symbol navigation
 ;; still leaps by whole words.
@@ -165,16 +191,21 @@
   (command-log-window-text-scale 2 "Command log two steps higher text scale")
   (command-log-logging-shows-buffer t "Toggling will show the buffer.")
   (command-log-hiding-disables-logging t "Toggling visible buffer turns off logging.")
-  (command-log-disabling-logging-kills-buffer t "The buffer will be new when displayed again.")
-  (command-log-log-globally t "Auto-enable with global minor mode (including minibuffer)")
-  (command-log-filter-commands '(self-insert-command) "Be chatty. Show everything besides self-insert-command"))
+  (command-log-disabling-logging-kills-buffer t "The buffer will be new when
+displayed again.")
+  (command-log-log-globally
+   t
+   "Auto-enable with global minor mode (including minibuffer)")
+
+  :config
+  (setopt command-log-default-side 'left)
+  (setopt command-log-filter-commands '(self-insert-command))
+  (setopt command-log-merge-repeat-targets 'post-command))
 
 ;; TODO find other packages that are not being managed by elpaca and bring them under the law
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
 ;; See `list-load-path-shadows'.
 (use-package project :elpaca nil)
-
-;; visually replace with overlays
 
 ;;; posimacs-defaults.el ends here.
 
