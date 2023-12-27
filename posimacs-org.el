@@ -34,6 +34,9 @@
   (setq org-agenda-window-setup 'current-window) ; don't kill window layout
   (setq org-auto-align-tags nil)                 ; whitespace is the devil
 
+  ;; allow image scaling
+  (setq org-image-actual-width nil)
+
   ;; load org files from ~/.org/
   (setq org-directory "~/.org")
   (setq org-agenda-files (list org-directory))
@@ -113,6 +116,11 @@
   (add-hook 'org-mode-hook #'org-appear-mode))
 
 
+(use-package orgit
+  :elpaca (orgit
+           :host github
+           :repo "magit/orgit"))
+
 (defun pmx-setup-org-fonts ()
   "Org mode needs it's font's set up after every document load."
   (interactive)
@@ -171,6 +179,8 @@
   :init
   (global-org-modern-mode))
 
+;; render nodes at other places
+(use-package org-transclusion)
 
 ;; for regenerating tocs (deprecated in favor of export TOCs)
 (use-package org-make-toc)
