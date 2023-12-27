@@ -1,4 +1,4 @@
-;;; posimacs-early-init.el --- standard speedups & bootstrap -*- lexical-binding: t; -*-
+;;; posimacs-early-init.el --- standard speedups & bootstrap -*-lexical-binding: t; no-byte-compile: t-*-
 
 ;;; Commentary:
 ;;

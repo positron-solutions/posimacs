@@ -214,7 +214,6 @@ work."
                  (display-buffer-reuse-mode-window) ;functions to try
                  (inhibit-same-window . nil))))
 
-(use-package auto-compile)
 ;; pmx-ielm-this-buffer is a shortcut to open an ielm buffer for introspective
 ;; hacking on that buffer.  This is often faster than the scratch buffer
 ;; workflow, which both accumulates broken forms and requires manually

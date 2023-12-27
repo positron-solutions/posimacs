@@ -1,4 +1,4 @@
-;;; posimacs-init.el --- You know -*- lexical-binding: t -*-
+;;; posimacs-init.el --- You know -*- lexical-binding: t;no-byte-compile: t-*-
 
 ;;; Commentary:
 ;;
@@ -61,8 +61,18 @@
 
 (elpaca no-littering
   (require 'no-littering))
-
 (elpaca-wait) ; ensure elpaca finishes queues before continuing
+
+(elpaca auto-compile
+  (require 'auto-compile)
+  ;; Don't load outdated .elc files
+  (setopt load-prefer-newer t)
+  (setopt auto-compile-display-buffer nil)
+  ;; You will still get byte compile and you can open *Warnings* buffer
+  (setopt native-comp-async-report-warnings-errors 'silent)
+  (auto-compile-on-load-mode 1)
+  (auto-compile-on-save-mode 1))
+(elpaca-wait)
 
 ;; See posimacs-early-init.el for initial replacement.
 (defun pmx--elpaca-after-init ()

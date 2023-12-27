@@ -42,8 +42,6 @@
 ;; don't ask to spell out "yes"
 (setopt use-short-answers t)
 
-(setopt native-comp-async-report-warnings-errors 'silent)
-
 ;; don't show transient commands in M-x completions?
 ;; (setq read-extended-command-predicate
 ;;       'command-completion-default-include-p)
@@ -61,10 +59,6 @@
 
 ;; Move to bottom
 (setq-default comint-scroll-to-bottom-on-input t)
-
-;; Don't load outdated .elc files
-(setq load-prefer-newer t)
-
 ;; Lock files annoying.  The extensive use of Emacs server makes it highly
 ;; unlikely to wind up with two Emacs looking at the same files.  Take care with
 ;; multiple Emacsen to point them to another directory.
