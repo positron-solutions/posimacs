@@ -44,6 +44,34 @@
 (use-package ielm
   :elpaca nil
   :config
+  (defvar pmx--ielm-ring nil)           ; one global ring
+  (defun pmx-ielm-init-history ()
+    "Persist ielm.
+This is per ielm name, so multiple ielm's will get their own
+history."
+    (let* ((file (format "ielm/%s"  (buffer-name)))
+           (path (no-littering-expand-var-file-name file)))
+      (unless (file-exists-p path)
+        (make-empty-file path 'parents))
+      (setq-local comint-input-ring-file-name path)
+      (setq-local comint-input-ring-size 1024)
+      (setq-local comint-input-ignoredups t)
+      (if pmx--ielm-ring
+          (setq-local comint-input-ring pmx--ielm-ring)
+        (comint-read-input-ring)
+        (setq pmx--ielm-ring comint-input-ring))))
+  (add-hook 'ielm-mode-hook 'pmx-ielm-init-history)
+
+  (defun pmx--ielm-save-history ()
+    (when comint-input-ring-file-name
+      (when (y-or-n-p "Save this ielm session? ")
+        (comint-write-input-ring))))
+
+  (defun pmx-ielm-save-history ()
+    (add-hook 'kill-buffer-hook #'pmx--ielm-save-history nil t))
+
+  (add-hook 'ielm-mode-hook #'pmx-ielm-save-history)
+
   (defun pmx--ielm-comint-truncate ()
     "When outputs are huge, avoid printing them because it will cause the buffer
 to be slow."
