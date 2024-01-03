@@ -4,6 +4,8 @@
 let
   cfg = config.posimacs;
   client-or-server = "emacsclient --create-frame -a '/usr/bin/env emacs'";
+  # terminal version of the above
+  # client-or-server = "emacsclient -nw --create-frame -a '/usr/bin/env emacs'";
 in {
   options.posimacs = {
     aliases = lib.mkOption {
@@ -58,25 +60,15 @@ in {
 
     programs.bash.shellAliases = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
       # How to break a nano habit
-      "nano" = client-or-server;
-      # Terminal version of above
-      # "nano" = "emacsclient -nw --create-frame";
+      # "nano" = client-or-server;
       "emacs" = client-or-server;
       "vi" = client-or-server;
       "vim" = client-or-server;
-    } else {
-      "nano" = "emacs";
-      "vi" = "emacs";
-      "vim" = "emacs";
-    });
+    } else {});
 
-    home.sessionVariables = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
-      # Use a new client window and fall back to terminal standalone if client fails
-      EDITOR = client-or-server;
-      ALTERNATE_EDITOR = "TERM=xterm-256color emacs -nw";
-    } else {
+    home.sessionVariables = lib.mkIf cfg.aliases ({
       # Use standalone GUI emacs and fall back to terminal if GUI cannot load
-      EDITOR = "emacs";
+      EDITOR = client-or-server;
       ALTERNATE_EDITOR = "TERM=xterm-256color emacs -nw";
     });
 
