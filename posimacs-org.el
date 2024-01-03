@@ -313,7 +313,7 @@
   (setopt org-tree-slide-slide-in-effect t)
   (setopt org-tree-slide-slide-in-blank-lines 4)
   (setopt org-tree-slide-content-margin-top 1)
-  (setopt org-tree-slide-activate-message nil)
+  (setopt org-tree-slide-activate-message "")
   (setopt org-tree-slide-indicator
           '(:next nil :previous nil :content nil))
   (setopt org-tree-slide-breadcrumbs
