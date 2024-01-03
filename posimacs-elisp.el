@@ -86,11 +86,20 @@ to be slow."
 (use-package lispy
   :hook ((lisp-mode emacs-lisp-mode))
   :config
-  (unbind-key (kbd "M-o") lispy-mode-map) ; lispy....i-forgot
+
+  (setopt lispy-close-quotes-at-end-p t)
+  ;; TODO this should work with Elisp but warns about needin Cider (for CL)
+  ;; (setopt lispy-eval-display-style 'overlay)
+
+  (unbind-key (kbd "X") lispy-mode-map)   ; lispy-convolute-left
+  (unbind-key (kbd "W") lispy-mode-map)   ; lispy-widen
+  (unbind-key (kbd "N") lispy-mode-map)   ; lispy-narrow
+  (unbind-key (kbd "t") lispy-mode-map)   ; lispy-teleport
+  (unbind-key (kbd "M-o") lispy-mode-map) ; lispy-other
   (unbind-key (kbd "M-j") lispy-mode-map) ; lispy-join
   (unbind-key (kbd "M-i") lispy-mode-map) ; lispy-iedit
-  (unbind-key (kbd "x") lispy-mode-map)   ; special-lispy-x
-  (unbind-key (kbd "b") lispy-mode-map))  ; special-lispy-back
+  (unbind-key (kbd "b") lispy-mode-map)   ; special-lispy-back
+  (unbind-key (kbd "x") lispy-mode-map))  ; special-lispy-x
 
 ;; Seeing delimiter balance at all times is pretty useful.
 (use-package rainbow-delimiters
