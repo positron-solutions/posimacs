@@ -44,6 +44,7 @@
    (vertical-scroll-bars . nil)
    (horizontal-scroll-bars . nil)
    (use-frame-synchronization . t)))
+(set-face-attribute 'default nil :foreground "#CCCCCC") ; dark background, light text
 
 (provide 'posimacs-early-init)
 ;;; posimacs-early-init.el ends here
