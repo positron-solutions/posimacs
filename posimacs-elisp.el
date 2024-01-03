@@ -34,6 +34,7 @@
 
 (use-package package-lint)
 
+(setopt help-at-pt-display-when-idle t)
 
 
 (use-package elisp-depend)
