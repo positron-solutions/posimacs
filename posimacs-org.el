@@ -73,16 +73,16 @@
   (setq org-hide-emphasis-markers t)
   (setq org-hide-drawer-startup t)
 
-
   ;; variable is configured, but I only use it sometimes manually
   ;; (add-hook 'org-mode-hook #'variable-pitch-mode)
   ;; line spacing
-  (add-hook 'org-mode-hook (lambda () (setq-local line-spacing 0.6)))
+  ;; (add-hook 'org-mode-hook (lambda () (setq-local line-spacing 0.6)))
+
   (keymap-unset org-src-mode-map "C-c '")
   (keymap-set org-src-mode-map "C-c C-c" #'org-edit-src-exit)
 
   ;; Set timer to save org buffers and write a commit at midnight
-  (defun pmx-commit-agenda-files ()
+  (defun pmx-commit-agenda-files (&rest _)
     (if-let ((git-bin (executable-find "git"))
              (out "auto-commit-org-files-log"))
         (->> (org-agenda-files)
@@ -91,16 +91,17 @@
              (-distinct)
              (-map (lambda (r)
                      (shell-command
-                      (format "cd %s && %s add -A" r git-bin) out out) r))
-             (-map (lambda (r)
+                      (format "cd %s && %s add -A" r git-bin)
+                      out out)
                      (shell-command
                       (format "cd %s && %s commit -m '%s'" r git-bin
                               (format "%s automatic-commit"
-                                      (format-time-string "%Y-%m-%d" (current-time)))) out out))))
+                                      (format-time-string "%Y-%m-%d"
+                                                          (current-time))))
+                      out out))))
       (error "Could not find git executable")))
 
-  (run-at-time "24:00" t (lambda (&rest _args)
-                           (pmx-commit-agenda-files))))
+  (run-at-time "24:00" t #'pmx-commit-agenda-files))
 
 ;; see agenda whenever you come back from lunch
 (use-package idle-org-agenda
