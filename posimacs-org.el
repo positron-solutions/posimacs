@@ -197,14 +197,6 @@
 
 (use-package hide-mode-line)
 
-(defun pmx-screencap-setup ()
-  "Make it good for video."
-  (interactive)
-  ;; I was going to praise this function until I needed the 16 pixel width
-  ;; correction lol.  Stop wasting my time.
-  (when (frame-parameter (selected-frame) 'fullscreen)
-    (set-frame-parameter (selected-frame) 'fullscreen nil))
-  (set-frame-size (selected-frame) (- 2560 16) 1440 t))
 
 
 
