@@ -189,16 +189,24 @@
 (use-package org-make-toc)
 
 (use-package visual-fill-column
-  :after visual-fill-column
   :config
-  (setq visual-fill-column-adjust-for-text-scale nil)
-  (setq visual-fill-column-width 120)
-  (setq visual-fill-column-center-text t))
+  (setopt visual-fill-column-adjust-for-text-scale nil)
+  ;; width is configured in defaults
+  (setopt visual-fill-column-center-text t)
+  (with-eval-after-load 'org
+    (add-hook 'org-mode-hook #'visual-fill-column-mode)))
 
 (use-package hide-mode-line)
 
+(use-package moc
+  :elpaca nil
+  :after org)
 
+(use-package screencap
+  :elpaca nil
+  :after scratch-pkgs)
 
+;; (setq next-screen-context-lines 30)
 
 (defvar-local pmx-subtle-cursor-active nil)
 
@@ -289,6 +297,11 @@
   (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
   (setq-local cursor-type (default-value 'cursor-type))
   (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
+
+(use-package unfill
+  :config
+  (with-eval-after-load 'org
+    (keymap-set org-mode-map "M-q" #'unfill-paragraph)))
 
 ;; presenting
 (use-package org-tree-slide

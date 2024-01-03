@@ -30,8 +30,8 @@
 ;; pitch faces, and variable pitch faces are hat and possibly in use by others,
 ;; so I've adopted this setting to move towards org files that can be properly
 ;; displayed by clients.
-(setopt visual-fill-column-width 100)
-(add-hook 'text-mode-hook #'visual-line-mode)
+(setopt visual-fill-column-width 80)
+;; (add-hook 'text-mode-hook #'visual-line-mode)
 
 (setq-default fill-column 80) ; How wide to auto-fill paragraphs
 ;; Fill while typing by default in these modes
