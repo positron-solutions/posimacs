@@ -13,11 +13,11 @@
 ;; Possibly we can configure Emacs to load the tree sitter grammars without
 ;; having them in the Emacs derivation itself.
 
-(setq major-mode-remap-alist
-      '((rust-mode . rust-ts-mode)))
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+(push '(rust-mode . rust-ts-mode) major-mode-remap-alist)
 
 (use-package rust-ts-mode
-  :hook (rust-ts-mode . eglot-ensure)
+  :hook (rust-ts-mode . lsp-deferred)
   :elpaca nil
   :init
   (setenv "RUST_BACKTRACE" "full"))

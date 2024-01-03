@@ -9,59 +9,94 @@
 
 ;;; Code:
 
-;; TODO check on this
-;; https://github.com/purcell/emacs.d/blob/master/lisp/init-nix.el
-(use-package nix-ts-mode
-  :elpaca (nix-ts-mode
-           :fetcher github
-           :repo "remi-gelinas/nix-ts-mode")
-  ;; :hook (nix-ts-mode . lsp-deferred)
-  :mode "\\.nix\\'")
+;; (use-package eglot
+;;   :config
 
-(use-package eglot
-  :config
-  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil")))
-  :hook (nix-ts-mode . eglot-ensure))
+;;   (setopt eglot-inlay-hints-mode nil)
+;;   ;; (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil")))
+;;   ;; :hook (nix-ts-mode . eglot-ensure)
+;;   )
 
 (use-package nixpkgs-fmt)
 
-;; LSP may send messages that are fairly large
-(setq read-process-output-max (* (* 1024 1024) 32)) ;; 32mb
+(use-package list-environment) ; specifically for inspecting nix envs
 
+(setenv "LSP_USE_PLISTS" "true")
 (use-package lsp-mode
-  :commands lsp
-  :custom
-  ;; what to use when checking on-save. "check" is default, I prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all nil) ; only show symbol info, not everything returned
-  (lsp-signature-render-documentation nil) ; don't show eldocs in popup
-  (lsp-idle-delay 0.5 "Reduce error noise while typing or completing")
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  (lsp-headerline-breadcrumb-enable nil)
+  :init
+  ;; LSP may send messages that are fairly large
+  (setopt read-process-output-max 1048576) ; max of /proc/sys/fs/pipe-max-size
+
   :config
-  ;; (setq lsp-use-plists t)  ; breaks rust-analyzer integration right now
-  (advice-add 'lsp :before #'direnv-update-environment)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (setopt lsp-use-plists t)             ; see `setenv' above
+
+  ;; what to use when checking on-save. "check" is default, TODO someone
+  ;; preferred clippy, but it wasn't me
+  ;; (lsp-rust-analyzer-cargo-watch-command "clippy")
+
+  (setopt lsp-eldoc-render-all nil) ; only show symbol info, not everything returned
+  (setopt lsp-signature-render-documentation nil) ; don't show eldocs in popup
+  (setopt lsp-idle-delay 10.0)   ; Reduce error noise while typing or completing
+  (setopt lsp-headerline-breadcrumb-enable nil)
+
+  ;; This is a modified definition from the one provided by LSP
+  ;; TODO upstream these changes!
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection (lambda () lsp-nix-nil-server-path))
+                    :major-modes '(nix-ts-mode)
+                    :initialized-fn (lambda (workspace)
+                                      (with-lsp-workspace workspace
+                                        (lsp--set-configuration
+                                         (lsp-configuration-section "nil"))))
+                    :synchronize-sections '("nil")
+                    :server-id 'nix-nil-ts))
+  (add-to-list 'lsp-language-id-configuration '(nix-ts-mode . "Nix"))
+
+  ;; for local environments from envrc
+  (defun pmx--lsp-set-plist (&rest _)
+    (setenv "LSP_USE_PLISTS" "true"))
+  (advice-add #'lsp-mode :before #'pmx--lsp-set-plist)
+
+  ;; Use LSP completions between triggers and min prefix
+  (defun pmx--company-zero-prefix ()
+    (setq-local company-minimum-prefix-length 0))
+  (add-hook 'lsp-mode-hook #'pmx--company-zero-prefix))
+
+;; TODO check some cases where this may be relevant
+;; (advice-add #'lsp :before #'envrc--update-env)
 
 (use-package lsp-ui
   :commands lsp-ui-mode
-  :custom
-  ; (lsp-ui-peek-enable nil) ; since peek opens on action, not spammy
-  (lsp-ui-sideline-enable nil) ; XXX de-spam
-  (lsp-ui-doc-include-signature) ; if we did show docs, show signature!
-  (lsp-ui-doc-enable nil))
+  :config
+  ;; (lsp-ui-peek-enable nil) ; since peek opens on action, not spammy
+  ;; (setopt lsp-ui-sideline-enable nil)
+  (setopt lsp-ui-sideline-delay 10.0)
+  (setopt lsp-ui-doc-include-signature t) ; if we did show docs, show signature!
+  (setopt lsp-ui-doc-enable nil)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 ;; COMPlete ANYthing
 (use-package company
-  :demand t
+  :after orderless
   :custom
   (company-idle-delay 0.3) ;; how long to wait until popup
-  (company-tooltip-minimum 10)
+  (company-tooltip-minimum 8)
   (company-tooltip-limit 16)
-  (company-tooltip-flip-when-above t)
+  (company-tooltip-flip-when-above nil)
   (company-tooltip-width-grow-only t)
-  (company-minimum-prefix-length 3)
+  (company-minimum-prefix-length 3)     ; this is overridden in lsp buffers
   :config
+  (setopt company-dabbrev-code-other-buffers t)
+  (setopt company-dabbrev-other-buffers t)
+  (setopt company-dabbrev-code-everywhere t)
+  (setopt company-dabbrev-code-other-buffers t)
+  (setopt company-tooltip-maximum-width 80) ; LSP completions are looooong
+
+  (defun just-one-face (fn &rest args)
+    (let ((orderless-match-faces [completions-common-part]))
+      (apply fn args)))
+
+  ;; (advice-add 'company-capf--candidates :around #'just-one-face)
 
   ;; replace company-capf with merged company and dabbrev :-)
   (setq company-backends
@@ -108,7 +143,10 @@
     (define-key ielm-map (kbd "<tab>") #'company-indent-or-complete-common))
 
   ;; use less aggressive completion when in text mode
-  (add-hook 'text-mode-hook (lambda () (setq-local company-minimum-prefix-length 5))))
+  (add-hook 'text-mode-hook
+            (lambda () (setq-local company-minimum-prefix-length 4))))
+
+(use-package lsp-ivy)
 
 (use-package orderless
   :custom
@@ -126,13 +164,24 @@
   (add-hook 'text-mode-hook 'yas-minor-mode))
 
 (use-package flycheck
-  :custom (flycheck-display-errors-delay 10 "Reduce error noise while typing")
   :config
+  (setopt flycheck-emacs-lisp-load-path 'inherit)
+  (setopt flycheck-display-errors-delay 4.0)
+  (setopt flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
   (global-flycheck-mode))
 
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
 
+;; TODO Dape with Rust
+
+;; https://github.com/purcell/emacs.d/blob/master/lisp/init-nix.el
+(use-package nix-ts-mode
+  :elpaca (nix-ts-mode
+           :fetcher github
+           :repo "remi-gelinas/nix-ts-mode")
+  :init (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
+  :hook (nix-ts-mode . lsp-deferred))
 
 (provide 'posimacs-prog)
 ;;; posimacs-prog.el ends here
