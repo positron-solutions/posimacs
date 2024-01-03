@@ -36,7 +36,10 @@
 
 
 
+(use-package elisp-depend)
 
+(use-package flycheck-package
+  :config (flycheck-package-setup))
 
 (use-package ielm
   :elpaca nil
