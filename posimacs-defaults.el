@@ -115,9 +115,10 @@
 ;; Why did I ever allow this to be set to nil?
 (setq enable-recursive-minibuffers t)
 
-(setq blink-cursor-interval 0.14
-      blink-cursor-delay 0.5
-      blink-cursor-blinks 300)
+(blink-cursor-mode -1)
+;; (setq blink-cursor-interval 0.14
+;;       blink-cursor-delay 0.5
+;;       blink-cursor-blinks 300)
 
 ;; Thanks Steve Purcell
 (keymap-global-set "RET" 'newline-and-indent)
