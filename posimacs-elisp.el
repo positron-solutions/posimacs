@@ -44,14 +44,15 @@
 (use-package ielm
   :elpaca nil
   :config
-  ;; When the output is huge, ielm can slow down.  Instead, let's just get rid
-  ;; of large output since there are other ways to handle this better and
-  ;; usually the user will change approach when the output is impractical.
-  (add-hook #'inferior-emacs-lisp-mode
-            (lambda () (setq-local comint-max-line-length 1024)
-              ;; comint-output-filter-functions is permanent local
-              (unless (memq #'comint-truncate-buffer comint-output-filter-functions)
-                (push #'comint-truncate-buffer comint-output-filter-functions)))))
+  (defun pmx--ielm-comint-truncate ()
+    "When outputs are huge, avoid printing them because it will cause the buffer
+to be slow."
+    (setq-local comint-max-line-length 1024)
+    ;; comint-output-filter-functions is permanent local
+    (unless (memq #'comint-truncate-buffer comint-output-filter-functions)
+      (push #'comint-truncate-buffer
+            comint-output-filter-functions)))
+  (add-hook 'ielm-mode-hook #'pmx--ielm-comint-truncate))
 
 (use-package lispy
   :hook ((lisp-mode emacs-lisp-mode))
