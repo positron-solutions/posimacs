@@ -16,6 +16,9 @@
   :elpaca nil
   :config
   ;; On save, check parens
+  (defun pmx--setup-check-paren-on-save ()
+    (add-hook 'after-save-hook #'check-parens nil t))
+  (add-hook 'emacs-lisp-mode-hook #'pmx--setup-check-paren-on-save))
 
 (with-eval-after-load 'company
   (defun pmx--company-elisp-tweaks ()
