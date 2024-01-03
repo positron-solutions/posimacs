@@ -13,65 +13,65 @@
   :config
 
   ;; When do we ever want to confirm after explicitly requesting execution?
-  (setq org-confirm-babel-evaluate nil)
+  (setopt org-confirm-babel-evaluate nil)
 
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-habit-show-habits-only-for-today t)
-  (setq org-agenda-show-future-repeats 'next)
-  (setq org-agenda-prefer-last-repeat t)
-  (setq org-adapt-indentation nil)
+  (setopt org-agenda-skip-scheduled-if-done t)
+  (setopt org-habit-show-habits-only-for-today t)
+  (setopt org-agenda-show-future-repeats 'next)
+  (setopt org-agenda-prefer-last-repeat t)
+  (setopt org-adapt-indentation nil)
 
   ;; https://github.com/bastibe/org-journal/issues/392
   ;; having cycling issues
-  ;; (setq org-fold-core-style 'overlays)
+  ;; (setopt org-fold-core-style 'overlays)
 
-  (setq org-mouse-1-follows-link nil)
-  (setq org-return-follows-link t)
+  (setopt org-mouse-1-follows-link nil)
+  (setopt org-return-follows-link t)
 
-  (setq org-startup-folded 'show2levels)
-  (setq org-list-indent-offset 2)             ; bullet lists
-  (setq org-insert-heading-respect-content t) ; don't let me screw up structure
-  (setq org-agenda-window-setup 'current-window) ; don't kill window layout
-  (setq org-auto-align-tags nil)                 ; whitespace is the devil
+  (setopt org-startup-folded 'show2levels)
+  (setopt org-list-indent-offset 0)             ; bullet lists
+  (setopt org-insert-heading-respect-content t) ; don't let me screw up structure
+  (setopt org-agenda-window-setup 'current-window) ; don't kill window layout
+  (setopt org-auto-align-tags nil)                 ; whitespace is the devil
 
   ;; allow image scaling
-  (setq org-image-actual-width nil)
+  (setopt org-image-actual-width nil)
 
   ;; load org files from ~/.org/
-  (setq org-directory "~/.org")
-  (setq org-agenda-files (list org-directory))
-  (setq org-archive-location "~/.org/archive.org::* From %s")
+  (setopt org-directory "~/.org")
+  (setopt org-agenda-files (list org-directory))
+  (setopt org-archive-location "~/.org/archive.org::* From %s")
 
   ;; TODO force captures to go somewhere
   ;; orphan captures will go here
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setopt org-default-notes-file (concat org-directory "/notes.org"))
 
   ;; correct editing at the end of unexpanded text
-  (setq org-catch-invisible-edits 'show-and-error)
+  (setopt org-catch-invisible-edits 'show-and-error)
 
   ;; show filename at head of refile suggestions
-  (setq org-refile-use-outline-path 'file)
-  (setq org-outline-path-complete-in-steps nil) ;; give ivy all suggestions
+  (setopt org-refile-use-outline-path 'file)
+  (setopt org-outline-path-complete-in-steps nil) ;; give ivy all suggestions
 
   ;; move to file itself for top-level
-  (setq org-refile-allow-creating-parent-nodes 'confirm)
-  (setq org-log-done 'time)
+  (setopt org-refile-allow-creating-parent-nodes 'confirm)
+  (setopt org-log-done 'time)
 
   ;; don't let ancestor TODO's be toggled unless all descendents are marked done
-  (setq org-enforce-todo-checkbox-dependencies t)
-  (setq org-enforce-todo-dependencies t)
-  (setq org-archive-reversed-order t) ;; newest first in archive
-  (setq org-habit-show-habits-only-for-today t)
-  (setq org-agenda-show-future-repeats nil)
-  (setq org-blank-before-new-entry '((heading . t)
+  (setopt org-enforce-todo-checkbox-dependencies t)
+  (setopt org-enforce-todo-dependencies t)
+  (setopt org-archive-reversed-order t) ;; newest first in archive
+  (setopt org-habit-show-habits-only-for-today t)
+  (setopt org-agenda-show-future-repeats nil)
+  (setopt org-blank-before-new-entry '((heading . t)
                                      (plain-list-item . auto)))
-  (setq org-cycle-separator-lines 2)
+  (setopt org-cycle-separator-lines 2)
 
   ;; export settings
-  (setq org-html-postamble nil)
-  (setq org-html-doctype "html5")
-  (setq org-hide-emphasis-markers t)
-  (setq org-hide-drawer-startup t)
+  (setopt org-html-postamble nil)
+  (setopt org-html-doctype "html5")
+  (setopt org-hide-emphasis-markers t)
+  (setopt org-hide-drawer-startup t)
 
   ;; variable is configured, but I only use it sometimes manually
   ;; (add-hook 'org-mode-hook #'variable-pitch-mode)
