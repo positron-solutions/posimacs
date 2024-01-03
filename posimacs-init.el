@@ -65,6 +65,10 @@
 
 (elpaca-wait) ; ensure elpaca finishes queues before continuing
 
+;; Scratch buffers that are useful
+(elpaca (scratch-pkgs :host github :repo "positron-solutions/scratch-pkgs")
+  (require 'scratch-pkgs))
+
 (elpaca auto-compile
   (require 'auto-compile)
   ;; Don't load outdated .elc files
