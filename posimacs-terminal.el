@@ -8,7 +8,7 @@
 
 (use-package eat
   :config
-  (add-hook 'eat-mode-hook #'eat-semi-char-mode)
+  (add-hook 'eat-session-created-hook #'eat-semi-char-mode)
   (keymap-set eat-semi-char-mode-map "M-o" nil)
   (define-obsolete-function-alias 'vterm #'eat "0.1.0"))
 
