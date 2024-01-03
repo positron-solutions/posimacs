@@ -321,7 +321,6 @@ determine the exact padding."
    ;; B and C inherit A
 
 ;;;;; org-mode
-   ((org-block &override) :background bg-alt)
    ((org-block-begin-line &override) :background bg :foreground comments :slant 'italic)
    ((org-quote &override) :background base1)
    ((org-done &override) :foreground llime)
@@ -345,8 +344,9 @@ determine the exact padding."
    ;; Ivy is using this in completions
    (ivy-org :inherit 'default :foreground chill)
 
-   (org-block :inherit 'fixed-pitch)
-   (org-block-begin-line :inherit 'org-block :height 0.6 :foreground grey)
+   (org-block :inherit 'fixed-pitch :background "#000000")
+   (org-code :foreground "#D85F00" :background bg)
+   (org-block-begin-line :inherit 'org-block :height 0.5 :foreground grey)
    (org-link :inherit 'org-block :underline t :foreground orange)
    ;; (org-modern-label :inherit 'fixed-pitch-serif :height 1.0)
 
