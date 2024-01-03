@@ -78,6 +78,8 @@
   ;; (add-hook 'org-mode-hook #'variable-pitch-mode)
   ;; line spacing
   (add-hook 'org-mode-hook (lambda () (setq-local line-spacing 0.6)))
+  (keymap-unset org-src-mode-map "C-c '")
+  (keymap-set org-src-mode-map "C-c C-c" #'org-edit-src-exit)
 
   ;; Set timer to save org buffers and write a commit at midnight
   (defun pmx-commit-agenda-files ()
