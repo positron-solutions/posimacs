@@ -24,6 +24,7 @@
 
 (use-package ivy
   :delight ivy-mode
+  :after orderless
   :config
   (ivy-mode)
   ;; Always ignore buffers set in `ivy-ignore-buffers'
