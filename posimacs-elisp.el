@@ -218,9 +218,6 @@ work."
 ;; hacking on that buffer.  This is often faster than the scratch buffer
 ;; workflow, which both accumulates broken forms and requires manually
 ;; specifying which buffer you want to operate on.
-(defun pmx--mru-buffer ()
-  "Get the buffer of the most recently used window."
-  (window-buffer (get-mru-window t t t)))
 
 (defun pmx--not-ielm-buffer-p (buffer)
   "Filter predicate to remove ielm buffers from `read-buffer' candidates.

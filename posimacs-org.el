@@ -118,7 +118,6 @@
   (setq org-appear-autoentities t)
   (add-hook 'org-mode-hook #'org-appear-mode))
 
-
 (use-package orgit
   :elpaca (orgit
            :host github
@@ -173,7 +172,6 @@
    ;; (org-modern-star '("∀" "∋" "∃" "≡" "∩"))
    ;; (org-modern-star '("🂡" "🂼" "🃇" "🃋" "🃕" "🂿" "🃒"))
    ;; (org-modern-star '("☰" "☲" "☵" "☷" "⚌" "⚏" "⚋"))
-
 
    (org-modern-block-fringe t))
   :commands (org-modern-mode org-modern-agenda)

@@ -88,8 +88,6 @@
 ;; Use recycle bin or whatever
 (setq delete-by-moving-to-trash t)
 
-;; Move to bottom
-(setq-default comint-scroll-to-bottom-on-input t)
 ;; Lock files annoying.  The extensive use of Emacs server makes it highly
 ;; unlikely to wind up with two Emacs looking at the same files.  Take care with
 ;; multiple Emacsen to point them to another directory.
@@ -98,8 +96,6 @@
 ;; deprecate the really crappy list-buffers mode
 ;; ibuffer is more comprehensive than the filtered counsel switch buffer
 (substitute-key-definition 'list-buffers 'ibuffer global-map)
-
-(show-paren-mode 1) ; Show matching parentheses
 
 (delete-selection-mode 1) ; Actions on active region will delete
 
@@ -129,7 +125,7 @@
 (defun pmx-keyboard-quit ()
   "Quit or close minibuffer if open."
   (interactive)
-  (declare-function minibuffer-keyboard-quit "delsel" ())
+  ;; (declare-function minibuffer-keyboard-quit "delsel" ())
   (if (active-minibuffer-window)
       ;; This way is generic across multiple frames but our setup isn't
       ;; typically using multiple frames yet.

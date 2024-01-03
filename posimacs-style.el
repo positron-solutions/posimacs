@@ -139,8 +139,6 @@
   (setopt doom-modeline-env-version nil)
   (setopt doom-modeline-height 34))
 
-;; A slightly more informative scratch buffer
-(setq initial-scratch-message ";; Only The Future Is Certain.")
 
 (use-package hl-line
   :elpaca nil
