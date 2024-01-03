@@ -9,14 +9,14 @@
 
 ;;; Code:
 
-;; Elpaca bootstrap.  Last updated 2023-12-15
+;; Elpaca bootstrap.  Last updated 01-02-2024
 (defvar elpaca-installer-version 0.6)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref "ad60abc45126300f5c743e83665f05424eb95646" ; static version
-                              :files (:defaults (:exclude "extensions"))
+                              :ref nil
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
                               :build (:not elpaca--activate-package)))
 (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
        (build (expand-file-name "elpaca/" elpaca-builds-directory))
@@ -25,6 +25,7 @@
   (add-to-list 'load-path (if (file-exists-p build) build repo))
   (unless (file-exists-p repo)
     (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
     (condition-case-unless-debug err
         (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
                  ((zerop (call-process "git" nil buffer t "clone"
@@ -61,6 +62,7 @@
 
 (elpaca no-littering
   (require 'no-littering))
+
 (elpaca-wait) ; ensure elpaca finishes queues before continuing
 
 (elpaca auto-compile
