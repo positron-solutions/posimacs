@@ -9,8 +9,25 @@
 ;; experience.
 ;;
 ;; Some pure-style configurations can be found in posimacs-style.el
+;; Completions and more general prog-mode configuration is in posimacs-prog.el
 
 ;;; Code:
+(use-package elisp-mode
+  :elpaca nil
+  :config
+  ;; On save, check parens
+
+(with-eval-after-load 'company
+  (defun pmx--company-elisp-tweaks ()
+    (setq-local company-backends '((company-capf
+                                    company-dabbrev-code)
+                                   (company-dabbrev-code company-gtags company-etags company-keywords)
+                                   company-dabbrev)))
+  (with-eval-after-load 'elisp-mode
+    (add-hook 'emacs-lisp-mode-hook #'pmx--company-elisp-tweaks)
+    (add-hook 'lisp-interaction-mode-hook #'pmx--company-elisp-tweaks))
+  (with-eval-after-load 'ielm
+    (add-hook 'ielm-mode-hook #'pmx--company-elisp-tweaks)))
 
 (use-package package-lint)
 
