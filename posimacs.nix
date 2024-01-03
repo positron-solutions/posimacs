@@ -23,10 +23,10 @@ in {
   ];
 
   config = {
-
     # customizing the build or version of an Emacs package
     nixpkgs.overlays = [ 
       emacs-overlay.overlays.default
+      # Add an explicit source to the flake if you require
       # (final : prev: {
       #   emacs = prev.emacs.overrideAttrs (old: {
       #     name = "emacs29";
