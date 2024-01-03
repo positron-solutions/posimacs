@@ -198,15 +198,20 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
                     eieio--unbound)))
    (object-slots obj) "\n"))
 
-;; TODO Requires dash
-(defun pmx-dump-object (obj)
-  "Return a plist of slot-value pairs of eieio OBJ."
-   (->>
-    (object-slots obj)
-    (--map (list it (if (slot-boundp obj it)
-                        (eieio-oref obj it)
-                      eieio--unbound)))
-    (-concat)))
+;; TODO requires some tool
+(use-package debbugs
+  :commands (debbugs-gnu))
+
+;; TODO move to a package for Elisp helpers
+(with-eval-after-load 'dash
+  (defun pmx-dump-object (obj)
+    "Return a plist of slot-value pairs of eieio OBJ."
+    (->>
+     (object-slots obj)
+     (--map (list it (if (slot-boundp obj it)
+                         (eieio-oref obj it)
+                       eieio--unbound)))
+     (-concat))))
 
 (provide 'posimacs-elisp)
 ;;; posimacs-elisp.el ends here
