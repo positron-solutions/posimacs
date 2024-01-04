@@ -175,10 +175,10 @@ determine the exact padding."
     :inherit 'fixed-pitch-serif
     :slant 'italic
     :foreground comments
-    :background (if posimacs-dark-comment-bg (doom-lighten bg 0.05)))
+    :background (if posimacs-dark-comment-bg (doom-lighten bg 0.05) 'unspecified))
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
-    :foreground doc-comments)
+    :foreground (or doc-comments 'unspecified))
 
 ;;;;; Flycheck
    (flycheck-popup-tip-face :background bg-blue :foreground fg-alt)
@@ -255,7 +255,7 @@ determine the exact padding."
 
 ;;;;; Modeline, Solaire modeline and Doom modeline
    (mode-line
-    :background modeline-bg :foreground modeline-fg
+    :background modeline-bg :foreground (or modeline-fg 'unspecified)
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg)))
    (mode-line-inactive
     :background modeline-bg-inactive :foreground modeline-fg-alt
