@@ -8,6 +8,7 @@
 ;;; Code:
 
 (use-package magit
+  :elpaca (magit :tag latest)
   :custom
   ;; also try magit-display-buffer-fullframe-status-v1
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)

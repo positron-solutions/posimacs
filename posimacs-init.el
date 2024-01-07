@@ -80,6 +80,26 @@
   (auto-compile-on-save-mode 1))
 (elpaca-wait)
 
+;; Make elpaca work with :tag t
+;; https://github.com/progfolio/elpaca/issues/126
+(defun +elpaca-recipe-tag-latest (recipe)
+  "Translate :tag RECIPE keyword's :latest option."
+  ;; Only applies when a recipe has specified :tag :latest.
+  (when-let ((tag (plist-get recipe :tag))
+             ((eq tag 'latest)))
+    (list :depth nil      ; Can't rely on a shallow clone to get the latest tag.
+          :pre-build      ; Grab the most recent tag and check it out.
+          '(let* ((tag (elpaca-with-process
+                           (elpaca-process-call "git" "describe" "--tag" "--abbrev=0" "--always")
+                         (if success (string-trim stdout)
+                           (error "Unable to find latest tag: %S" stderr)))))
+             (elpaca-with-process (elpaca-process-call "git" "checkout" tag)
+               (if success (message "checked out tag: %s" tag)
+                 (error "Unable to check out tag: %S" stderr))))
+          ;; remove our custom value so it does not interfere with the usual value checks.
+          :tag nil)))
+(push #'+elpaca-recipe-tag-latest elpaca-recipe-functions)
+
 ;; See posimacs-early-init.el for initial replacement.
 (defun pmx--elpaca-after-init ()
   "Undo filename handler trick and delete self for fun."
