@@ -31,16 +31,16 @@
 (setq-default
  package-native-compile t
  inhibit-startup-message t
- frames-inhibit-implied-resize t         ; please don't mess up screencasts
+ frames-inhibit-implied-resize t        ; please don't mess up screencasts
  mode-line-format nil
  default-frame-alist
  '((tool-bar-lines . 0)
    (menu-bar-lines . 0)
    (internal-border-width . 0)
    (undecorated . t)
-   (background-color . "#000000")       ; said to reduce startup flicker on theme
-   (ns-appearance . dark)               ; darwin
-   (ns-transparent-titlebar . t)        ; darwin
+   (background-color . "#000000")      ; said to reduce startup flicker on theme
+   (ns-appearance . dark)              ; darwin
+   (ns-transparent-titlebar . t)       ; darwin
    (vertical-scroll-bars . nil)
    (horizontal-scroll-bars . nil)
    (use-frame-synchronization . t)))

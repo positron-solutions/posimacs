@@ -64,7 +64,7 @@
   (setopt org-habit-show-habits-only-for-today t)
   (setopt org-agenda-show-future-repeats nil)
   (setopt org-blank-before-new-entry '((heading . t)
-                                     (plain-list-item . auto)))
+                                       (plain-list-item . auto)))
   (setopt org-cycle-separator-lines 2)
 
   ;; export settings
