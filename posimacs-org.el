@@ -213,7 +213,7 @@
 
 (use-package screencap
   :elpaca nil
-  :after scratch-pkgs)
+  :after transient)
 
 ;; (setq next-screen-context-lines 30)
 
