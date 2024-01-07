@@ -81,6 +81,12 @@
   (keymap-unset org-src-mode-map "C-c '")
   (keymap-set org-src-mode-map "C-c C-c" #'org-edit-src-exit)
 
+  ;; TODO this is really scattered.
+  ;; See visual fill mode, the M-q binding, the default width settings in
+  ;; defaults.
+  ;; Also see adaptive wrap.
+  (add-hook 'org-mode-hook #'visual-line-mode)
+
   ;; Set timer to save org buffers and write a commit at midnight
   (defun pmx-commit-agenda-files (&rest _)
     (if-let ((git-bin (executable-find "git"))
@@ -102,6 +108,11 @@
       (error "Could not find git executable")))
 
   (run-at-time "24:00" t #'pmx-commit-agenda-files))
+
+;; works with `visual-line-mode'
+(use-package adaptive-wrap
+  :config
+  (add-hook 'org-mode-hook #'adaptive-wrap-prefix-mode))
 
 ;; see agenda whenever you come back from lunch
 (use-package idle-org-agenda
