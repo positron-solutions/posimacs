@@ -25,8 +25,8 @@
   ;; having cycling issues
   ;; (setopt org-fold-core-style 'overlays)
 
-  (setopt org-mouse-1-follows-link nil)
-  (setopt org-return-follows-link t)
+  (setopt org-mouse-1-follows-link t)
+  (setopt org-return-follows-link nil)
 
   (setopt org-startup-folded 'show2levels)
   (setopt org-list-indent-offset 0)             ; bullet lists
