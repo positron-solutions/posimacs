@@ -59,9 +59,51 @@
   (setopt keypression-concat-self-insert nil)
   (setopt keypression-frame-background-mode 'dark))
 
-;; (use-package keypression
-;;   :elpaca (keypression :host github :repo "chuntaro/emacs-keypression"
-;;                        :remotes ("positron" :repo "chuntaro/emacs-keypression")))
+(use-package keycast
+  :config
+  (setopt keycast-mode-line-format
+          "%k%c%r ")
+  (setopt keycast-substitute-alist
+          '((keycast-log-erase-buffer nil nil)
+            (transient-update         nil nil)
+            (self-insert-command      nil nil)
+            (mwheel-scroll nil nil)))
+
+  (defvar moody--active-window (selected-window))
+
+  ;; Unfortunately "for historical reasons" according to the manual, there is no
+  ;; facility to read the actual `selected-window' when it has been temporarily
+  ;; set.  Even if you know what you are doing.
+  (defun moody-window-active-p ()
+    "Return t if the selected window is the active window.
+Or put differently, return t if the possibly only temporarily
+selected window is still going to be selected when we return
+to the command loop."
+    (eq (selected-window) moody--active-window))
+
+  (defun moody--set-active-window (_)
+    (let ((win (selected-window)))
+      (setq moody--active-window
+            (if (minibuffer-window-active-p win)
+                (minibuffer-selected-window)
+              win))))
+  (add-hook 'pre-redisplay-functions #'moody--set-active-window)
+
+  ;; The actual integration
+  (defun pmx-keycast-doom-modeline-update (return)
+    (if (moody-window-active-p)
+        (concat return " " keycast-last-formatted)
+      return))
+
+  ;; Mode line hooks get called on start and stop :-)
+  (defun pmx-keycast-doom-modeline-integrate ()
+    (if keycast-freestyle-mode
+        (advice-add #'doom-modeline-segment--buffer-position :filter-return
+                    #'pmx-keycast-doom-modeline-update)
+      (advice-remove #'doom-modeline-segment--buffer-position
+                     #'pmx-keycast-doom-modeline-update)))
+
+  (add-hook 'keycast-freestyle-mode-hook #'pmx-keycast-doom-modeline-integrate))
 
 ;;;###Autoload
 (defun pmx-screenshot-svg ()

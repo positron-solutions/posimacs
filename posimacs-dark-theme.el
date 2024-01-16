@@ -283,6 +283,10 @@ determine the exact padding."
    (whitespace-indentation :inherit 'default)
    (whitespace-big-indent :inherit 'default)
 
+;;; Keycast
+   (keycast-key :weight 'bold :foreground base0 :background lime)
+   (keycast-command :weight 'bold :foreground lime)
+
 ;;;;; ivy-mode
    (ivy-current-match :background light-spark :foreground bg :distant-foreground spark :weight 'normal)
    (ivy-posframe :background base1 :foreground fg)
