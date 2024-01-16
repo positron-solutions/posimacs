@@ -175,7 +175,7 @@
    (org-modern-hide-stars 'leading)
 
    ;; I like to change up my stars
-   (org-modern-star '("∯" "∮" "∇" "Σ" "∞" "∴"))
+   (org-modern-star '("∯" "∮" "∇" "σ" "∞" "∴"))
    ;; (org-modern-star '("♨" "✈" "✲" "⍟" "✰" "▻" "▸")
    ;; (org-modern-star '("◩" "⬙" "◲" "◇" "▿"))
    ;; (org-modern-star '("█" "▟" "▞" "▄" "▘" "▗" "▁"))
