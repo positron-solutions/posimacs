@@ -82,13 +82,20 @@
                       :family "Roboto Slab"
                       :height 1.5
                       :inherit 'default)
-  (set-face-attribute 'shortdoc-heading nil
-                      :family "Roboto Slab"
-                      :height 1.3
-                      :inherit 'default)
   (set-face-attribute 'helpful-heading nil
                       :family "Roboto Slab"
                       :height 1.3
+                      :inherit 'default))
+
+(use-package shortdoc
+  :elpaca nil
+  :config
+  (set-face-attribute 'shortdoc-section nil :inherit 'fixed-pitch)
+  (set-face-attribute 'shortdoc-heading nil :inherit 'fixed-pitch)
+  (set-face-attribute 'shortdoc-heading nil
+                      :family "Roboto Slab"
+                      :height 1.3
+                      :weight 'bold
                       :inherit 'default))
 
 (use-package doom-themes
