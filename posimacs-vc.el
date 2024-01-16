@@ -25,6 +25,16 @@
   :after magit
   :hook (magit-mode-hook . magit-todos-mode))
 
+(use-package ediff
+  :elpaca nil
+  ;; Prot's setup.  These are experimental.
+  :config
+  (setopt ediff-keep-variants nil)
+  ;; (setopt ediff-make-buffers-readonly-at-startup nil)
+  ;; (setopt ediff-merge-revisions-with-ancestor t)
+  ;; (setopt ediff-show-clashes-only t)
+  (setopt ediff-split-window-function 'split-window-horizontally)
+  (setopt ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package git-messenger)
 
