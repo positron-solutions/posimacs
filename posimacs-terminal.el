@@ -1,19 +1,21 @@
 ;;; posimacs-terminal --- Running Normal Things
 
 ;;; Commentary:
-;;
-;; Uses Elisp only EAT with it's cool modes I don't understand yet.
+
+;; Eat with some shortcuts to allow implicit mode changes.
 
 ;;; Code:
 
 (use-package eat
   :after avy
   :config
-  (add-hook 'eat-session-created-hook #'eat-semi-char-mode)
+  (setopt eat-query-before-killing-running-terminal 'auto)
+  (add-hook 'eat-session-created-hook #'eat-emacs-mode)
   (keymap-set eat-semi-char-mode-map "M-o" nil)
+
   (defun pmx--eat-jump-to-line ()
     (interactive)
-    (eat-line-mode)
+    (eat-emacs-mode)
     (call-interactively #'avy-goto-word-1))
   (keymap-set eat-semi-char-mode-map "M-j" #'pmx--eat-jump-to-line)
 
@@ -21,7 +23,9 @@
     (interactive)
     (eat-semi-char-mode)
     (goto-char (point-max)))
-  (keymap-set eat-line-mode-map "RET" #'pmx--eat-return-to-semi-char)
+  (keymap-set eat-mode-map
+              "RET" #'pmx--eat-return-to-semi-char)
+
   (define-obsolete-function-alias 'vterm #'eat "0.1.0"))
 
 (provide 'posimacs-terminal)
