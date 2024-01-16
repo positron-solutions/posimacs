@@ -19,7 +19,7 @@
 ;;; Filling and truncation
 ;; Always truncate in prog modes, never in any other mode.
 (setopt truncate-lines nil)
-(setq truncate-partial-width-windows nil) ; interacts with truncate-lines
+(setopt truncate-partial-width-windows nil) ; interacts with truncate-lines
 (defun pmx--truncate-prog ()
   "Hook function."
   (setq-local truncate-lines t))
