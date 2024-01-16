@@ -82,6 +82,10 @@
                       :family "Roboto Slab"
                       :height 1.5
                       :inherit 'default)
+  (set-face-attribute 'shortdoc-heading nil
+                      :family "Roboto Slab"
+                      :height 1.3
+                      :inherit 'default)
   (set-face-attribute 'helpful-heading nil
                       :family "Roboto Slab"
                       :height 1.3

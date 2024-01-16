@@ -345,6 +345,13 @@ determine the exact padding."
    (org-document-title :inherit 'org-level-1 :weight 'bold
                        :height 1.42 :foreground light-spark)
 
+   ;; Shortdoc section, heading
+   (shortdoc-section :inherit 'fixed-pitch)
+   (shortdoc-heading :inherit 'fixed-pitch)
+
+   ;; Helpful heading
+   (helpful-heading :inherit 'info-title-3)
+
    ;; Ivy is using this in completions
    (ivy-org :inherit 'default :foreground chill)
 
