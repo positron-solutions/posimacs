@@ -18,10 +18,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    #emacs29-src = {
-    #   url = "github:emacs-mirror/emacs/emacs-29.1";
-    #   flake = false;
-    #};
+    emacs29-src = {
+      url = "github:emacs-mirror/emacs/emacs-29.1.90";
+      flake = false;
+    };
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";

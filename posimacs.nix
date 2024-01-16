@@ -27,13 +27,14 @@ in {
     nixpkgs.overlays = [ 
       emacs-overlay.overlays.default
       # Add an explicit source to the flake if you require
-      # (final : prev: {
-      #   emacs = prev.emacs.overrideAttrs (old: {
-      #     name = "emacs29";
-      #     version = emacs29-src.shortRev;
-      #     src = emacs29-src;
-      #   });
-      #  })
+      (final : prev: {
+        emacs = prev.emacs.overrideAttrs (old: {
+          name = "emacs29";
+          version = "29.1.90";
+          src = emacs29-src;
+          # patches = null;
+        });
+      })
     ];
 
     # Install packages from the top level package set if your module depends on them
@@ -50,7 +51,7 @@ in {
     ];
 
     programs.emacs = {
-      package = (pkgs.emacsPackagesFor pkgs.emacs29-gtk3).emacsWithPackages
+      package = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
         (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 
