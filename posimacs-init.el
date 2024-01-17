@@ -66,8 +66,11 @@
 (elpaca-wait) ; ensure elpaca finishes queues before continuing
 
 ;; Scratch buffers that are useful
-(elpaca (scratch-pkgs :host github :repo "positron-solutions/scratch-pkgs")
-  (require 'scratch-pkgs))
+(elpaca (scratch-pkgs
+         ;; :host github :repo "positron-solutions/scratch-pkgs"
+         :repo "~/Desktop/positron/scratch-pkgs/")
+  (setopt scratch-pkgs-mode 'elpaca)
+  (stratch-pkgs-integrate))
 
 (elpaca auto-compile
   (require 'auto-compile)
