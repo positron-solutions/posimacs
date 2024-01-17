@@ -49,6 +49,9 @@
 
 ;; Install use-package support
 (elpaca elpaca-use-package
+  ;; Handy debugging expression
+  ;; (setq use-package-verbose t)
+
   ;; Enable :elpaca use-package keyword.
   (elpaca-use-package-mode)
   ;; Assume :elpaca t unless otherwise specified.
@@ -56,9 +59,6 @@
 ;; Load no-littering just after bootsrapping elpaca.  Otherwise, downstream
 ;; packages may initialize to weird locations, often resulting in missing
 ;; history and unwanted file littering
-
-;; Handy to keep commented
-;; (setq use-package-verbose t)
 
 (elpaca no-littering
   (require 'no-littering))
