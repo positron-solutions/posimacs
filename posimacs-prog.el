@@ -9,14 +9,6 @@
 
 ;;; Code:
 
-;; (use-package eglot
-;;   :config
-
-;;   (setopt eglot-inlay-hints-mode nil)
-;;   ;; (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil")))
-;;   ;; :hook (nix-ts-mode . eglot-ensure)
-;;   )
-
 (use-package nixpkgs-fmt)
 
 (use-package list-environment) ; specifically for inspecting nix envs
