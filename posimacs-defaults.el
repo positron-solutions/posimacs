@@ -36,7 +36,7 @@
 ;; Fill while typing by default in these modes
 (add-hook 'fundamental-mode-hook #'auto-fill-mode)
 (add-hook 'markdown-mode-hook #'auto-fill-mode)
-(add-hook 'emacs-lisp-mode-hook #'auto-fill-mode)
+(add-hook 'prog-mode-hook #'auto-fill-mode)
 ;;; End filling & truncation
 
 (pixel-scroll-precision-mode 1)

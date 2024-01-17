@@ -18,7 +18,10 @@
   ;; On save, check parens
   (defun pmx--setup-check-paren-on-save ()
     (add-hook 'after-save-hook #'check-parens nil t))
-  (add-hook 'emacs-lisp-mode-hook #'pmx--setup-check-paren-on-save))
+  (add-hook 'emacs-lisp-mode-hook #'pmx--setup-check-paren-on-save)
+  (defun pmx--disable-adaptive-auto-fill ()
+    (setq-local adaptive-auto-fill nil))
+  (add-hook 'emacs-lisp-mode-hook #'pmx--disable-adaptive-auto-fill))
 
 (with-eval-after-load 'company
   (defun pmx--company-elisp-tweaks ()
