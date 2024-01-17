@@ -154,7 +154,7 @@
   :elpaca nil
   :config
   (recentf-load-list)
-  (setq recentf-max-saved-items 200)
+  (setq recentf-max-saved-items 400)
 
   ;; bookmarks are a workaround for fine-grained history for files in these
   ;; directories
