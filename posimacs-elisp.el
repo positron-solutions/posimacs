@@ -39,7 +39,6 @@
 
 (setopt help-at-pt-display-when-idle t)
 
-
 (use-package elisp-depend)
 
 (use-package flycheck-package
@@ -75,6 +74,8 @@ history."
     (add-hook 'kill-buffer-hook #'pmx--ielm-save-history nil t))
 
   (add-hook 'ielm-mode-hook #'pmx-ielm-save-history)
+
+  (defalias 'ielm-history #'comint-dynamic-list-input-ring)
 
   (defun pmx--ielm-comint-truncate ()
     "When outputs are huge, avoid printing them because it will cause the buffer
