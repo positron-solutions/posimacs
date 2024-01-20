@@ -34,6 +34,7 @@
   (setq ivy-use-ignore-default t)
   (setq ivy-wrap t)
   (setq ivy-height 12)
+  (setopt ivy-use-virtual-buffers t)
   (setq ivy-ignore-buffers
         '("magit[\-:]"
           "*Flycheck"
@@ -85,8 +86,12 @@
 
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
 (use-package counsel
+  :commands (counsel-mode)              ; lol.. I'm being ridiculousa and making
+                                        ; this load after the elpaca init hook
+                                        ; for no reason.  It's just fun that it
+                                        ; seems to work out okay.
   :elpaca (counsel :autoloads t)
-  :config
+  :init
   (letrec ((load-counsel (lambda ()
                            (counsel-mode)
                            (remove-hook 'elpaca-after-init-hook load-counsel))))
@@ -94,7 +99,6 @@
   (setopt counsel-find-file-at-point t))
 
 ;; Git & project tree based searching for files
-;; TODO move over with VC stuff
 (use-package projectile
   :after magit
   :init (setq projectile-completion-system 'ivy)
