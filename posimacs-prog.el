@@ -159,11 +159,19 @@
   (add-hook 'text-mode-hook 'yas-minor-mode))
 
 (use-package flycheck
+  :commands (global-flycheck-mode)
+  :elpaca (flycheck :autoloads t)
   :config
   (setopt flycheck-emacs-lisp-load-path 'inherit)
   (setopt flycheck-display-errors-delay 4.0)
-  (setopt flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
-  (global-flycheck-mode))
+  (setopt flycheck-check-syntax-automatically '(save idle-change new-line
+                                                     mode-enabled))
+  (letrec ((flycheck-init
+            (lambda ()
+              (global-flycheck-mode)
+              (remove-hook 'elpaca-after-init-hook
+                           flycheck-init))))
+    (add-hook 'elpaca-after-init-hook flycheck-init)))
 
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
@@ -184,6 +192,7 @@
   :hook (k8s-mode . yas-minor-mode))
 
 (use-package kubernetes
+  :defer t
   :elpaca (kubernetes :autoloads t))
 
 (use-package yaml-pro
