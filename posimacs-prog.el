@@ -13,7 +13,7 @@
 
 (use-package list-environment) ; specifically for inspecting nix envs
 
-(setenv "LSP_USE_PLISTS" "true")
+(setenv "LSP_USE_PLISTS" "true")        ; TODO at least one of these is redundant
 (use-package lsp-mode
   :defer t
   :init
@@ -84,6 +84,7 @@
   (setopt company-dabbrev-code-everywhere t)
   (setopt company-dabbrev-code-other-buffers t)
   (setopt company-tooltip-maximum-width 80) ; LSP completions are looooong
+  (setopt company-selection-wrap-around t)
 
   (defun just-one-face (fn &rest args)
     (let ((orderless-match-faces [completions-common-part]))

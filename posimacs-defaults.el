@@ -143,6 +143,9 @@
 ;; visit files at same position
 (save-place-mode 1)
 
+;; Turn off initial scratch
+(setq initial-scratch-message nil)
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; Basic packages ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -158,10 +161,10 @@
 
   ;; bookmarks are a workaround for fine-grained history for files in these
   ;; directories
-  (add-to-list 'recentf-exclude
-               (recentf-expand-file-name no-littering-var-directory))
-  (add-to-list 'recentf-exclude
-               (recentf-expand-file-name no-littering-etc-directory))
+  ;; (add-to-list 'recentf-exclude
+  ;;              (recentf-expand-file-name no-littering-var-directory))
+  ;; (add-to-list 'recentf-exclude
+  ;;              (recentf-expand-file-name no-littering-etc-directory))
 
   (run-at-time nil (* 5 60) 'recentf-save-list))
 

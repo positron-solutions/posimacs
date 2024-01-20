@@ -151,6 +151,7 @@
   :elpaca nil
   :config
   (global-hl-line-mode 1))
+
 ;; ;; https://github.com/Malabarba/beacon
 ;; ;; When you scroll, the cursor highlights very loudly
 ;; (use-package beacon

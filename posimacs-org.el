@@ -131,8 +131,7 @@
   (setq org-appear-autolinks t)
   (setq org-appear-trigger 'always)
   (setq org-appear-autosubmarkers t)
-  (setq org-appear-autoentities t)
-  (add-hook 'org-mode-hook #'org-appear-mode))
+  (setq org-appear-autoentities t))
 
 (use-package orgit
   :commands (orgit-store-link)
@@ -337,7 +336,7 @@
                       'height 0.2
                       'face '(inherit 'org-level-1)))
   (setopt org-tree-slide-skip-outline-level 0)
-  (setopt org-tree-slide-fold-subtrees-skipped t)
+  (setopt org-tree-slide-fold-subtrees-skipped nil)
 
   (defun pmx-org-tree-slide-quit ()
     "Lol, guys, could we have a quit command? Oh."

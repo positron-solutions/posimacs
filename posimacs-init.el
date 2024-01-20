@@ -49,8 +49,17 @@
 
 ;; Install use-package support
 (elpaca elpaca-use-package
-  ;; Handy debugging expression
+  ;; Handy debugging expressions
   ;; (setq use-package-verbose t)
+  (setq use-package-compute-statistics t)
+  
+  (defun elpaca-update (arg)
+    "Fetch, merge, rebuild."
+    (interactive "p")
+    (let ((current-prefix-arg 4)
+          (prefix-arg 4))
+      (message "%S" arg)
+      (call-interactively #'elpaca-merge)))
 
   ;; Enable :elpaca use-package keyword.
   (elpaca-use-package-mode)

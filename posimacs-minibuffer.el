@@ -11,7 +11,7 @@
 
 ;;; Code:
 
-(use-package swiper ; the better buffer search
+(use-package swiper                ; the better incremental search
   :bind ("M-s" . swiper))
 
 ;; case insensitive matching of filenames
@@ -20,6 +20,7 @@
 (use-package amx                   ; better M-x interface -- integrates with Ivy
   :after ivy
   :config
+  (setopt amx-history-length 100)
   (amx-mode t))
 
 (use-package ivy
