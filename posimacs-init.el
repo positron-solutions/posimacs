@@ -132,10 +132,10 @@
 (use-package gcmh
   :demand t
   :config
-  ;; (setopt garbage-collection-messages t)
-  (setopt gcmh-high-cons-threshold (* 128 800000))
-  (setopt gcmh-low-cons-threshold (* 16 800000))
-  (setopt gc-cons-percentage 0.7)
+  (setopt garbage-collection-messages t)
+  (setopt gcmh-high-cons-threshold (* 512 800000))
+  (setopt gcmh-low-cons-threshold (* 32 800000))
+  (setopt gc-cons-percentage 0.4)
   (add-hook 'elpaca-after-init-hook (lambda () (gcmh-mode 1))))
 
 ;;; Load modules.

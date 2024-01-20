@@ -18,6 +18,7 @@
 ;; https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
 ;; Note, `gcmh' package will modify this later, so we don't reset it.
 (setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 2.0
       file-name-handler-alist nil)
 
 ;; Use the no-littering var directory for elisp native compile cache
