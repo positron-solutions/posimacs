@@ -21,6 +21,18 @@
     (call-interactively #'avy-goto-word-1))
   (keymap-set eat-semi-char-mode-map "M-j" #'pmx--eat-jump-to-line)
 
+  (defun pmx--eat-swiper-to-line ()
+    (interactive)
+    (eat-emacs-mode)
+    (call-interactively #'swiper))
+  (keymap-set eat-semi-char-mode-map "M-s" #'pmx--eat-swiper-to-line)
+
+  (defun pmx--eat-set-mark-to-line ()
+    (interactive)
+    (eat-emacs-mode)
+    (call-interactively #'set-mark-command))
+  (keymap-set eat-semi-char-mode-map "C-SPC" #'pmx--eat-set-mark-to-line)
+
   (defun pmx--eat-return-to-semi-char ()
     (interactive)
     (eat-semi-char-mode)
