@@ -17,14 +17,13 @@
 ;; case insensitive matching of filenames
 (setq read-file-name-completion-ignore-case t)
 
-(use-package amx ; better M-x interface -- integrates with Ivy
-  :delight amx-mode
+(use-package amx                   ; better M-x interface -- integrates with Ivy
+  :after ivy
   :config
   (amx-mode t))
 
 (use-package ivy
-  :delight ivy-mode
-  :after orderless
+  :after (orderless counsel)
   :config
   (ivy-mode)
   ;; Always ignore buffers set in `ivy-ignore-buffers'
@@ -57,13 +56,13 @@
   (ivy-use-virtual-buffers t))
 
 (use-package ivy-rich  ; More informative ivy completionsq
-  :after (ivy counsel)
+  :after ivy
   :config
   (ivy-rich-mode +1)
   (ivy-rich-project-root-cache-mode +1))
 
 (use-package all-the-icons-ivy-rich
-  :after counsel-projectile
+  :after ivy
   :init  (all-the-icons-ivy-rich-mode 1))
 
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
@@ -71,8 +70,8 @@
 ;; rather than the first match being at the start of a suggestion
 (use-package counsel
   :delight
+  :elpaca (counsel :autoloads t)
   :config
-  (counsel-mode)
   (setq counsel-find-file-at-point t)
   (setq ivy-initial-inputs-alist  ; by default, match anywhere in name
         (quote
@@ -87,6 +86,10 @@
           (org-capture-refile . "")
           (Man-completion-table . "")
           (woman . "")))))
+  (letrec ((load-counsel (lambda ()
+                           (counsel-mode)
+                           (remove-hook 'elpaca-after-init-hook load-counsel))))
+    (add-hook 'elpaca-after-init-hook load-counsel))
 
 ;; Git & project tree based searching for files
 ;; TODO move over with VC stuff
@@ -104,10 +107,11 @@
   (setq projectile-switch-project-action 'magit-status))
 
 ;; provides emacs ripgrep integration for counsel-projectil-ripgrep
-(use-package projectile-ripgrep)
+(use-package projectile-ripgrep
+  :after projectile)
 
 (use-package counsel-projectile
-  ; :after (counsel projectile)
+  :after (counsel projectile)
   :config
   (counsel-projectile-mode))
 

@@ -25,7 +25,9 @@
 (use-package vlf ; view large files
   :config (require 'vlf-setup))
 
-(use-package sudo-edit) ; upgrade perms to write read-only file
+(use-package sudo-edit ; upgrade perms to write read-only file
+  :commands (sudo-edit
+             sudo-edit-find-file))
 
 (defun pmx--keypression-ignore (cmd)
   "Ignore bad CMD."

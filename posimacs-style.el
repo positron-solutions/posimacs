@@ -97,7 +97,6 @@
 
 (use-package doom-themes
   ;; TODO see if you can leave the loading order independent
-  :after org-modern
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
   (load-theme 'posimacs-dark t)
@@ -107,8 +106,6 @@
            (load-theme 'posimacs-dark t)
            (pmx--setup-fonts)
            (pmx--setup-korean-fonts)
-           ;; after org-modern
-           (pmx-setup-org-fonts)
 
            ;; Corrects (and improves) org-mode's native fontification.
            (doom-themes-org-config))))

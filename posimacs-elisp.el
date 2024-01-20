@@ -35,7 +35,10 @@
   (with-eval-after-load 'ielm
     (add-hook 'ielm-mode-hook #'pmx--company-elisp-tweaks)))
 
-(use-package package-lint)
+(use-package package-lint
+  :commands (package-lint-current-buffer
+             package-lint-describe-symbol-history)
+  :elpaca (package-lint :autoloads t))
 
 (setopt help-at-pt-display-when-idle t)
 
@@ -125,11 +128,10 @@ to be slow."
 ;; This package makes all help buffers much more informative and easier to read.
 ;; This makes it much easier to introspect emacs state and elisp code.
 (use-package helpful
+  :elpaca (helpful :autoloads t)
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-key] . helpful-key))
-
-  :demand t
   :config
   (set-face-attribute 'helpful-heading nil
                           :family "Roboto Slab"

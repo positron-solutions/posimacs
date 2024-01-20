@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package org
-  :after projectile
+  :defer t
   :config
 
   ;; When do we ever want to confirm after explicitly requesting execution?
@@ -111,17 +111,22 @@
 
 ;; works with `visual-line-mode'
 (use-package adaptive-wrap
+  :after org
   :config
   (add-hook 'org-mode-hook #'adaptive-wrap-prefix-mode))
 
 ;; see agenda whenever you come back from lunch
 (use-package idle-org-agenda
+  :after org
+  :defer 10
   :config
   (setq idle-org-agenda-interval 900)
   (idle-org-agenda-mode))
 
 ;; show things when cursor gets there
 (use-package org-appear
+  :elpaca (org-appear :autoloads t)
+  :hook org-mode
   :config
   (setq org-appear-autolinks t)
   (setq org-appear-trigger 'always)
@@ -130,6 +135,7 @@
   (add-hook 'org-mode-hook #'org-appear-mode))
 
 (use-package orgit
+  :commands (orgit-store-link)
   :elpaca (orgit
            :host github
            :repo "magit/orgit"))
@@ -166,6 +172,7 @@
 
 ;; just get the basics out of the way
 (use-package org-modern
+  :after org
   :hook ((org-mode                 . org-modern-mode)
          (org-agenda-finalize-hook . org-modern-agenda))
   :custom
@@ -187,15 +194,15 @@
    (org-modern-block-fringe t))
   :commands (org-modern-mode org-modern-agenda)
   :config
-  (add-hook 'org-modern-mode-hook #'pmx-setup-org-fonts)
-  :init
-  (global-org-modern-mode))
+  (add-hook 'org-modern-mode-hook #'pmx-setup-org-fonts))
 
 ;; render nodes at other places
-(use-package org-transclusion)
+(use-package org-transclusion
+  :after org)
 
 ;; for regenerating tocs (deprecated in favor of export TOCs)
-(use-package org-make-toc)
+(use-package org-make-toc
+  :after org)
 
 (use-package visual-fill-column
   :config
@@ -208,14 +215,12 @@
 (use-package hide-mode-line)
 
 (use-package moc
-  :elpaca nil
   :after org)
 
-(use-package screencap
-  :elpaca nil
-  :after transient)
+(use-package org-coke
+  :after org)
 
-;; (setq next-screen-context-lines 30)
+(use-package screencap)
 
 (defvar-local pmx-subtle-cursor-active nil)
 
@@ -308,13 +313,14 @@
   (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
 
 (use-package unfill
-  :config
-  (with-eval-after-load 'org
-    (keymap-set org-mode-map "M-q" #'unfill-paragraph)))
+  :after org
+  :bind (:map org-mode-map ("M-q" . #'unfill-paragraph)))
 
 ;; presenting
 (use-package org-tree-slide
   :after hide-mode-line
+  :elpaca (org-tree-slide :autoloads t)
+  :commands (org-tree-slide-mode)
   :config
   (setopt org-tree-slide-never-touch-face t)
   (setopt org-tree-slide-header t)
@@ -363,6 +369,7 @@
   (add-hook 'org-tree-slide-stop-hook #'pmx-presentation-stop))
 
 (use-package org-present
+  :after org
   :config
   (defun pmx-org-present-prepare-slide (buffer-name heading)
     ;; Show only top-level headlines
@@ -380,7 +387,8 @@
 ;; A pure library for manipulating & consuming org buffers.  This is really
 ;; useful for org hacking, but you can also use the built-in API's with the
 ;; benefit of deeper integration with the rest of org.
-(use-package org-ml)
+(use-package org-ml
+  :after org)
 
 (provide 'posimacs-org)
 

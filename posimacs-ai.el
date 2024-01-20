@@ -23,6 +23,7 @@
 (setenv "GPG_AGENT_INFO" nil)
 
 (use-package chatgpt-shell
+  :commands (chatgpt-shell)
   :custom
   ((chatgpt-shell-openai-key
     (lambda ()

@@ -15,6 +15,7 @@
 
 (setenv "LSP_USE_PLISTS" "true")
 (use-package lsp-mode
+  :defer t
   :init
   ;; LSP may send messages that are fairly large
   (setopt read-process-output-max 1048576) ; max of /proc/sys/fs/pipe-max-size
@@ -138,7 +139,8 @@
   (add-hook 'text-mode-hook
             (lambda () (setq-local company-minimum-prefix-length 4))))
 
-(use-package lsp-ivy)
+(use-package lsp-ivy
+  :defer t)
 
 (use-package orderless
   :custom
@@ -174,6 +176,19 @@
            :repo "remi-gelinas/nix-ts-mode")
   :init (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
   :hook (nix-ts-mode . lsp-deferred))
+
+;; Editing kubernetes yamls can link directly to API reference
+(use-package k8s-mode
+  :elpaca (k8s-mode :autoloads t)
+  :hook (k8s-mode . yas-minor-mode))
+
+(use-package kubernetes
+  :elpaca (kubernetes :autoloads t))
+
+(use-package yaml-pro
+  :elpaca (yaml-pro :autoloads t)
+  ;; TODO Set up mode hooks
+  )
 
 (provide 'posimacs-prog)
 ;;; posimacs-prog.el ends here
