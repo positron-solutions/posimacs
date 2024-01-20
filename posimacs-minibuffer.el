@@ -17,11 +17,14 @@
 ;; case insensitive matching of filenames
 (setq read-file-name-completion-ignore-case t)
 
-(use-package amx                   ; better M-x interface -- integrates with Ivy
+(use-package prescient
   :after ivy
-  :config
-  (setopt amx-history-length 100)
-  (amx-mode t))
+  (setopt prescient-history-length 200)
+  (setopt prescient-sort-length-enable t))
+
+(use-package ivy-prescient
+  :hook ivy-mode
+  :after ivy-prescient)
 
 (use-package ivy
   :after (orderless counsel)
@@ -60,20 +63,16 @@
             (org-capture-refile . "")
             (Man-completion-table . "")
             (woman . ""))))
-
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial-or-done)
 
   ;; prefer alt key more often
-  (define-key ivy-minibuffer-map (kbd "M-n") 'ivy-next-line)
-  (define-key ivy-minibuffer-map (kbd "M-p") 'ivy-previous-line)
+  ;; (define-key ivy-minibuffer-map (kbd "M-n") 'ivy-next-line)
+  ;; (define-key ivy-minibuffer-map (kbd "M-p") 'ivy-previous-line)
   (define-key ivy-minibuffer-map (kbd "C-n") nil)
-  (define-key ivy-minibuffer-map (kbd "C-p") nil)
-
-  :custom
-  (ivy-use-virtual-buffers t))
+  (define-key ivy-minibuffer-map (kbd "C-p") nil))
 
 (use-package ivy-rich  ; More informative ivy completionsq
-  :after ivy
+  :after (ivy counsel-projectile)
   :config
   (ivy-rich-mode +1)
   (ivy-rich-project-root-cache-mode +1))
