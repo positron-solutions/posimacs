@@ -113,21 +113,17 @@
           :tag nil)))
 (push #'+elpaca-recipe-tag-latest elpaca-recipe-functions)
 
-;; See posimacs-early-init.el for initial replacement.
-(defun pmx--elpaca-after-init ()
-  "Undo filename handler trick and delete self for fun."
-
-  ;; load user's persisted customize values.
-  (load
-   (setq custom-file (expand-file-name "customs.el" user-emacs-directory))
-   'noerror)
-
-  (setq file-name-handler-alist file-name-handler-alist--old)
-  (remove-hook 'elpaca-after-init-hook #'pmx--elpaca-after-init)
-  (fmakunbound #'pmx--elpaca-after-init)
-  (makunbound 'file-name-handler-alist--old))
-
-(add-hook 'elpaca-after-init-hook #'pmx--elpaca-after-init)
+;; This cleans up the settings done in posimacs-early-init.el
+;; See posimacs-early-init.el
+(letrec ((pmx-clean-up
+          (lambda ()
+            (load
+             (setq custom-file (expand-file-name "customs.el" user-emacs-directory))
+             'noerror)
+            (setq file-name-handler-alist file-name-handler-alist--old)
+            (remove-hook 'elpaca-after-init-hook pmx-clean-up)
+            (makunbound 'file-name-handler-alist--old))))
+  (add-hook 'elpaca-after-init-hook pmx-clean-up))
 
 ;; Idle garbage collection
 (use-package gcmh
