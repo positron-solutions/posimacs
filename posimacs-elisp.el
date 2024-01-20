@@ -131,6 +131,12 @@ to be slow."
 
   :demand t
   :config
+  (set-face-attribute 'helpful-heading nil
+                          :family "Roboto Slab"
+                          :height 1.0
+                          :weight 'bold
+                          :inherit 'info-title-3)
+
   ;; patch apropos buttons to call helpful instead of help
   (with-eval-after-load 'apropos
     (dolist (fun-bt '(apropos-function apropos-macro apropos-command))

@@ -78,13 +78,10 @@
                       :family "Roboto Slab"
                       :height 1.5
                       :inherit 'default)
+  ;; helpful has a :config expression for helpful-heading
   (set-face-attribute 'info-menu-header nil
                       :family "Roboto Slab"
                       :height 1.5
-                      :inherit 'default)
-  (set-face-attribute 'helpful-heading nil
-                      :family "Roboto Slab"
-                      :height 1.3
                       :inherit 'default))
 
 (use-package shortdoc
