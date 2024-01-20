@@ -83,10 +83,7 @@
   :init  (all-the-icons-ivy-rich-mode 1))
 
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
-;; The customization of ivy-initial-inputs-alist is to allow matching anywhere
-;; rather than the first match being at the start of a suggestion
 (use-package counsel
-  :delight
   :elpaca (counsel :autoloads t)
   :config
   (letrec ((load-counsel (lambda ()
@@ -99,7 +96,6 @@
 ;; TODO move over with VC stuff
 (use-package projectile
   :after magit
-  :delight
   :init (setq projectile-completion-system 'ivy)
   :config
   (projectile-mode +1)
