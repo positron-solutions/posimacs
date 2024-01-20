@@ -72,15 +72,6 @@
 (elpaca no-littering
   (require 'no-littering))
 
-(elpaca-wait) ; ensure elpaca finishes queues before continuing
-
-;; Scratch buffers that are useful
-(elpaca (scratch-pkgs
-         ;; :host github :repo "positron-solutions/scratch-pkgs"
-         :repo "~/Desktop/positron/scratch-pkgs/")
-  (setopt scratch-pkgs-mode 'elpaca)
-  (stratch-pkgs-integrate))
-
 (elpaca auto-compile
   (require 'auto-compile)
   ;; Don't load outdated .elc files
@@ -90,7 +81,17 @@
   (setopt native-comp-async-report-warnings-errors 'silent)
   (auto-compile-on-load-mode 1)
   (auto-compile-on-save-mode 1))
-(elpaca-wait)
+
+;; Scratch buffers that are useful
+(elpaca (scratch-pkgs
+         ;; :host github :repo "positron-solutions/scratch-pkgs"
+         :repo "~/Desktop/positron/scratch-pkgs/")
+  (require 'scratch-pkgs)
+  (setopt scratch-pkgs-mode 'elpaca)
+  (scratch-pkgs-integrate))
+
+;; TODO evidently Elpaca will strongly order the loading.
+(elpaca-wait) ; ensure elpaca finishes queues before continuing
 
 ;; Make elpaca work with :tag t
 ;; https://github.com/progfolio/elpaca/issues/126
