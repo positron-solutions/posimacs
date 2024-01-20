@@ -13,13 +13,7 @@
   ;; also try magit-display-buffer-fullframe-status-v1
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   :config
-  ;; stolen from https://www.manueluberti.eu/emacs/2018/02/17/magit-bury-buffer/
-  (defun pk-magit-kill-buffers (param)
-    "Restore window configuration and kill all Magit buffers."
-    (let ((buffers (magit-mode-get-buffers)))
-      (magit-restore-window-configuration)
-      (mapc #'kill-buffer buffers)))
-  (setq magit-bury-buffer-function #'pk-magit-kill-buffers))
+  (setopt magit-bury-buffer-function #'magit-mode-quit-window))
 
 (use-package magit-todos
   :after magit
