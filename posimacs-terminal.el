@@ -7,9 +7,11 @@
 ;;; Code:
 
 (use-package eat
+  :commands (eat eat-project eat-project-other-window)
   :after avy
   :config
   (setopt eat-query-before-killing-running-terminal 'auto)
+  (setopt eat-kill-buffer-on-exit t)
   (add-hook 'eat-session-created-hook #'eat-emacs-mode)
   (keymap-set eat-semi-char-mode-map "M-o" nil)
 
