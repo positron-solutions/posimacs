@@ -153,8 +153,7 @@ determine the exact padding."
 
 ;;;; --- extra faces ------------------------
 
-  (((all-the-icons-dblue &override) :foreground teal)
-   (elscreen-tab-other-screen-face :background bg-blue :foreground fg-alt)
+  ((elscreen-tab-other-screen-face :background bg-blue :foreground fg-alt)
 
    (evil-goggles-default-face :inherit 'region :background (doom-blend region bg 0.5))
 

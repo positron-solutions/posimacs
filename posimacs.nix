@@ -73,14 +73,6 @@ in {
       ALTERNATE_EDITOR = "TERM=xterm-256color emacs -nw";
     });
 
-    # pre-install fonts for all-the-icons
-    home.file.".local/share/fonts/all-the-icons.ttf".source = ./fonts/all-the-icons.ttf;
-    home.file.".local/share/fonts/file-icons.ttf".source = ./fonts/file-icons.ttf;
-    home.file.".local/share/fonts/fontawesome.ttf".source = ./fonts/fontawesome.ttf;
-    home.file.".local/share/fonts/material-design-icons.ttf".source = ./fonts/material-design-icons.ttf;
-    home.file.".local/share/fonts/octicons.ttf".source = ./fonts/octicons.ttf;
-    home.file.".local/share/fonts/weathericons.ttf".source = ./fonts/weathericons.ttf;
-
     # some more Korean fonts for extra nice looking Org mode
     home.file.".local/share/fonts/GowunBatang-Bold.ttf".source = ./fonts/GowunBatang-Bold.ttf;
     home.file.".local/share/fonts/GowunBatang-Regular.ttf".source = ./fonts/GowunBatang-Regular.ttf;

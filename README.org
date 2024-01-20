@@ -221,7 +221,7 @@ Otherwise you can just run =emacs= to watch the process manually.
 
 Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
 
-You will /still/ need to run =M-x all-the-icons-install-fonts= for icons to
+You will /still/ need to run =M-x nerd-icons-install-fonts= for icons to
 begin working.  Can't pre-install them as they are not picked up in
 =~/Library/Fonts/=
 

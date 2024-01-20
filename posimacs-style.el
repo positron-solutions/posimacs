@@ -27,18 +27,6 @@
 (add-hook 'emacs-lisp-mode-hook 'pmx-greek-lambda)
 (add-hook 'inferior-emacs-lisp-mode-hook 'pmx-greek-lambda)
 
-;; https://github.com/domtronn/all-the-icons.el
-;; File & other icons used by ivy, dired, and other packages to
-;; give more visual cues about completion options and lists of items
-(use-package all-the-icons
-  :config
-  (setq ielm-prompt (concat (all-the-icons-fileicon "emacs") ": "))
-  (setq ielm-dynamic-multiline-inputs nil) ; multi-line expression indent nicely
-  (setq ielm-header "Inferior Emacs Lisp Mode.  M-x `ielm-change-working-buffer' to hack on some live buffer.\n\n")) ; for real
-
-(use-package all-the-icons-dired
-  :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
-
 ;; 안영하세요
 (use-package mule
   :elpaca nil
@@ -132,7 +120,13 @@
   (parrot-animate-on-load t)
   (parrot-mode t)) ;; enables the mode
 
-(use-package nerd-icons)
+(use-package nerd-icons
+  :config
+  (setq ielm-prompt (concat (nerd-icons-sucicon "nf-custom-emacs") ": ")))
+
+(use-package nerd-icons-dired
+  :after nerd-icons
+  :hook dired-mode)
 
 (use-package doom-modeline
   :after nerd-icons
@@ -180,9 +174,8 @@
 
 ;; Gotta keep up with everyone else and their cool dashboards
 (use-package dashboard
-  :after all-the-icons
+  :after (nerd-icons doom-themes doom-modeline)
   :config
-
   ;; top stuff
   (setopt dashboard-startup-banner (concat user-emacs-directory "posimacs/graphics/posimacs-banner.png"))
   (setopt dashboard-set-navigator t)
@@ -190,15 +183,15 @@
   (setq dashboard-banner-logo-title nil)
 
   (setq dashboard-navigator-buttons
-        `(((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+        `(((,(nerd-icons-octicon "nf-oct-mark_github" :height 1.1 :v-adjust 0.0)
             "Github"
             "View Public Repository"
             (lambda (&rest _) (browse-url "https://github.com/positron-solutions/posimacs")))
-           (,(all-the-icons-octicon "flame" :height 1.1 :v-adjust 0.0)
+           (,(nerd-icons-octicon "nf-oct-flame" :height 1.1 :v-adjust 0.0)
             "Bugs"
             "Report an Issue or Request Feature"
             (lambda (&rest _) (browse-url "https://github.com/positron-solutions/posimacs/issues")))
-           (,(all-the-icons-faicon "reddit-alien" :height 1.1 :v-adjust 0.0)
+           (,(nerd-icons-faicon "nf-fa-reddit_alien" :height 1.1 :v-adjust 0.0)
             "Reddit"
             "Come to Emacs Subreddit!"
             (lambda (&rest _) (browse-url "https://www.reddit.com/r/emacs/top/?t=month"))))))
@@ -210,15 +203,15 @@
   (setopt dashboard-show-shortcuts nil)
   (dashboard-modify-heading-icons '((projects . "star")))
   (setq dashboard-item-names '(("Projects:" .
-                                (concat (all-the-icons-octicon "star") " Projects:"))))
+                                (concat (nerd-icons-octicon "star") " Projects:"))))
 
   ;; footer
   (setopt dashboard-set-footer t)
   (setq dashboard-footer-messages '("Next year we're adding a text editor!"))
-  (setopt dashboard-footer-icon (all-the-icons-octicon "dashboard"
-                                                       :height 1.1
-                                                       :v-adjust -0.05
-                                                       :face 'font-lock-keyword-face))
+  (setopt dashboard-footer-icon (nerd-icons-faicon "nf-fa-coffee"
+                                                    :height 1.1
+                                                    :v-adjust -0.05
+                                                    :face 'font-lock-keyword-face))
 
   ;; other
   (setopt dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
