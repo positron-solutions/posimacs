@@ -26,19 +26,13 @@ in {
     # customizing the build or version of an Emacs package
     nixpkgs.overlays = [ 
       emacs-overlay.overlays.default
-      # Add an explicit source to the flake if you require
-      (final : prev: {
-        emacs29 = prev.emacs.overrideAttrs (old: {
-          name = "emacs29";
-          version = "29.2";
-          src = emacs29-src;
-          # patches = null;
-        });
-      })
     ];
 
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
+      kind # k8s
+      kubectl
+      nerdfonts
       nixpkgs-fmt
       nil
       ripgrep # projectile-ripgrep function relies on this
@@ -51,7 +45,7 @@ in {
     ];
 
     programs.emacs = {
-      package = (pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
+      package = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
         (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 
