@@ -1,4 +1,4 @@
-;;; posimacs-vc --- Version Control
+;;; posimacs-vc --- Version Control  -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -36,7 +36,10 @@
   (setopt ediff-split-window-function 'split-window-horizontally)
   (setopt ediff-window-setup-function 'ediff-setup-windows-plain))
 
+;; TODO ?
 (use-package git-messenger)
+
+(use-package git-modes)
 
 (use-package git-gutter
   :config

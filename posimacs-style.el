@@ -1,10 +1,10 @@
-;;; posimacs-doom-themes --- Things are looking up -*- lexical-binding: t -*-
+;;; posimacs-style --- Things are looking up -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
-;; Doom has a nice comprehensive theme system and lots of good starting points.
-;; Let's adopt!
-;;
+;; Changes in this package affect appearence but try not to affect behavior, a
+;; goal that is impossible without modular composing configurations, but I will
+;; do something about that elsewhere.
 
 ;;; Code:
 
@@ -132,8 +132,8 @@
   (parrot-animate-on-load t)
   (parrot-mode t)) ;; enables the mode
 
-
 (use-package nerd-icons)
+
 (use-package doom-modeline
   :after nerd-icons
   :init

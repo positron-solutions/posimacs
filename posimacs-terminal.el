@@ -1,4 +1,4 @@
-;;; posimacs-terminal --- Running Normal Things
+;;; posimacs-terminal --- Running Normal Things  -*- lexical-binding: t -*-
 
 ;;; Commentary:
 
