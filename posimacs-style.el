@@ -184,9 +184,9 @@
   :config
 
   ;; top stuff
-  (setq dashboard-startup-banner (concat user-emacs-directory "posimacs/graphics/posimacs-banner.png"))
-  (setq dashboard-set-navigator t)
-  (setq dashboard-set-init-info t)
+  (setopt dashboard-startup-banner (concat user-emacs-directory "posimacs/graphics/posimacs-banner.png"))
+  (setopt dashboard-set-navigator t)
+  (setopt dashboard-set-init-info t)
   (setq dashboard-banner-logo-title nil)
 
   (setq dashboard-navigator-buttons
@@ -204,32 +204,28 @@
             (lambda (&rest _) (browse-url "https://www.reddit.com/r/emacs/top/?t=month"))))))
 
   ;; items
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons nil) ; the icons for agenda are not great
-  (setq dashboard-items '((projects . 5)
-                          (agenda . 5)))
-  (setq dashboard-show-shortcuts nil)
-  (dashboard-modify-heading-icons '((projects . "star")
-                                    (agenda . "milestone")))
+  (setopt dashboard-set-heading-icons t)
+  (setopt dashboard-set-file-icons nil) ; the icons for agenda are not great
+  (setq dashboard-items '((projects . 5)))
+  (setopt dashboard-show-shortcuts nil)
+  (dashboard-modify-heading-icons '((projects . "star")))
   (setq dashboard-item-names '(("Projects:" .
-                                (concat (all-the-icons-octicon "star") " Projects:"))
-                               ("Agenda for the coming week:" .
-                                (concat  " This week's agenda:" (all-the-icons-fileicon "org")))))
+                                (concat (all-the-icons-octicon "star") " Projects:"))))
 
   ;; footer
-  (setq dashboard-set-footer t)
+  (setopt dashboard-set-footer t)
   (setq dashboard-footer-messages '("Next year we're adding a text editor!"))
-  (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
-                                                     :height 1.1
-                                                     :v-adjust -0.05
-                                                     :face 'font-lock-keyword-face))
+  (setopt dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                       :height 1.1
+                                                       :v-adjust -0.05
+                                                       :face 'font-lock-keyword-face))
 
   ;; other
-  (setq dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
+  (setopt dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
 
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-
-  (add-hook 'elpaca-after-init-hook #'dashboard-open))
+  (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+  (dashboard-setup-startup-hook))
 
 (provide 'posimacs-style)
 ;;; posimacs-style.el ends here.
