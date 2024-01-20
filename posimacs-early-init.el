@@ -34,6 +34,9 @@
  inhibit-startup-message t
  frames-inhibit-implied-resize t        ; please don't mess up screencasts
  mode-line-format nil
+ ;; Builds with Nix set this to a garbage time.  Elpaca needs to guess if
+ ;; built-in packages are out of date or not.
+ emacs-build-time '(26026 11222 728074 741000)
  default-frame-alist
  '((tool-bar-lines . 0)
    (menu-bar-lines . 0)
