@@ -28,9 +28,9 @@ in {
       emacs-overlay.overlays.default
       # Add an explicit source to the flake if you require
       (final : prev: {
-        emacs = prev.emacs.overrideAttrs (old: {
+        emacs29 = prev.emacs.overrideAttrs (old: {
           name = "emacs29";
-          version = "29.1.90";
+          version = "29.2";
           src = emacs29-src;
           # patches = null;
         });
@@ -51,7 +51,7 @@ in {
     ];
 
     programs.emacs = {
-      package = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
+      package = (pkgs.emacsPackagesFor pkgs.emacs29).emacsWithPackages
         (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 

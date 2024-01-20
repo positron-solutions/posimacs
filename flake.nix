@@ -19,7 +19,7 @@
       inputs.flake-utils.follows = "flake-utils";
     };
     emacs29-src = {
-      url = "github:emacs-mirror/emacs/emacs-29.1.90";
+      url = "github:emacs-mirror/emacs/emacs-29.2";
       flake = false;
     };
     emacs-overlay = {
