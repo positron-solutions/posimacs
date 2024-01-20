@@ -45,6 +45,22 @@
   (setq ivy-re-builders-alist
         '((t . ivy--regex-ignore-order))) ; orderless
 
+  ;; The customization of ivy-initial-inputs-alist is to allow matching anywhere
+  ;; rather than the first match being at the start of a suggestion
+  (setopt ivy-initial-inputs-alist      ; by default, match anywhere in name
+          (quote
+           ((counsel-minor . "")
+            (counsel-package . "")
+            (counsel-org-capture . "")
+            (counsel-M-x . "")
+            (counsel-describe-function . "")
+            (counsel-describe-variable . "")
+            (org-refile . "")
+            (org-agenda-refile . "")
+            (org-capture-refile . "")
+            (Man-completion-table . "")
+            (woman . ""))))
+
   (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial-or-done)
 
   ;; prefer alt key more often
@@ -73,24 +89,11 @@
   :delight
   :elpaca (counsel :autoloads t)
   :config
-  (setq counsel-find-file-at-point t)
-  (setq ivy-initial-inputs-alist  ; by default, match anywhere in name
-        (quote
-         ((counsel-minor . "")
-          (counsel-package . "")
-          (counsel-org-capture . "")
-          (counsel-M-x . "")
-          (counsel-describe-function . "")
-          (counsel-describe-variable . "")
-          (org-refile . "")
-          (org-agenda-refile . "")
-          (org-capture-refile . "")
-          (Man-completion-table . "")
-          (woman . "")))))
   (letrec ((load-counsel (lambda ()
                            (counsel-mode)
                            (remove-hook 'elpaca-after-init-hook load-counsel))))
     (add-hook 'elpaca-after-init-hook load-counsel))
+  (setopt counsel-find-file-at-point t))
 
 ;; Git & project tree based searching for files
 ;; TODO move over with VC stuff
