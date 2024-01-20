@@ -140,7 +140,8 @@
   (add-hook 'elpaca-after-init-hook #'doom-modeline-mode)
   :config
   (setopt doom-modeline-percent-position nil)
-  (setopt doom-modeline-position-column-line-format '("%3l:%3c"))
+  (setopt doom-modeline-position-column-line-format '("%3l:%c"))
+  (setopt mode-line-position-column-format '(" C%-3c"))
   (setopt doom-modeline-buffer-encoding nil)
   (setopt doom-modeline-major-mode-icon t)
   (setopt doom-modeline-env-version nil)
