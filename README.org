@@ -225,7 +225,11 @@ You will /still/ need to run =M-x nerd-icons-install-fonts= for icons to
 begin working.  Can't pre-install them as they are not picked up in
 =~/Library/Fonts/=
 
-*** Daemon
+*** Server
+Instead of running a server, the recommended way to use Emacs these days is to start the server during Emacs startup.  You alias your Emacs command to one that first tries to start emacs-client and then falls back to starting Emacs, which will start the server.  This way, when the last Emacs frame is closed, Emacs is dead.  It is reliable and convenient compared to using systemctl to restart Emacs.
+
+**** Daemon
+If you insist on using the Daemon, there are some things you should know.
 
 The daemon is extremely convenient for fast loading and keeping all buffers
 accessible to all panes by launching clients to a central emacs server.  This
