@@ -19,12 +19,14 @@
 
 (use-package prescient
   :after ivy
+  :config
   (setopt prescient-history-length 200)
   (setopt prescient-sort-length-enable t))
 
 (use-package ivy-prescient
   :hook ivy-mode
-  :after ivy-prescient)
+  :after prescient
+  :config (ivy-prescient-mode))
 
 (use-package ivy
   :after (orderless counsel)
@@ -100,6 +102,7 @@
 
 ;; Git & project tree based searching for files
 (use-package projectile
+  :commands (projectile-switch-project)
   :after magit
   :init (setq projectile-completion-system 'ivy)
   :config

@@ -50,8 +50,8 @@
 ;; Install use-package support
 (elpaca elpaca-use-package
   ;; Handy debugging expressions
+  ;; (setq use-package-compute-statistics t)
   ;; (setq use-package-verbose t)
-  (setq use-package-compute-statistics t)
   
   (defun elpaca-update (arg)
     "Fetch, merge, rebuild."

@@ -197,6 +197,7 @@
 
 ;; render nodes at other places
 (use-package org-transclusion
+  :hook org-mode
   :after org)
 
 ;; for regenerating tocs (deprecated in favor of export TOCs)

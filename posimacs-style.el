@@ -84,7 +84,6 @@
                       :inherit 'default))
 
 (use-package doom-themes
-  ;; TODO see if you can leave the loading order independent
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
   (load-theme 'posimacs-dark t)
@@ -103,6 +102,7 @@
 
 ;; nice countdown timers
 (use-package champagne
+  :commands champagne
   :elpaca (champagne
            :type git :host github
            :repo "positron-solutions/champagne")
@@ -129,7 +129,7 @@
   :hook dired-mode)
 
 (use-package doom-modeline
-  :after nerd-icons
+  :after (nerd-icons doom-themes)
   :init
   (add-hook 'elpaca-after-init-hook #'doom-modeline-mode)
   :config
@@ -214,11 +214,10 @@
                                                     :face 'font-lock-keyword-face))
 
   ;; other
-  (setopt dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
+  (setq dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
 
   (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
-  (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
-  (dashboard-setup-startup-hook))
+  (add-hook 'elpaca-after-init-hook #'dashboard-initialize))
 
 (provide 'posimacs-style)
 ;;; posimacs-style.el ends here.
