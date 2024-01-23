@@ -178,27 +178,26 @@
 (use-package org-modern
   :after org
   :hook ((org-mode                 . org-modern-mode)
-         (org-agenda-finalize-hook . org-modern-agenda))
-  :custom
-  ((org-modern-todo t)
-   (org-modern-table nil)
-   (org-modern-variable-pitch t)
-   (org-modern-hide-stars 'leading)
-
-   ;; I like to change up my stars
-   (org-modern-star '("∯" "∮" "∇" "σ" "∞" "∴"))
-   ;; (org-modern-star '("♨" "✈" "✲" "⍟" "✰" "▻" "▸")
-   ;; (org-modern-star '("◩" "⬙" "◲" "◇" "▿"))
-   ;; (org-modern-star '("█" "▟" "▞" "▄" "▘" "▗" "▁"))
-   ;; (org-modern-star '("☀" "☉" "☾" "☄" "❉" "✵" "✰" "✩"))
-   ;; (org-modern-star '("∀" "∋" "∃" "≡" "∩"))
-   ;; (org-modern-star '("🂡" "🂼" "🃇" "🃋" "🃕" "🂿" "🃒"))
-   ;; (org-modern-star '("☰" "☲" "☵" "☷" "⚌" "⚏" "⚋"))
-
-   (org-modern-block-fringe t))
+         (org-agenda-finalize-hook . org-modern-agenda)
+         (org-modern-mode . pmx-setup-org-fonts))
   :commands (org-modern-mode org-modern-agenda)
   :config
-  (add-hook 'org-modern-mode-hook #'pmx-setup-org-fonts))
+  (setopt org-modern-todo t)
+  (setopt org-modern-table nil)
+  (setopt org-modern-variable-pitch t)
+  (setopt org-modern-hide-stars 'leading)
+
+  ;; I like to change up my stars
+  (setopt org-modern-star '("∯" "∮" "∇" "σ" "∞" "∴"))
+  ;; (setopt org-modern-star '("♨" "✈" "✲" "⍟" "✰" "▻" "▸")
+  ;; (setopt org-modern-star '("◩" "⬙" "◲" "◇" "▿"))
+  ;; (setopt org-modern-star '("█" "▟" "▞" "▄" "▘" "▗" "▁"))
+  ;; (setopt org-modern-star '("☀" "☉" "☾" "☄" "❉" "✵" "✰" "✩"))
+  ;; (setopt org-modern-star '("∀" "∋" "∃" "≡" "∩"))
+  ;; (setopt org-modern-star '("🂡" "🂼" "🃇" "🃋" "🃕" "🂿" "🃒"))
+  ;; (setopt org-modern-star '("☰" "☲" "☵" "☷" "⚌" "⚏" "⚋"))
+
+  (setopt org-modern-block-fringe t))
 
 ;; render nodes at other places
 (use-package org-transclusion
