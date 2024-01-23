@@ -168,6 +168,9 @@
   ;; (add-to-list 'recentf-exclude
   ;;              (recentf-expand-file-name no-littering-etc-directory))
 
+  ;; Nix paths will frequently be opened when viewing documentation or source.
+  (add-to-list 'recentf-exclude "/nix/store/")
+
   (run-at-time nil (* 5 60) 'recentf-save-list))
 
 (use-package ws-butler                  ; Cleanup whitespace at end of lines
