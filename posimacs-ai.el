@@ -24,12 +24,12 @@
 
 (use-package chatgpt-shell
   :commands (chatgpt-shell)
-  :custom
+  :config
   (setq chatgpt-shell-model-version 6)  ; gpt-3.5 turbo
   (setq chatgpt-shell-system-prompt 2)  ; general
-  (setq (chatgpt-shell-openai-key
+  (setq chatgpt-shell-openai-key
          (lambda ()
-           (auth-source-pick-first-password :host "api.openai.com")))))
+           (auth-source-pick-first-password :host "api.openai.com"))))
 
 (provide 'posimacs-ai)
 ;;; posimacs-ai.el ends here
