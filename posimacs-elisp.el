@@ -45,17 +45,30 @@
 (use-package elisp-depend)
 
 (use-package flycheck-package
-  :config (flycheck-package-setup))
+  :elpaca (flycheck-package :autoloads t)
+  :commands flycheck-package-setup
+  :config
+  (letrec setup-flycheck-pkgs-once
+    (lambda ()
+      (flycheck-package-setup)
+      (remove-hook 'elpaca-after-init-hook
+                   setup-flycheck-pkgs-once))
+    (add-hook 'elpaca-after-init-hook
+              setup-flycheck-pkgs-once)))
 
 (use-package ielm
   :elpaca nil
   :config
+  ;; multi-line expression indent nicely
+  (setopt ielm-dynamic-multiline-inputs nil)
+  (setopt ielm-header "Inferior Emacs Lisp Mode.  M-x\
+`ielm-change-working-buffer' to hack on some live buffer.\n\n")
+
   (defvar pmx--ielm-ring nil)           ; one global ring
   (defun pmx-ielm-init-history ()
     "Persist ielm.
-This is per ielm name, so multiple ielm's will get their own
-history."
-    (let* ((file (format "ielm/%s"  (buffer-name)))
+One history for all ielm sessions."
+    (let* ((file (format "ielm/ielm"  (buffer-name)))
            (path (no-littering-expand-var-file-name file)))
       (unless (file-exists-p path)
         (make-empty-file path 'parents))
