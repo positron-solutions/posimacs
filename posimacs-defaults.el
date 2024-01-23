@@ -52,6 +52,8 @@
 (global-unset-key [(control z)])
 (global-unset-key [(control x)(control z)])
 
+;; See posimacs-bindings.el
+(repeat-mode 1)
 
 (setq select-enable-clipboard t) ; yanks copy to X clipboard
 (setq scroll-step 1) ; Line by line scrolling
@@ -175,11 +177,11 @@
 
 ;; camel case counts as words boundaries when navigating.  symbol navigation
 ;; still leaps by whole words.
-(use-package subword
-  :delight
-  :elpaca nil                           ; built-in package
-  :config
-  (global-subword-mode 1))
+;; (use-package subword
+;;   :delight
+;;   :elpaca nil                           ; built-in package
+;;   :config
+;;   (global-subword-mode 1))
 
 ;; TODO move this to a package of enhancements to baseline behavior
 (use-package command-log
