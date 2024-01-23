@@ -1,4 +1,4 @@
-;;; posimacs-init.el --- You know -*- lexical-binding: t;no-byte-compile: t-*-
+;;; posimacs-init.el --- You know -*- lexical-binding: t;
 
 ;;; Commentary:
 ;;
@@ -169,4 +169,7 @@
 ;; Local Variables:
 ;; flycheck-disabled-checkers: (emacs-lisp)
 ;; eval: (jinx-mode -1)
+;; no-byte-compile: t
+;; no-native-compile: t
+;; no-update-autoloads: t
 ;; End:

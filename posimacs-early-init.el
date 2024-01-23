@@ -2,8 +2,15 @@
 
 ;;; Commentary:
 ;;
-;; tricks to speed up loading and avoid unwanted work & initialization that
+;; Tricks to speed up loading and avoid unwanted work & initialization that
 ;; would affect downstream init.
+;;
+;; Don't draw things on startup that would be turned off later (toobars etc).
+;;
+;; Remove graphical flickers and set up some colors that will mesh better with
+;; the actual theme loading or at least not blind us when the config has a bug.
+;;
+;; Variables that are particular to Emacs being installed via Nix.
 
 ;;; Code:
 
