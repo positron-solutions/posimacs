@@ -64,6 +64,16 @@
   (setopt ielm-header "Inferior Emacs Lisp Mode.  M-x\
 `ielm-change-working-buffer' to hack on some live buffer.\n\n")
 
+  ;; Go to prompt when not at the end of the buffer
+  (defun pmx-ielm-return ()
+    (interactive)
+    (if (< (- (line-number-at-pos (point))
+              (line-number-at-pos (point-max)))
+           0)
+        (goto-char (point-max))
+      (call-interactively #'ielm-return)))
+  (keymap-set inferior-emacs-lisp-mode-map "RET" #'pmx-ielm-return)
+
   (defvar pmx--ielm-ring nil)           ; one global ring
   (defun pmx-ielm-init-history ()
     "Persist ielm.
