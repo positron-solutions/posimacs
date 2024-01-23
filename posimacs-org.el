@@ -28,6 +28,11 @@
   (setopt org-mouse-1-follows-link t)
   (setopt org-return-follows-link nil)
 
+  ;; Jesus Christ if you're going to automatically move tags to a far column,
+  ;; you need to maintain the colulmn while typing or else the lines will
+  ;; reflow.
+  (setopt org-tags-column 0)
+
   (setopt org-startup-folded 'show2levels)
   (setopt org-list-indent-offset 0)             ; bullet lists
   (setopt org-insert-heading-respect-content t) ; don't let me screw up structure
