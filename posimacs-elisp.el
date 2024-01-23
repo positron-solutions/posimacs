@@ -235,6 +235,9 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
                        eieio--unbound)))
      (-concat))))
 
+(use-package keymap-utils
+  :elpaca (keymap-utils :tag t))
+
 (provide 'posimacs-elisp)
 ;;; posimacs-elisp.el ends here
 
