@@ -222,7 +222,13 @@
   :after org)
 
 (use-package org-coke
-  :after org)
+  :after org
+  :config
+  (defun org-coke-after-change-setup ()
+    (add-to-list 'after-change-functions
+                 #'org-coke-keep-spacing))
+  (add-hook 'org-mode-hook #'org-coke-space-out)
+  (add-hook 'org-mode-hook #'org-coke-after-change-setup))
 
 (use-package screencap)
 
