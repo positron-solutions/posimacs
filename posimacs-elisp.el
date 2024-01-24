@@ -155,12 +155,13 @@ to be slow."
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-key] . helpful-key))
+  :hook (helpful-mode . show-paren-mode)
   :config
   (set-face-attribute 'helpful-heading nil
-                          :family "Roboto Slab"
-                          :height 1.0
-                          :weight 'bold
-                          :inherit 'info-title-3)
+                      :family "Roboto Slab"
+                      :height 1.0
+                      :weight 'bold
+                      :inherit 'info-title-3)
 
   ;; patch apropos buttons to call helpful instead of help
   (with-eval-after-load 'apropos
