@@ -295,9 +295,13 @@ determine the exact padding."
    (internal-border :background base7)
 
 ;;;;; tooltips for company & lsp ui
-   (company-tooltip :background tooltip-bg)
-   (internal-border :background dark-spark)
-   (tooltips :background tooltip-bg)
+   (company-tooltip :background "#000000")
+   (internal-border :background spark)
+   (company-tooltip-selection :background light-spark :foreground bg
+                              :distant-foreground spark :weight 'normal)
+   (company-tooltip-common :distant-foreground dmatch2 :foreground match2)
+   (company-tooltip-common-selection :inherit 'ivy-current-match)
+   (tooltips :background "#000000")
    (lsp-ui-doc-background :background tooltip-bg)
 ;;;;; lsp-mode and lsp-ui-mode
    (lsp-ui-peek-highlight :foreground yellow)
