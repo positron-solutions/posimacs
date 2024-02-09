@@ -23,8 +23,8 @@ in {
   ];
 
   config = {
-    # customizing the build or version of an Emacs package
-    nixpkgs.overlays = [ 
+    # customizing the build or version of an Emacs packagep
+    nixpkgs.overlays = [
       emacs-overlay.overlays.default
     ];
 
@@ -45,8 +45,9 @@ in {
     ];
 
     programs.emacs = {
-      package = (pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages
-        (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
+      enable = true;
+      package = pkgs.emacs-unstable;
+      extraPackages = (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
     };
 
     # Fontconfig will ensure that fonts installed in home.packages
