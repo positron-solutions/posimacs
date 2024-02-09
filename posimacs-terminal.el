@@ -40,6 +40,20 @@
   (keymap-set eat-mode-map
               "RET" #'pmx--eat-return-to-semi-char)
 
+  (defun pmx--eat-yank-to-semi-char ()
+    (interactive)
+    (eat-semi-char-mode)
+    (yank))
+  (keymap-set eat-mode-map
+              "C-y" #'pmx--eat-yank-to-semi-char)
+
+  (defun pmx--eat-yank-from-kill-ring-to-semi-char ()
+    (interactive)
+    (eat-semi-char-mode)
+    (yank-from-kill-ring))
+  (keymap-set eat-mode-map
+              "M-y" #'pmx--eat-yank-from-kill-ring-to-semi-char)
+
   (define-obsolete-function-alias 'vterm #'eat "0.1.0"))
 
 (provide 'posimacs-terminal)
