@@ -41,6 +41,17 @@
 
 (pixel-scroll-precision-mode 1)
 
+;; Too lazy
+(use-package autoinsert
+  :elpaca nil
+  :config
+  (setq auto-insert-query nil)
+  (push '(emacs-lisp-mode . (lambda () (require 'yasnippet)
+                              (insert "<p")
+                              (call-interactively #'yas-expand)))
+        auto-insert-alist)
+  (auto-insert-mode t))
+
 ;; Even if no buffers have unsaved changes, prompt before quitting
 (setq confirm-kill-emacs 'y-or-n-p)
 
