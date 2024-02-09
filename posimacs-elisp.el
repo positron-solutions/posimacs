@@ -83,7 +83,7 @@ One history for all ielm sessions."
       (unless (file-exists-p path)
         (make-empty-file path 'parents))
       (setq-local comint-input-ring-file-name path)
-      (setq-local comint-input-ring-size 1024)
+      (setq-local comint-input-ring-size 2048)
       (setq-local comint-input-ignoredups t)
       (if pmx--ielm-ring
           (setq-local comint-input-ring pmx--ielm-ring)
@@ -106,7 +106,7 @@ One history for all ielm sessions."
   (defun pmx--ielm-comint-truncate ()
     "When outputs are huge, avoid printing them because it will cause the buffer
 to be slow."
-    (setq-local comint-max-line-length 1024)
+    (setq-local comint-max-line-length 2048)
     ;; comint-output-filter-functions is permanent local
     (unless (memq #'comint-truncate-buffer comint-output-filter-functions)
       (push #'comint-truncate-buffer

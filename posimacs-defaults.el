@@ -187,8 +187,6 @@
 
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
-  :demand t
-  :after no-littering
   :elpaca nil
   :config
   (recentf-load-list)
@@ -204,7 +202,7 @@
   ;; Nix paths will frequently be opened when viewing documentation or source.
   (add-to-list 'recentf-exclude "/nix/store/")
 
-  (run-at-time nil (* 5 60) 'recentf-save-list))
+  (run-at-time nil (* 5 60) #'recentf-save-list))
 
 (use-package ws-butler                  ; Cleanup whitespace at end of lines
   :config

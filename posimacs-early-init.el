@@ -28,7 +28,7 @@
       gc-cons-percentage 2.0
       file-name-handler-alist nil)
 
-;; Use the no-littering var directory for elisp native compile cache
+;; Use the no-littering style var directory for elisp native compile cache
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (convert-standard-filename
@@ -37,7 +37,6 @@
 ;; Turn off graphics features that would slow down initial startup.
 ;; https://github.com/Gavinok/emacs.d
 (setq-default
- package-native-compile t
  inhibit-startup-message t
  frames-inhibit-implied-resize t        ; please don't mess up screencasts
  mode-line-format nil
