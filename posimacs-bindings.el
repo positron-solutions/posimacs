@@ -237,7 +237,6 @@ Repeats of that char should continue."
   (general-unbind 'org-mode-map "M-e")
   (general-unbind 'ibuffer-mode-map "M-s")
   (general-unbind 'ibuffer-mode-map "M-j")
-  (general-unbind 'lispy-mode-map "M-k")
 
   ;; Finish up by correcting repeat maps that were screwd up
   (setq undo-repeat-map (make-sparse-keymap))
