@@ -54,13 +54,13 @@ in {
     # are available
     fonts.fontconfig.enable = true;
 
-    programs.bash.shellAliases = lib.mkIf cfg.aliases (if config.services.emacs.enable then {
+    programs.bash.shellAliases = lib.mkIf cfg.aliases {
       # How to break a nano habit
       # "nano" = client-or-server;
       "emacs" = client-or-server;
       "vi" = client-or-server;
       "vim" = client-or-server;
-    } else {});
+    };
 
     home.sessionVariables = lib.mkIf cfg.aliases ({
       # Use standalone GUI emacs and fall back to terminal if GUI cannot load
