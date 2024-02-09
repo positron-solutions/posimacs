@@ -41,7 +41,7 @@
   (set-fontset-font t 'korean-ksc5601
                     (font-spec :family "Gowun Dodum"
                                :inherit 'default
-                               :height 100)))
+                               :size 11.0)))
 
 (defun pmx--setup-org-bullet-fonts ()
   "The bullets are not actually Roboto Slab."
