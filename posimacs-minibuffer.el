@@ -73,7 +73,8 @@
   ;; (define-key ivy-minibuffer-map (kbd "M-n") 'ivy-next-line)
   ;; (define-key ivy-minibuffer-map (kbd "M-p") 'ivy-previous-line)
   (define-key ivy-minibuffer-map (kbd "C-n") nil)
-  (define-key ivy-minibuffer-map (kbd "C-p") nil))
+  (define-key ivy-minibuffer-map (kbd "C-p") nil)
+  (define-key ivy-minibuffer-map (kbd "C-<return>") #'ivy-immediate-done))
 
 (use-package ivy-rich  ; More informative ivy completionsq
   :after (ivy counsel-projectile)
