@@ -21,7 +21,8 @@
   :after ivy
   :config
   (setopt prescient-history-length 200)
-  (setopt prescient-sort-length-enable t))
+  (setopt prescient-sort-length-enable t)
+  (prescient-persist-mode t))
 
 (use-package ivy-prescient
   :hook ivy-mode
