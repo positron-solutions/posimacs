@@ -113,6 +113,7 @@ Repeats of that char should continue."
 
 ;; TODO move to early loading?
 (use-package general
+  :config
   ;; Prefer kill to bury...
   (general-def 'helpful-mode-map "q" #'kill-this-buffer)
   (general-def 'help-mode-map "q" #'kill-this-buffer)
@@ -136,21 +137,24 @@ Repeats of that char should continue."
     "C-t"                               ; transpose-chars
     "C-u"                               ; universal argument
 
-    "M-a"                               ; backward-sentence
-    "M-b"                               ; backward-word
-    "M-c"                               ; capitalize-word
-    "M-d"                               ; kill-word
-    "M-f"                               ; forward-word
-    "M-k"                               ; kill-sentence
-    "M-l"                               ; downcase
-    "M-m"                               ; back-to-indentation
-    "M-r"                               ; move-to-window-line-top-bottom
-    "M-t"                               ; transpose-words
-    "M-u"                               ; upcase
-    "M-z"                               ; zap-to-char
-
     "C-<up>"                            ; backward-paragraph
     "C-<down>")                         ; forward-paragraph
+
+  (general-unbind                       ; M-Meta sequences
+    'esc-map
+    "a"                                 ; backward-sentence
+    "b"                                 ; backward-word
+    "c"                                 ; capitalize-word
+    "d"                                 ; kill-word
+    "f"                                 ; forward-word
+    "k"                                 ; kill-sentence
+    "l"                                 ; downcase
+    "m"                                 ; back-to-indentation
+    "r"                                 ; move-to-window-line-top-bottom
+    "t"                                 ; transpose-words
+    "u"                                 ; upcase
+    "z")                                ; zap-to-char
+
 
   (general-unbind 'ctl-x-map
     "C-x C-@"                           ; pop-global-mark
