@@ -178,6 +178,13 @@
 ;; Basic packages ;;
 ;;;;;;;;;;;;;;;;;;;;
 
+(use-package bookmark
+  :elpaca nil
+  :config
+  ;; Why yes, yes, please delete that bookmark that I just set.  It was garbage
+  ;; obviously.  That's why I saved it.
+  (run-at-time nil (* 5 60) #'bookmark-save))
+
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
   :demand t
