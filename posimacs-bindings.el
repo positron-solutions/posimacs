@@ -157,19 +157,20 @@ Repeats of that char should continue."
 
 
   (general-unbind 'ctl-x-map
-    "C-x C-@"                           ; pop-global-mark
-    "C-x $"                             ; set-selective-display
-    "C-x +"                             ; balance-windows
-    "C-x ."                             ; set-fill-prefix
-    "C-x ;"                             ; comment-set-column
+    ;; TODO warns
+    "C-@"                               ; pop-global-mark
+    "$"                                 ; set-selective-display
+    "+"                                 ; balance-windows
+    "."                                 ; set-fill-prefix
+    ";"                                 ; comment-set-column
 
-    "C-x C-o"                           ; set-goal-column
-    "C-x C-l"                           ; downcase region
-    "C-x C-u"                           ; upcase region
+    "C-o"                               ; set-goal-column
+    "C-l"                               ; downcase region
+    "C-u"                               ; upcase region
 
-    "C-x f"                             ; set-fill-column
-    "C-x l"                             ; count-lines-page
-    "C-x u"                             ; undo
+    "f"                                 ; set-fill-column
+    "l"                                 ; count-lines-page
+    "u"                                 ; undo
     ;; TODO there's a lot more cruft
     ;; in the C-x map :-( `user-keys'
     )
