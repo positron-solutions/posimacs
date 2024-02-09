@@ -73,29 +73,9 @@
             (self-insert-command      nil nil)
             (mwheel-scroll nil nil)))
 
-  (defvar moody--active-window (selected-window))
-
-  ;; Unfortunately "for historical reasons" according to the manual, there is no
-  ;; facility to read the actual `selected-window' when it has been temporarily
-  ;; set.  Even if you know what you are doing.
-  (defun moody-window-active-p ()
-    "Return t if the selected window is the active window.
-Or put differently, return t if the possibly only temporarily
-selected window is still going to be selected when we return
-to the command loop."
-    (eq (selected-window) moody--active-window))
-
-  (defun moody--set-active-window (_)
-    (let ((win (selected-window)))
-      (setq moody--active-window
-            (if (minibuffer-window-active-p win)
-                (minibuffer-selected-window)
-              win))))
-  (add-hook 'pre-redisplay-functions #'moody--set-active-window)
-
   ;; The actual integration
   (defun pmx-keycast-doom-modeline-update (return)
-    (if (moody-window-active-p)
+    (if (eq (current-buffer) (window-buffer (old-selected-window)))
         (concat return " " keycast-last-formatted)
       return))
 
