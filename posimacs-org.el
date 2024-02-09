@@ -10,6 +10,19 @@
 
 (use-package org
   :defer t
+  :init
+  ;; probably don't need all the modules
+  (setq org-modules '(ol-doi
+                      ol-w3m
+                      ;; ol-bbdb
+                      ol-bibtex
+                      ol-docview
+                      ;; ol-gnus
+                      ol-info
+                      ol-irc
+                      ;; ol-mhe
+                      ;; ol-rmail
+                      ol-eww))
   :config
 
   ;; When do we ever want to confirm after explicitly requesting execution?
