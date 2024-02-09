@@ -3,9 +3,9 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-23.11";
     jinx-src = {
-      url = "github:minad/jinx?ref=0.8";
+      url = "github:minad/jinx?ref=1.2";
       flake = false;
     };
   };
