@@ -43,6 +43,13 @@
                                :inherit 'default
                                :height 100)))
 
+(defun pmx--setup-org-bullet-fonts ()
+  "The bullets are not actually Roboto Slab."
+  (set-fontset-font "fontset-default"
+                    8750 (font-spec :family "Iosevka Nerd Font Mono"
+                                    :size 24.0
+                                    :inherit 'default)))
+
 (defun pmx--setup-fonts (&rest _)
   "Nice fonts for nice people (and robots)."
   ;; Base fonts
