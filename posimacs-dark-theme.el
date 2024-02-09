@@ -178,6 +178,11 @@ determine the exact padding."
    (font-lock-doc-face
     :inherit 'font-lock-comment-face
     :foreground (or doc-comments 'unspecified))
+   (help-key-binding :inherit 'fixed-pitch
+                     :foreground neon
+                     :box nil
+                     :background nil
+                     :weight 'bold)
 
 ;;;;; Flycheck
    (flycheck-popup-tip-face :background bg-blue :foreground fg-alt)
@@ -276,7 +281,8 @@ determine the exact padding."
    (solaire-mode-line-inactive-face
     :inherit 'mode-line-inactive
     :background modeline-bg-inactive-l
-    :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
+    :box (if -modeline-pad `(:line-width ,-modeline-pad :color
+                                         ,modeline-bg-inactive-l)))
 
 ;;;;; whitespace
    (whitespace-indentation :inherit 'default)
@@ -303,6 +309,7 @@ determine the exact padding."
    (company-tooltip-common-selection :inherit 'ivy-current-match)
    (tooltips :background "#000000")
    (lsp-ui-doc-background :background tooltip-bg)
+
 ;;;;; lsp-mode and lsp-ui-mode
    (lsp-ui-peek-highlight :foreground yellow)
    (lsp-ui-sideline-symbol-info :foreground (doom-blend comments bg 0.85)
@@ -333,7 +340,6 @@ determine the exact padding."
    ((org-done &override) :foreground llime)
    ((org-todo &override) :foreground shock)
 
-
    (org-level-1 :inherit 'org-level-8 :foreground chill :weight 'bold :height 1.64)
    (org-level-2 :inherit 'org-level-8 :foreground ml-spark :weight 'bold :height 1.48)
    (org-level-3 :inherit 'org-level-8 :foreground neon :weight 'bold :height 1.32)
@@ -355,7 +361,11 @@ determine the exact padding."
    (org-code :foreground "#D85F00" :background bg)
    (org-block-begin-line :inherit 'org-block :height 0.5 :foreground grey)
    (org-link :inherit 'org-block :underline t :foreground orange)
-   ;; (org-modern-label :inherit 'fixed-pitch-serif :height 1.0)
+   (org-modern-todo :inherit '(org-todo org-modern-label) :inverse-video t
+                    :weight 'bold :height 1.4)
+   (org-modern-done :inherit '(org-modern-label) :foreground "#888888" :background "#333333" :weight 'bold :height 1.4)
+   (org-modern-tag :inherit '(secondary-selection org-modern-label)
+                   :foreground "#FFFFFF" :background "#4D0059" :height 1.4)
 
    (org-hide :foreground hidden))
 
