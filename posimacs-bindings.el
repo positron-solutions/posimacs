@@ -177,19 +177,19 @@ Repeats of that char should continue."
 
   ;; Preen the help map
   (general-unbind 'help-mode-map
-    "C-h C-\\"                          ; duplicate describe-input-method
-    "C-h C-a"                           ; about-emacs
-    "C-h C-c"                           ; describe-copying
-    "C-h C-e"                           ; view-external-packages
-    "C-h C-o"                           ; describe-distribution
-    "C-h C-p"                           ; finder-by-keyword
-    "C-h C-s"                           ; search-forward-help-for-help
-    "C-h C-w"                           ; describe-no-warranty
-    "C-h RET"                           ; view-order-manuals
-    "C-h g"                             ; describe-gnu-project
-    "C-h h"                             ; view-hello-file
-    "C-h t")                            ; help-with-tutorial
+    "C-\\"                              ; duplicate describe-input-method
+    "C-a"                               ; about-emacs
+    "C-c"                               ; describe-copying
+    "C-e"                               ; view-external-packages
+    "C-o"                               ; describe-distribution
+    "C-s"                               ; search-forward-help-for-help
+    "C-w"                               ; describe-no-warranty
+    "RET"                               ; view-order-manuals
+    "g"                                 ; describe-gnu-project
+    "h"                                 ; view-hello-file
+    "t")                                ; help-with-tutorial
 
+  ;; "C-p"                           ; finder-by-keyword
   ;; Replacement definitions, more coherence in defaults
   (general-unbind 'global-map "C-v")
   (general-def 'global-map "M-c" #'scroll-down-command)
