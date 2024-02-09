@@ -118,7 +118,7 @@
 (letrec ((pmx-clean-up
           (lambda ()
             (load
-             (setq custom-file (expand-file-name "customs.el" user-emacs-directory))
+             (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
              'noerror)
             (setq file-name-handler-alist file-name-handler-alist--old)
             (remove-hook 'elpaca-after-init-hook pmx-clean-up)
