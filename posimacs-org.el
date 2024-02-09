@@ -104,6 +104,7 @@
   ;; defaults.
   ;; Also see adaptive wrap.
   (add-hook 'org-mode-hook #'visual-line-mode)
+  (keymap-set org-mode-map "C-k" #'kill-visual-line)
 
   ;; Set timer to save org buffers and write a commit at midnight
   (defun pmx-commit-agenda-files (&rest _)
