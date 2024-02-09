@@ -187,6 +187,7 @@
   (setopt dashboard-startup-banner (concat user-emacs-directory "posimacs/graphics/posimacs-banner.png"))
   (setopt dashboard-set-navigator t)
   (setopt dashboard-set-init-info t)
+  (setopt dashboard-center-content t)
   (setq dashboard-banner-logo-title nil)
 
   (setq dashboard-navigator-buttons
@@ -206,19 +207,21 @@
   ;; items
   (setopt dashboard-set-heading-icons t)
   (setopt dashboard-set-file-icons nil) ; the icons for agenda are not great
-  (setq dashboard-items '((projects . 5)))
+  (setq dashboard-items '((projects . 5)
+                          (recents  . 5)
+                          (bookmarks . 5)))
   (setopt dashboard-show-shortcuts nil)
   (dashboard-modify-heading-icons '((projects . "star")))
-  (setq dashboard-item-names '(("Projects:" .
-                                (concat (nerd-icons-octicon "star") " Projects:"))))
+  (setq dashboard-item-names `(("Projects:" .
+                                ,(concat (nerd-icons-faicon "nf-fa-star") " Projects:"))))
 
   ;; footer
   (setopt dashboard-set-footer t)
   (setq dashboard-footer-messages '("Next year we're adding a text editor!"))
   (setopt dashboard-footer-icon (nerd-icons-faicon "nf-fa-coffee"
-                                                    :height 1.1
-                                                    :v-adjust -0.05
-                                                    :face 'font-lock-keyword-face))
+                                                   :height 1.1
+                                                   :v-adjust -0.05
+                                                   :face 'font-lock-keyword-face))
 
   ;; other
   (setq dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
