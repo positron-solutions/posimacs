@@ -171,7 +171,8 @@
 (save-place-mode 1)
 
 ;; Turn off initial scratch
-(setq initial-scratch-message nil)
+(setq initial-scratch-message nil
+      initial-major-mode 'emacs-lisp-mode)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Basic packages ;;
