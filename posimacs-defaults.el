@@ -55,9 +55,14 @@
 ;; Even if no buffers have unsaved changes, prompt before quitting
 (setq confirm-kill-emacs 'y-or-n-p)
 
-(with-eval-after-load 'server
-  (unless (server-running-p)
-    (server-start)))
+;; Allow access from emacsclient
+(use-package server
+  :elpaca nil
+  :config
+  (add-hook 'elpaca-after-init-hook
+            (lambda ()
+              (unless (server-running-p)
+                (server-start)))))
 
 ;; Unbind Pesky Sleep Button
 (global-unset-key [(control z)])
