@@ -127,6 +127,7 @@ to be slow."
   (unbind-key (kbd "t") lispy-mode-map)   ; lispy-teleport
   (unbind-key (kbd "M-o") lispy-mode-map) ; lispy-other
   (unbind-key (kbd "M-j") lispy-mode-map) ; lispy-join
+  (unbind-key (kbd "M-k") lispy-mode-map) ; lispy-kill-sentence
   (unbind-key (kbd "M-i") lispy-mode-map) ; lispy-iedit
   (unbind-key (kbd "b") lispy-mode-map)   ; special-lispy-back
   (unbind-key (kbd "x") lispy-mode-map))  ; special-lispy-x
