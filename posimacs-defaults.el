@@ -55,6 +55,15 @@
 ;; Even if no buffers have unsaved changes, prompt before quitting
 (setq confirm-kill-emacs 'y-or-n-p)
 
+;; Save all tempfiles in ~/.emacs.d/var/backups/
+(let ((emacs-backup-dir (no-littering-expand-var-file-name "backups/.saves-")))
+  (setq backup-directory-alist
+	`((".*" . ,emacs-backup-dir)))
+  (setq auto-save-file-name-transforms
+	`((".*" ,emacs-backup-dir t)))
+  (setq auto-save-list-file-prefix
+	emacs-backup-dir))
+
 ;; Allow access from emacsclient
 (use-package server
   :elpaca nil
