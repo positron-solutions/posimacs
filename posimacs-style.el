@@ -13,19 +13,11 @@
   :config
   (default-text-scale-mode)) ;C-M-= and C-M-- for larger and smaller text
 
-;; Thanks Oleg Pavliv
-;; https://unix.stackexchange.com/questions/30039/emacs-how-to-insert-%CE%BB-instead-of-lambda-in-scheme-mode
-(defun pmx-greek-lambda ()
-  "Make lambda expressions shorter for easier reading in Lisp code."
-  (font-lock-add-keywords
-   nil
-   `(("\\<lambda\\>"
-      (0 (progn (compose-region (match-beginning 0) (match-end 0)
-                                ,(make-char 'greek-iso8859-7 107))
-                nil))))))
-
-(add-hook 'emacs-lisp-mode-hook 'pmx-greek-lambda)
-(add-hook 'inferior-emacs-lisp-mode-hook 'pmx-greek-lambda)
+(let ((rules `(("\\<lambda\\>"
+               (0  '(face font-lock-keyword-face
+                          display ,(char-to-string (make-char 'greek-iso8859-7 107))))))))
+  (dolist (m '(emacs-lisp-mode inferior-emacs-lisp-mode lisp-mode))
+    (font-lock-add-keywords m rules)))
 
 ;; 안영하세요
 (use-package mule
