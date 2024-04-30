@@ -29,10 +29,7 @@ in {
 
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
-      kind # k8s
-      kubectl
       nerdfonts
-      nixpkgs-fmt
       nil
       ripgrep # projectile-ripgrep function relies on this
       noto-fonts-cjk-sans
