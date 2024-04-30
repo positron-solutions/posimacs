@@ -146,12 +146,12 @@
                         "posimacs-minibuffer.el"
                         "posimacs-org.el"
                         "posimacs-prog.el"
+                        "posimacs-rust.el"
                         "posimacs-style.el"
                         "posimacs-vc.el"
                         "posimacs-terminal.el"
 
-                        "jinx/posimacs-jinx.el"
-                        "rust/posimacs-rust.el")))
+                        "jinx/posimacs-jinx.el")))
   (dolist (file-name posimacs-files)
     (load (expand-file-name
            (concat "posimacs/" file-name)

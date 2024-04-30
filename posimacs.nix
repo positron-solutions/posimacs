@@ -1,4 +1,4 @@
-{ emacs-jinx, rust, emacs-overlay, emacs29-src }:
+{ emacs-jinx, emacs-overlay, emacs29-src }:
 { config, pkgs, lib, ... }:
 
 let
@@ -19,7 +19,6 @@ in {
   # import modules within modules for composition / dependency
   imports = [
     emacs-jinx
-    rust
   ];
 
   config = {
