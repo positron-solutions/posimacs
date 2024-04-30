@@ -29,6 +29,8 @@ in {
 
     # Install packages from the top level package set if your module depends on them
     home.packages = with pkgs; [
+      aspell
+      aspellDicts.en
       nerdfonts
       nil
       ripgrep # projectile-ripgrep function relies on this

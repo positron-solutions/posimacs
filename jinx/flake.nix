@@ -8,9 +8,13 @@
       url = "github:minad/jinx?ref=1.2";
       flake = false;
     };
+    korean-hunspell-src = {
+      url = "github:spellcheck-ko/hunspell-dict-ko";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, jinx-src}:
+  outputs = { self, nixpkgs, flake-utils, jinx-src, korean-hunspell-src}:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -40,8 +44,23 @@
           '';
         };
 
+        korean-hunspell = pkgs.stdenv.mkDerivation {
+          name = "ko";
+          src = korean-hunspell-src;
+          pname = "hunspell-dict-ko";
+          buildInputs = [
+            pkgs.python3
+            pkgs.python3.pkgs.pyaml
+          ];
+          installPhase = ''
+            mkdir -p $out/share/hunspell
+            cp ko.aff $out/share/hunspell/ko.aff
+            cp ko.dic $out/share/hunspell/ko.dic
+          '';
+        };
+
         # Create the module and inject its dependency we declared above
-        module = import ./jinx.nix { inherit emacs-jinx; };
+        module = import ./jinx.nix { inherit emacs-jinx korean-hunspell; };
 
       in rec {
         homeConfigurations = {
@@ -49,7 +68,7 @@
           default = homeConfigurations.emacs-jinx;
         };
         packages = rec {
-          inherit emacs-jinx;
+          inherit emacs-jinx korean-hunspell;
           default = packages.emacs-jinx;
         };
       });

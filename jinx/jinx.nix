@@ -1,11 +1,14 @@
-{ emacs-jinx }: { config, pkgs, lib, ... }:
+{ emacs-jinx, korean-hunspell }: { config, pkgs, lib, ... }:
 
 let
   cfg = config.posimacs;
-in {
+in
+{
   config = {
     home.packages = [
       emacs-jinx
+      korean-hunspell
+      pkgs.hunspell
     ];
 
     # link jinx module into convenient load path
