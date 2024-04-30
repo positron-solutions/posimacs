@@ -233,164 +233,91 @@
 (use-package hide-mode-line)
 
 (use-package moc
-  :after org)
+  :after org
+  :config
+  (defun pmx-set-project-screenshots ()
+    (interactive)
+    (let ((dir (read-directory-name "screenshot directory: ")))
+      (unless (file-exists-p dir)
+        (make-directory dir t))
+      (setq moc-screenshot-path dir)))
+  ;; (defun pmx-project-screenshots ()
+  ;;   (expand-file-name
+  ;;    "screenshots/"
+  ;;    (or (project-root (project-current))
+  ;;        (temporary-file-directory))))
+  (setopt moc-screenshot-path #'pmx-set-project-screenshots)
+  (defun pmx-org-block-no-background ()
+    (face-remap-add-relative 'org-block '(:background nil)))
+  (add-hook 'moc-focus-mode-hook #'pmx-org-block-no-background))
 
 (use-package org-coke
   :after org
-  :config
-  (defun org-coke-after-change-setup ()
-    (add-to-list 'after-change-functions
-                 #'org-coke-keep-spacing))
-  (add-hook 'org-mode-hook #'org-coke-space-out)
-  (add-hook 'org-mode-hook #'org-coke-after-change-setup))
+  :config)
 
-(use-package screencap)
-
-(defvar-local pmx-subtle-cursor-active nil)
-
-(defun pmx-toggle-subtle-cursor ()
-  "Turn subtle cursor on or off."
-  (interactive)
-  (if pmx-subtle-cursor-active
-      (progn  (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
-              (setq-local cursor-type (default-value 'cursor-type))
-              (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
-    (setq-local blink-cursor-alist '(((hbar . 0) . bar)))
-    (setq-local cursor-type '(hbar . 0))
-    (setq-local blink-cursor-blinks 4))
-  (setq-local pmx-subtle-cursor-active (not pmx-subtle-cursor-active)))
-
-(defvar-local pmx-hide-org-meta-line-cookie nil)
-
-(defun pmx-hide-org-meta-line ()
-  "Hide meta keywords."
-  (interactive)
-  (unless pmx-hide-org-meta-line-cookie
-    (setq pmx-hide-org-meta-line-cookie
-          (face-remap-add-relative 'org-meta-line :foreground
-                                   (face-attribute 'org-meta-line :background)))))
-
-(defun pmx-show-org-meta-line ()
-  "Show meta keywords."
-  (interactive)
-  (when pmx-hide-org-meta-line-cookie
-    (face-remap-remove-relative pmx-hide-org-meta-line-cookie)))
-
-(defun pmx-toggle-org-meta-line ()
-  "Toggle visibility of meta lines."
-  (interactive)
-  (if pmx-meta-line-hidden
-      (pmx-show-org-meta-line)
-    (pmx-hide-org-meta-line)))
-
-(defvar-local pmx-presentation-text-scale 2)
-(defvar-local pmx-presentation-full-screen t
-  "Set this within a buffer in order to ask for full-screen display.")
 (defvar-local pmx-old-window-configuration nil "Restore after tree slide exit.")
 (defvar-local pmx--header-line-cookie nil "Restore header line face.")
 
-(defun pmx-presentation-start ()
-  "Make tree slide nice."
-  (pmx-toggle-subtle-cursor)
-  (setq-local pmx--header-line-cookie (face-remap-add-relative 'header-line :height 2.0))
-  (setq header-line-format " ")
-  (org-appear-mode -1)
-  (pmx-hide-org-meta-line)
-  (text-scale-set pmx-presentation-text-scale)
-  (org-display-inline-images nil t (point-min) (point-max))
-  (visual-line-mode 1)
-  (when pmx-presentation-full-screen
-    (fringe-mode '(0 . 0))
-    (setq pmx-old-window-configuration (current-window-configuration))
-    (delete-other-windows)
-    (visual-fill-column-mode 1))
-  (git-gutter-mode -1)
-  (when (featurep 'jinx)
-    (jinx-mode -1))
-  ;; claims to be deprecated
-  (read-only-mode 1)
-  (hide-mode-line-mode 1))
+(use-package macro-slides
+  :elpaca (macro-slides :repo "~/.emacs.d/etc/scratch-pkgs/macro-slides.git")
+  :after moc
+  :config
+  (setq ms-breadcrumb-face
+        '(:height 240))
 
-(defun pmx-presentation-stop ()
-  "Make tree slide nice."
-  (hide-mode-line-mode -1)
-  (visual-line-mode -1)
-  (when pmx-presentation-full-screen
-    (visual-fill-column-mode -1)
-    (fringe-mode nil)
-    (when pmx-old-window-configuration
-      (set-window-configuration pmx-old-window-configuration)
-      (setq pmx-old-window-configuration nil)))
-  (read-only-mode -1)
-  (git-gutter-mode 1)
-  (org-display-inline-images nil t (point-min) (point-max))
-  (text-scale-set 0)
-  (when (featurep 'jinx)
-    (jinx-mode 1))
-  (pmx-show-org-meta-line)
-  (org-appear-mode 1)
-  (face-remap-remove-relative pmx--header-line-cookie)
-  (setq header-line-format nil)
-  (pmx-toggle-subtle-cursor)
-  (setq-local blink-cursor-alist (default-value 'blink-cursor-alist))
-  (setq-local cursor-type (default-value 'cursor-type))
-  (setq-local blink-cursor-blinks (default-value 'blink-cursor-blinks)))
+  (add-hook 'ms-mode-hook #'moc-present-mode)
+
+  ;; hack to clear gutter during presentation
+  (add-hook 'ms-narrow-hook #'git-gutter:clear-gutter)
+  (add-hook 'ms-narrow-hook #'moc-hide-refresh))
 
 (use-package unfill
   :after org
   :bind (:map org-mode-map ("M-q" . #'unfill-paragraph)))
 
 ;; presenting
-(use-package org-tree-slide
-  :after hide-mode-line
-  :elpaca (org-tree-slide :autoloads t)
-  :commands (org-tree-slide-mode)
-  :config
-  (setopt org-tree-slide-never-touch-face t)
-  (setopt org-tree-slide-header t)
-  (setopt org-tree-slide-date nil)
-  (setopt org-tree-slide-slide-in-effect t)
-  (setopt org-tree-slide-slide-in-blank-lines 4)
-  (setopt org-tree-slide-content-margin-top 1)
-  (setopt org-tree-slide-activate-message "")
-  (setopt org-tree-slide-indicator
-          '(:next nil :previous nil :content nil))
-  (setopt org-tree-slide-breadcrumbs
-          (propertize " 🢒 "
-                      ;; 'display '(raise 0.1)
-                      'height 0.2
-                      'face '(inherit 'org-level-1)))
-  (setopt org-tree-slide-skip-outline-level 0)
-  (setopt org-tree-slide-fold-subtrees-skipped nil)
+;; (use-package org-tree-slide
+;;   :after hide-mode-line
+;;   :elpaca (org-tree-slide :autoloads t)
+;;   :commands (org-tree-slide-mode)
+;;   :config
+;;   (setopt org-tree-slide-never-touch-face t)
+;;   (setopt org-tree-slide-header t)
+;;   (setopt org-tree-slide-date nil)
+;;   (setopt org-tree-slide-slide-in-effect t)
+;;   (setopt org-tree-slide-slide-in-blank-lines 4)
+;;   (setopt org-tree-slide-content-margin-top 1)
+;;   (setopt org-tree-slide-header-date nil)
+;;   (setopt org-tree-slide-header-author nil)
+;;   (setopt org-tree-slide-header-email nil)
+;;   (setopt org-tree-slide-indicator
+;;           '(:next nil :previous nil :content nil))
 
-  (defun pmx-org-tree-slide-quit ()
-    "Lol, guys, could we have a quit command? Oh."
-    (interactive)
-    (org-tree-slide-mode -1))
+;;   ;; TODO brutish
+;;   (defun pmx-org-tree-slide-toggle-full-screen ()
+;;     "When tree slide mode is active, run's teardown hook and set up again."
+;;     (interactive)
+;;     (when org-tree-slide-mode
+;;       (org-tree-slide-stop))
+;;     (setq-local pmx-presentation-full-screen
+;;                 (not pmx-presentation-full-screen))
+;;     (when org-tree-slide-mode
+;;       (pmx-presentation-start)))
 
-  (defun pmx-org-tree-slide-toggle-full-screen ()
-    "When tree slide mode is active, run's teardown hook and set up again."
-    (interactive)
-    (when org-tree-slide-mode
-      (pmx-presentation-stop))
-    (setq-local pmx-presentation-full-screen
-                (not pmx-presentation-full-screen))
-    (when org-tree-slide-mode
-      (pmx-presentation-start)))
+;;   (define-key org-tree-slide-mode-map (kbd "<right>") #'org-tree-slide-move-next-tree)
+;;   (define-key org-tree-slide-mode-map (kbd "<left>") #'org-tree-slide-move-previous-tree)
+;;   (define-key org-tree-slide-mode-map (kbd "<up>") #'org-tree-slide-content)
+;;   (define-key org-tree-slide-mode-map (kbd "<down>") #'pmx-org-tree-slide-quit)
 
-  (define-key org-tree-slide-mode-map (kbd "<right>") #'org-tree-slide-move-next-tree)
-  (define-key org-tree-slide-mode-map (kbd "<left>") #'org-tree-slide-move-previous-tree)
-  (define-key org-tree-slide-mode-map (kbd "<up>") #'org-tree-slide-content)
-  (define-key org-tree-slide-mode-map (kbd "<down>") #'pmx-org-tree-slide-quit)
+;;   ;; hack to clear gutter during presentation
+;;   (add-hook 'org-tree-slide-after-narrow-hook #'git-gutter:clear-gutter)
+;;   (add-hook 'org-tree-slide-before-move-next-hook #'moc-unhide-notes)
+;;   (add-hook 'org-tree-slide-before-move-prev-hook #'moc-unhide-notes)
+;;   (add-hook 'org-tree-slide-after-narrow-hook #'moc-hide-all)
 
-  ;; hack to clear gutter during presentation
-  (add-hook 'org-tree-slide-after-narrow-hook #'git-gutter:clear-gutter)
-  (add-hook 'org-tree-slide-before-move-next-hook #'moc-unhide-notes)
-  (add-hook 'org-tree-slide-before-move-prev-hook #'moc-unhide-notes)
-  (add-hook 'org-tree-slide-after-narrow-hook #'moc-hide-notes)
-
-  (add-hook 'org-tree-slide-play-hook #'pmx-presentation-start)
-  (add-hook 'org-tree-slide-stop-hook #'pmx-presentation-stop))
+;;   (add-hook 'org-tree-slide-play-hook #'pmx-presentation-start)
+;;   (add-hook 'org-tree-slide-stop-hook #'pmx-presentation-stop)
+;;   )
 
 (use-package org-present
   :after org
