@@ -13,11 +13,16 @@
   :config
   (default-text-scale-mode)) ;C-M-= and C-M-- for larger and smaller text
 
-(let ((rules `(("\\<lambda\\>"
-               (0  '(face font-lock-keyword-face
-                          display ,(char-to-string (make-char 'greek-iso8859-7 107))))))))
-  (dolist (m '(emacs-lisp-mode inferior-emacs-lisp-mode lisp-mode))
-    (font-lock-add-keywords m rules)))
+;; TODO check if fontification was broken with the older method
+;; TODO narrow the rule to where it should be
+(defun pmx--setup-pretty-lambda ()
+  (let ((rules `(("\\<lambda\\>"
+                  (0  '(face font-lock-keyword-face display "λ"))))))
+    (dolist (m '(emacs-lisp-mode inferior-emacs-lisp-mode lisp-mode))
+      (font-lock-add-keywords m rules))
+    (set-fontset-font "fontset-default"
+                      955 (font-spec :family "Roboto Mono"
+                                     :inherit 'default))))
 
 ;; 안영하세요
 (use-package mule
