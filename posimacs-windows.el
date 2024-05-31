@@ -26,16 +26,15 @@
 ;; minibuffer or a transient window causes windows to automatically scroll.  In
 ;; extremely suboptimal configurations, every buffer on the screen will
 ;; herky-jerk over repeated M-x invocations, causing epilepsy in small children.
-(setq scroll-preserve-screen-position 'always)
+(setq scroll-preserve-screen-position nil)
+(setq scroll-error-top-bottom t)
 (setq next-screen-context-lines 12)
-;; Auto-scroll as little as possible.  Avoid moving the point.
-(setq scroll-preserve-screen-position t) ; firstly, avoid some herky jerk situations
-;; Second, dynamically set `scroll-conservatively' to avoid automatic re-centers.
-;; We want automatic re-center when swiper for example goes off screen, but for
-;; minibuffer or transient display, we want the minimum possible scroll.
-;; And finally, dynamically shrink the margin so that the space created by
-;; margin will all be used up before automatic scrolling can occur and margins
-;; will not be maintained during minibuffer or transient display.
+;; Dynamically set `scroll-conservatively' to avoid automatic re-centers.  We
+;; want automatic re-center when swiper for example goes off screen, but for
+;; minibuffer or transient display, we want the minimum possible scroll.  And
+;; finally, dynamically shrink the margin so that the space created by margin
+;; will all be used up before automatic scrolling can occur and margins will not
+;; be maintained during minibuffer or transient display.
 (defvar pmx--no-herky-jerk-margin nil)
 (defvar pmx--no-herky-jerk-scroll-conservatively nil)
 (setq scroll-margin 12)
