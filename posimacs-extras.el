@@ -89,18 +89,6 @@
 
   (add-hook 'keycast-freestyle-mode-hook #'pmx-keycast-doom-modeline-integrate))
 
-;;;###Autoload
-(defun pmx-screenshot-svg ()
-  "Save a screenshot of the current frame as an SVG image.
-Saves to a temp file and puts the filename in the kill ring."
-  (interactive)
-  (let* ((filename (make-temp-file "Emacs" nil ".svg"))
-         (data (x-export-frames nil 'svg)))
-    (with-temp-file filename
-      (insert data))
-    (kill-new filename)
-    (message filename)))
-
 (provide 'posimacs-extras)
 ;;; posimacs-extras.el ends here
 
