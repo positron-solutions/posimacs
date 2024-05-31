@@ -205,6 +205,18 @@ Repeats of that char should continue."
   (general-def 'global-map "M-k" #'pmx-forward-to-char)
   (general-def 'global-map "M-l" #'avy-goto-word-1)
 
+  (defun pmx-eat-project-toggle ()
+    "Toggle the project terminal."
+    (interactive)
+    (if (string-match-p "eat-"
+                        (symbol-name (buffer-local-value
+                                      'major-mode
+                                      (current-buffer))))
+        (call-interactively #'previous-buffer)
+      (call-interactively #'eat-project)))
+
+  (general-def 'global-map "M-z" #'pmx-eat-project-toggle)
+  (general-def 'eat-semi-char-mode-map "M-z" #'pmx-eat-project-toggle)
   (defun pmx-backward-symbol ()
     "Backward symbol should exist."
     (interactive)
