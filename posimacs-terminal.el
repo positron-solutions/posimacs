@@ -19,7 +19,7 @@
     (interactive)
     (eat-emacs-mode)
     (call-interactively #'avy-goto-word-1))
-  (keymap-set eat-semi-char-mode-map "M-j" #'pmx--eat-jump-to-line)
+  (keymap-set eat-semi-char-mode-map "M-l" #'pmx--eat-jump-to-line)
 
   (defun pmx--eat-swiper-to-line ()
     (interactive)
