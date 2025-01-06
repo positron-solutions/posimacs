@@ -299,6 +299,9 @@
 (defvar-local pmx-old-window-configuration nil "Restore after tree slide exit.")
 (defvar-local pmx--header-line-cookie nil "Restore header line face.")
 
+(use-package ox-gfm
+    :after org)
+
 (defun pmx--dslide-text-scale ()
   (text-scale-set 3))
 
