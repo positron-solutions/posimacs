@@ -69,21 +69,20 @@
   (setopt keypression-concat-self-insert nil)
   (setopt keypression-frame-background-mode 'dark))
 
+;; The actual integration
+(defun pmx-keycast-doom-modeline-update (return)
+  (if (eq (current-buffer) (window-buffer (old-selected-window)))
+      (append return (list  keycast-last-formatted))
+    return))
+
 (use-package keycast
   :config
-  (setopt keycast-mode-line-format
-          "%k%c%r ")
+  (setopt keycast-mode-line-format "%k%c%r ")
   (setopt keycast-substitute-alist
           '((keycast-log-erase-buffer nil nil)
             (transient-update         nil nil)
             (self-insert-command      nil nil)
             (mwheel-scroll nil nil)))
-
-  ;; The actual integration
-  (defun pmx-keycast-doom-modeline-update (return)
-    (if (eq (current-buffer) (window-buffer (old-selected-window)))
-        (concat return " " keycast-last-formatted)
-      return))
 
   ;; Mode line hooks get called on start and stop :-)
   (defun pmx-keycast-doom-modeline-integrate ()
