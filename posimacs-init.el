@@ -141,6 +141,7 @@
                         "posimacs-windows.el"
                         "posimacs-ai.el"
                         "posimacs-bindings.el"
+                        "posimacs-cl.el"
                         "posimacs-elisp.el"
                         "posimacs-extras.el"
                         "posimacs-minibuffer.el"
