@@ -22,6 +22,9 @@
   (defun pmx--disable-adaptive-auto-fill ()
     (setq-local adaptive-auto-fill nil))
   (add-hook 'emacs-lisp-mode-hook #'pmx--disable-adaptive-auto-fill)
+  (defun pmx--no-electric-pair ()
+    (electric-pair-local-mode -1))
+  (add-hook 'emacs-lisp-mode-hook #'pmx--no-electric-pair)
   (with-eval-after-load 'counsel
     (defun pmx--counsel-outline-config ()
       (when (derived-mode-p 'emacs-lisp-mode))
