@@ -292,18 +292,43 @@
 (defvar-local pmx-old-window-configuration nil "Restore after tree slide exit.")
 (defvar-local pmx--header-line-cookie nil "Restore header line face.")
 
-(use-package macro-slides
-  :elpaca (macro-slides :repo "~/.emacs.d/etc/scratch-pkgs/macro-slides.git")
-  :after moc
+(defun pmx--dslide-text-scale ()
+  (text-scale-set 3))
+
+(defun pmx--dslide-no-jinx ()
+  (jinx-mode -1)
+  (without-restriction
+    (let ((overlays (overlays-in (point-min) (point-max))))
+      (mapc (lambda (o)
+              (when (eq (overlay-get o 'category)
+                        'jinx-overlay)
+                (delete-overlay o)))
+            overlays))))
+
+(defun pmx--dslide-git-gutters-off ()
+  (git-gutter-mode -1)
+  ;; TODO why does this need a timer?
+  (run-at-time
+   0.05 nil
+   (lambda (&rest _)
+     (without-restriction
+       (git-gutter:clear-diff-infos)
+       (git-gutter:clear-gutter)))))
+
+(use-package dslide
+  :ensure (dslide :repo "~/.emacs.d/elpaca/repos/dslide")
   :config
-  (setq ms-breadcrumb-face
-        '(:height 240))
-
-  (add-hook 'ms-mode-hook #'moc-present-mode)
-
-  ;; hack to clear gutter during presentation
-  (add-hook 'ms-narrow-hook #'git-gutter:clear-gutter)
-  (add-hook 'ms-narrow-hook #'moc-hide-refresh))
+  (add-hook 'dslide-start-hook #'pmx--dslide-git-gutters-off)
+  (add-hook 'dslide-start-hook #'pmx--dslide-no-jinx)
+  (add-hook 'dslide-start-hook #'pmx--dslide-text-scale)
+  (setq dslide-header-date nil
+        dslide-header-email t
+        dslide-margin-title-above 4.0
+        dslide-margin-title-below 0.0
+        dslide-margin-content 2.0
+        dslide-header-author t
+        dslide-hide-todo t
+        dslide-hide-tags t))
 
 (use-package unfill
   :after org
