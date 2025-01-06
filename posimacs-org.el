@@ -190,14 +190,15 @@
   (setopt org-modern-hide-stars 'leading)
 
   ;; I like to change up my stars
-  (setopt org-modern-star '("∯" "∮" "∇" "σ" "𝛼" "∞" "𝜺"))
-  ;; (setopt org-modern-star '("♨" "✈" "✲" "⍟" "✰" "▻" "▸")
-  ;; (setopt org-modern-star '("◩" "⬙" "◲" "◇" "▿"))
-  ;; (setopt org-modern-star '("█" "▟" "▞" "▄" "▘" "▗" "▁"))
-  ;; (setopt org-modern-star '("☀" "☉" "☾" "☄" "❉" "✵" "✰" "✩"))
-  ;; (setopt org-modern-star '("∀" "∋" "∃" "≡" "∩"))
-  ;; (setopt org-modern-star '("🂡" "🂼" "🃇" "🃋" "🃕" "🂿" "🃒"))
-  ;; (setopt org-modern-star '("☰" "☲" "☵" "☷" "⚌" "⚏" "⚋"))
+  (setopt org-modern-star 'replace)
+  (setopt org-modern-replace-stars "∯∮∇σ𝛼∞𝜺")
+  ;; (setopt org-modern-star "♨✈✲⍟✰▻▸")
+  ;; (setopt org-modern-star "◩⬙◲◇▿")
+  ;; (setopt org-modern-star "█▟▞▄▘▗▁")
+  ;; (setopt org-modern-star "☀☉☾☄❉✵✰✩")
+  ;; (setopt org-modern-star "∀∋∃≡∩)
+  ;; (setopt org-modern-star "🂡🂼🃇🃋🃕🂿🃒")
+  ;; (setopt org-modern-star "☰☲☵☷⚌⚏⚋")
 
   (setopt org-modern-block-fringe t))
 
