@@ -208,6 +208,13 @@ call unless there's a ton of windows for some reason."
                (mode . ,pmx-other-win-modes)
                (inhibit-same-window . nil)))
 
+;; Removed options that create frames
+(setq display-buffer-fallback-action
+      '((display-buffer--maybe-same-window
+         display-buffer-reuse-window
+         display-buffer-in-previous-window
+         display-buffer-use-some-window)))
+
 ;;; posimacs-windows.el ends here.
 
 ;; Local Variables:
