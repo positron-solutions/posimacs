@@ -38,7 +38,7 @@
 ;; https://github.com/Gavinok/emacs.d
 (setq-default
  inhibit-startup-message t
- frames-inhibit-implied-resize t        ; please don't mess up screencasts
+ frame-inhibit-implied-resize t        ; please don't mess up screencasts
  mode-line-format nil
  ;; Builds with Nix set this to a garbage time.  Elpaca needs to guess if
  ;; built-in packages are out of date or not.
