@@ -11,8 +11,11 @@
 
 ;;; Code:
 
-(use-package swiper                ; the better incremental search
-  :bind ("M-s" . swiper))
+
+(use-package swiper                     ; the better incremental search
+  :bind ("M-s" . swiper)
+  :config
+  (setopt swiper-action-recenter t))
 
 ;; case insensitive matching of filenames
 (setq read-file-name-completion-ignore-case t)
