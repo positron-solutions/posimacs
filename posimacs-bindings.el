@@ -210,6 +210,9 @@ Repeats of that char should continue."
   (general-def 'global-map "M-k" #'pmx-forward-to-char)
   (general-def 'global-map "M-l" #'avy-goto-word-1)
 
+  (general-def 'global-map "M-0" #'forward-sexp)
+  (general-def 'global-map "M-9" #'backward-sexp)
+
   (defun pmx-eat-project-toggle ()
     "Toggle the project terminal."
     (interactive)
@@ -222,6 +225,8 @@ Repeats of that char should continue."
 
   (general-def 'global-map "M-z" #'pmx-eat-project-toggle)
   (general-def 'eat-semi-char-mode-map "M-z" #'pmx-eat-project-toggle)
+  (general-def 'global-map "M-u" #'universal-argument)
+
   (defun pmx-backward-symbol ()
     "Backward symbol should exist."
     (interactive)
@@ -247,6 +252,8 @@ Repeats of that char should continue."
   (general-unbind 'ivy-minibuffer-map "M-o")
   (general-unbind 'dired-mode-map "M-o")
   (general-unbind 'ibuffer-mode-map "M-o")
+  (general-unbind 'mhtml-mode-map "M-o") ; TODO user-keys
+  (general-unbind 'diff-mode-map "M-o")
   (general-unbind 'org-mode-map "M-h")
   (general-unbind 'org-mode-map "M-j")
   (general-unbind 'org-mode-map "M-o")
@@ -265,6 +272,14 @@ Repeats of that char should continue."
   :after (general avy command-log info help-fns)
   :ensure (transient :tag latest)
   :config
+
+  (setq transient-mode-line-format nil)
+
+  (defun pmx--transient-no-cursor ()
+    (set-buffer transient--buffer)
+    (setq-local cursor-type nil))
+
+  (add-hook 'transient-setup-buffer-hook #'pmx--transient-no-cursor)
 
   (defun pmx-watch-variable ()
     "Watch variable changes with a generic watch callback."
@@ -329,7 +344,7 @@ Repeats of that char should continue."
       ("R" "Regexp Builder" regexp-builder)]
 
      ["Debug"
-      ("d" pxm-debugging)]
+      ("d" "debugging" pmx-debugging)]
 
      ["Bindings"
       ;; TODO whereis
@@ -341,9 +356,9 @@ Repeats of that char should continue."
      ;; characters.  The outputs are a bit difficult to parse at first.
      ;; Recreating the states is not intuitive.
      ["Text"
-      ("df" "Describe Face" describe-face)
-      ("dc" "Describe Char" describe-char)
-      ("dp" "Describe Text Properties" describe-text-properties)]
+      ("Df" "Describe Face" describe-face)
+      ("Dc" "Describe Char" describe-char)
+      ("Dp" "Describe Text Properties" describe-text-properties)]
 
      ["Watch"
       ;; TODO keycast!
@@ -365,7 +380,7 @@ Repeats of that char should continue."
       ("C-m m" "Emacs Manual" info-emacs-manual)
       ("g" "Glossary" search-emacs-glossary)]])
 
-  (general-def "M-h" 'posimacs-help-transient))
+  (general-def "M-h" 'pmx-help))
 
 (provide 'posimacs-bindings)
 ;;; posimacs-bindings ends here
