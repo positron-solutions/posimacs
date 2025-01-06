@@ -1,4 +1,4 @@
-{ emacs-jinx, emacs-overlay, emacs29-src }:
+{ emacs-jinx, emacs-overlay, ... }:
 { config, pkgs, lib, ... }:
 
 let
@@ -33,21 +33,22 @@ in
       aspell
       aspellDicts.en
       nerdfonts
-      nil
-      ripgrep # projectile-ripgrep function relies on this
+      ripgrep
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       roboto
       roboto-mono
       roboto-slab
-      symbola # Emacs can use this font to override symbols
+      symbola
     ];
 
     programs.emacs = {
       enable = true;
       package = pkgs.emacs-unstable;
-      extraPackages = (epkgs: [epkgs.treesit-grammars.with-all-grammars]);
+      extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
     };
+
+    # Either this kind of expression or the other kind
 
     # Fontconfig will ensure that fonts installed in home.packages
     # are available

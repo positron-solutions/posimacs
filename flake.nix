@@ -6,11 +6,11 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-23.11";
-    emacs29-src = {
-      url = "github:emacs-mirror/emacs/emacs-29.2";
-      flake = false;
-    };
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-24.05";
+    # emacs29-src = {
+    #   url = "github:emacs-mirror/emacs/emacs-29.3";
+    #   flake = false;
+    # };
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,10 +30,10 @@
         module = import ./posimacs.nix {
           emacs-jinx = inputs.emacs-jinx.homeConfigurations.${system}.default;
           emacs-overlay = inputs.emacs-overlay;
-	  emacs29-src = inputs.emacs29-src;
+          # emacs29-src = inputs.emacs29-src;
         };
-
-      in rec {
+      in
+      rec {
         homeConfigurations = {
           posimacs = module;
           default = homeConfigurations.posimacs;
