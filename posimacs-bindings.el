@@ -111,15 +111,20 @@ Repeats of that char should continue."
 ;;                    backward-word-with-case))
 ;;   (put command 'repeat-map 'case-repeat-map))
 
+(defun pmx--kill-this-buffer ()
+  "`kill-this-buffer' is impressively useless."
+  (interactive)
+  (kill-buffer (current-buffer)))
+
 ;; TODO move to early loading?
 (use-package general
   :config
   ;; Prefer kill to bury...
-  (general-def 'helpful-mode-map "q" #'kill-this-buffer)
-  (general-def 'help-mode-map "q" #'kill-this-buffer)
-  (general-def 'Info-mode-map "q" #'kill-this-buffer)
-  (general-def 'dired-mode-map "q" #'kill-this-buffer)
-  (general-def 'shortdoc-mode-map "q" #'kill-this-buffer)
+  (general-def 'helpful-mode-map "q" #'pmx--kill-this-buffer)
+  (general-def 'help-mode-map "q" #'pmx--kill-this-buffer)
+  (general-def 'Info-mode-map "q" #'pmx--kill-this-buffer)
+  (general-def 'dired-mode-map "q" #'pmx--kill-this-buffer)
+  (general-def 'shortdoc-mode-map "q" #'pmx--kill-this-buffer)
 
   ;; Create some space.  Purge any top-level commands that are not that useful
   ;; compared to others, duplicated with a better binding, or should be
