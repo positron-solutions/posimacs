@@ -25,22 +25,32 @@
   :config
   (setq default-input-method "korean-hangul")
   (define-key global-map (kbd "C-\\") nil)
-  (define-key global-map (kbd "s-SPC") #'toggle-input-method))
+  (define-key global-map (kbd "M-`") #'toggle-input-method))
 
 ;; Better Korean langauge support
 (defun pmx--setup-korean-fonts ()
   "Configure Korean chars to be more 아름답지."
   (set-fontset-font t 'korean-ksc5601
-                    (font-spec :family "Gowun Dodum"
-                               :inherit 'default
-                               :size 11.0)))
+                    (font-spec :family "NanumGothicCoding"
+                               :inherit 'default)))
 
 (defun pmx--setup-org-bullet-fonts ()
   "The bullets are not actually Roboto Slab."
   (set-fontset-font "fontset-default"
+                    8711 (font-spec :family "Roboto Slab"
+                                    :inherit 'default))
+  (set-fontset-font "fontset-default"
+                    8751 (font-spec :family "Iosevka Nerd Font Mono"
+                                    :inherit 'default))
+  (set-fontset-font "fontset-default"
                     8750 (font-spec :family "Iosevka Nerd Font Mono"
-                                    :size 24.0
-                                    :inherit 'default)))
+                                    :inherit 'default))
+  (set-fontset-font "fontset-default"
+                    963 (font-spec :family "Iosevka Nerd Font Mono"
+                                   :inherit 'default))
+  (set-fontset-font "fontset-default"
+                    #xf05c3 (font-spec :family "Iosevka Nerd Font Mono"
+                                       :inherit 'default)))
 
 (defun pmx--setup-fonts (&rest _)
   "Nice fonts for nice people (and robots)."
@@ -69,6 +79,10 @@
   (set-face-attribute 'info-menu-header nil
                       :family "Roboto Slab"
                       :height 1.5
+                      :inherit 'default)
+  (set-face-attribute 'helpful-heading nil
+                      :family "Roboto Slab"
+                      :height 1.5
                       :inherit 'default))
 
 (use-package shortdoc
@@ -92,6 +106,8 @@
            (load-theme 'posimacs-dark t)
            (pmx--setup-fonts)
            (pmx--setup-korean-fonts)
+           (pmx--setup-org-bullet-fonts)
+           (pmx--setup-pretty-lambda)
 
            ;; Corrects (and improves) org-mode's native fontification.
            (doom-themes-org-config))))
@@ -133,8 +149,12 @@
   (add-hook 'elpaca-after-init-hook #'doom-modeline-mode)
   :config
   (setopt doom-modeline-percent-position nil)
-  (setopt doom-modeline-position-column-line-format '("%3l:%c"))
-  (setopt mode-line-position-column-format '(" C%-3c"))
+  (setopt column-number-mode nil)
+  (setopt line-number-mode nil)
+  (setopt mode-line-position-line-format '(" %3l"))
+  (setopt doom-modeline-position-line-format '(" %3l"))
+  (setopt doom-modeline-position-column-line-format '("%3l:%3c"))
+  (setopt doom-modeline-position-column-format '(" %3C"))
   (setopt doom-modeline-buffer-encoding nil)
   (setopt doom-modeline-major-mode-icon t)
   (setopt doom-modeline-env-version nil)
