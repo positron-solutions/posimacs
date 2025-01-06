@@ -9,6 +9,7 @@ in
       emacs-jinx
       korean-hunspell
       pkgs.hunspell
+      pkgs.hunspellDicts.en_US
     ];
 
     # link jinx module into convenient load path
