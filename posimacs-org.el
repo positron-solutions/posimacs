@@ -41,6 +41,11 @@
   (setopt org-mouse-1-follows-link t)
   (setopt org-return-follows-link nil)
 
+  ;; lots of org inputs are not pairs
+  (defun pmx--org-no-pairs ()
+    (electric-pair-local-mode -1))
+  (add-hook 'org-mode-hook #'pmx--org-no-pairs)
+
   ;; Jesus Christ if you're going to automatically move tags to a far column,
   ;; you need to maintain the colulmn while typing or else the lines will
   ;; reflow.
