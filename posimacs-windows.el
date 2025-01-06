@@ -113,7 +113,7 @@ observed."
 (setq split-window-preferred-function #'pmx-split-window-conservatively)
 
 (use-package windmove
-  :elpaca nil
+  :ensure nil
   :config
 
   ;; Stack overflow was decent!

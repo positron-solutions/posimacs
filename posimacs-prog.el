@@ -180,7 +180,7 @@
 
 ;; https://github.com/purcell/emacs.d/blob/master/lisp/init-nix.el
 (use-package nix-ts-mode
-  :elpaca (nix-ts-mode
+  :ensure (nix-ts-mode
            :fetcher github
            :repo "remi-gelinas/nix-ts-mode")
   :init (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
@@ -193,7 +193,7 @@
 
 (use-package kubernetes
   :defer t
-  :elpaca (kubernetes :autoloads t))
+  :ensure (kubernetes :autoloads t))
 
 (use-package yaml-pro
   :elpaca (yaml-pro :autoloads t)

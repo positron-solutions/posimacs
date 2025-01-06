@@ -26,7 +26,7 @@
 
 ;; 안영하세요
 (use-package mule
-  :elpaca nil
+  :ensure nil
   :config
   (setq default-input-method "korean-hangul")
   (define-key global-map (kbd "C-\\") nil)
@@ -77,7 +77,7 @@
                       :inherit 'default))
 
 (use-package shortdoc
-  :elpaca nil
+  :ensure nil
   :config
   (set-face-attribute 'shortdoc-section nil :inherit 'fixed-pitch)
   (set-face-attribute 'shortdoc-heading nil :inherit 'fixed-pitch)
@@ -107,7 +107,7 @@
 ;; nice countdown timers
 (use-package champagne
   :commands champagne
-  :elpaca (champagne
+  :ensure (champagne
            :type git :host github
            :repo "positron-solutions/champagne")
   :config
@@ -115,7 +115,7 @@
 
 ;; animated parrots and nyancat whenever you finish org todo's or push code
 (use-package parrot
-  :elpaca  (parrot :host github :repo "positron-solutions/parrot" :files (:defaults "img"))
+  :ensure  (parrot :host github :repo "positron-solutions/parrot" :files (:defaults "img"))
   :custom
   (parrot-animate 'hide-static)
   (parrot-rotate-animate-after-rotation nil)

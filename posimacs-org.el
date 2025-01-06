@@ -144,7 +144,7 @@
 
 ;; show things when cursor gets there
 (use-package org-appear
-  :elpaca (org-appear :autoloads t)
+  :ensure (org-appear :autoloads t)
   :hook org-mode
   :config
   (setq org-appear-autolinks t)
@@ -154,7 +154,7 @@
 
 (use-package orgit
   :commands (orgit-store-link)
-  :elpaca (orgit
+  :ensure (orgit
            :host github
            :repo "magit/orgit"))
 
@@ -233,6 +233,7 @@
 (use-package hide-mode-line)
 
 (use-package moc
+  :ensure (moc :repo "~/.emacs.d/elpaca/repos/moc")
   :after org
   :config
   (defun pmx-set-project-screenshots ()

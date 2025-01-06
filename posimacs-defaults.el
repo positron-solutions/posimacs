@@ -43,7 +43,7 @@
 
 ;; Too lazy
 (use-package autoinsert
-  :elpaca nil
+  :ensure nil
   :config
   (setq auto-insert-query nil)
   (push '(emacs-lisp-mode . (lambda () (require 'yasnippet)
@@ -66,7 +66,7 @@
 
 ;; Allow access from emacsclient
 (use-package server
-  :elpaca nil
+  :ensure nil
   :config
   (add-hook 'elpaca-after-init-hook
             (lambda ()
@@ -178,8 +178,13 @@
 ;; Basic packages ;;
 ;;;;;;;;;;;;;;;;;;;;
 
+(use-package dired
+  :ensure nil
+  :config
+  (setopt dired-listing-switches "-alh"))
+
 (use-package bookmark
-  :elpaca nil
+  :ensure nil
   :config
   ;; Why yes, yes, please delete that bookmark that I just set.  It was garbage
   ;; obviously.  That's why I saved it.
@@ -187,7 +192,7 @@
 
 ;; Accumulate history of buffers automatically.  Saves mental effort enormously.
 (use-package recentf
-  :elpaca nil
+  :ensure nil
   :config
   (recentf-load-list)
   (setq recentf-max-saved-items 400)
@@ -213,13 +218,13 @@
 ;; still leaps by whole words.
 ;; (use-package subword
 ;;   :delight
-;;   :elpaca nil                           ; built-in package
+;;   :ensure nil                           ; built-in package
 ;;   :config
 ;;   (global-subword-mode 1))
 
 ;; TODO move this to a package of enhancements to baseline behavior
 (use-package command-log
-  :elpaca (command-log
+  :ensure (command-log
            :host github
            :repo "positron-solutions/command-log")
   :custom
@@ -240,7 +245,7 @@ displayed again.")
 ;; TODO find other packages that are not being managed by elpaca and bring them under the law
 ;; https://www.reddit.com/r/emacs/comments/okse5o/magit_not_accepting_cnp_or_updown_arrows/
 ;; See `list-load-path-shadows'.
-(use-package project :elpaca nil)
+(use-package project :ensure nil)
 
 ;;; posimacs-defaults.el ends here.
 

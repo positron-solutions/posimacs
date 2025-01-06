@@ -10,9 +10,10 @@
 (use-package restart-emacs)
 
 (use-package snow
-  :elpaca (snow :host github :repo "alphapapa/snow.el"))
+  :ensure (snow :host github :repo "alphapapa/snow.el"))
 
-(use-package mandelbrot)
+(use-package mandelbrot
+  :ensure (mandelbrot :repo "/home/satoshi/.emacs.d/scratch-pkgs/mandelbrot/"))
 
 ;; tracking command usage to measure pain
 (use-package keyfreq

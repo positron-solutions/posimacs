@@ -258,7 +258,7 @@ Repeats of that char should continue."
 ;; TODO new package for sure
 (use-package transient
   :after (general avy command-log info help-fns)
-  :elpaca (transient :tag latest)
+  :ensure (transient :tag latest)
   :config
 
   (defun pmx-watch-variable ()

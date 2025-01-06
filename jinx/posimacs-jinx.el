@@ -8,7 +8,7 @@
 ;;; Code:
 
 (use-package jinx
-  :elpaca nil
+  :ensure nil
   :demand t
   :load-path  "~/.emacs.d/vendor/emacs-jinx/"
   :hook (elpaca-after-init-hook . global-jinx-mode)

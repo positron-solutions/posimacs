@@ -13,7 +13,7 @@
 
 ;;; Code:
 (use-package elisp-mode
-  :elpaca nil
+  :ensure nil
   :config
   ;; On save, check parens
   (defun pmx--setup-check-paren-on-save ()
@@ -38,14 +38,14 @@
 (use-package package-lint
   :commands (package-lint-current-buffer
              package-lint-describe-symbol-history)
-  :elpaca (package-lint :autoloads t))
+  :ensure (package-lint :autoloads t))
 
 (setopt help-at-pt-display-when-idle t)
 
 (use-package elisp-depend)
 
 (use-package flycheck-package
-  :elpaca (flycheck-package :autoloads t)
+  :ensure (flycheck-package :autoloads t)
   :commands flycheck-package-setup
   :config
   (letrec setup-flycheck-pkgs-once
@@ -57,7 +57,7 @@
               setup-flycheck-pkgs-once)))
 
 (use-package ielm
-  :elpaca nil
+  :ensure nil
   :config
   ;; multi-line expression indent nicely
   (setopt ielm-dynamic-multiline-inputs nil)
@@ -152,7 +152,7 @@ to be slow."
 ;; This package makes all help buffers much more informative and easier to read.
 ;; This makes it much easier to introspect emacs state and elisp code.
 (use-package helpful
-  :elpaca (helpful :autoloads t)
+  :ensure (helpful :autoloads t)
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-variable] . helpful-variable)
          ([remap describe-key] . helpful-key))
@@ -192,7 +192,7 @@ to be slow."
   (eq (buffer-local-value 'major-mode (get-buffer buf)) 'ert-results-mode))
 
 (use-package ert
-  :elpaca nil
+  :ensure nil
   :config
   (add-to-list 'display-buffer-alist
                `(pmx-buffer-ert-p         ;predicate
@@ -261,7 +261,7 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
      (-concat))))
 
 (use-package keymap-utils
-  :elpaca (keymap-utils :tag t))
+  :ensure (keymap-utils :tag t))
 
 (provide 'posimacs-elisp)
 ;;; posimacs-elisp.el ends here

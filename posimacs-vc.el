@@ -8,7 +8,7 @@
 ;;; Code:
 
 (use-package magit
-  :elpaca (magit :tag latest)
+  :ensure (magit :tag latest)
   :custom
   ;; also try magit-display-buffer-fullframe-status-v1
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
@@ -20,7 +20,7 @@
   :hook (magit-mode-hook . magit-todos-mode))
 
 (use-package ediff
-  :elpaca nil
+  :ensure nil
   ;; Prot's setup.  These are experimental.
   :config
   (setopt ediff-keep-variants nil)

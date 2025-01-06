@@ -94,7 +94,7 @@
                                         ; this load after the elpaca init hook
                                         ; for no reason.  It's just fun that it
                                         ; seems to work out okay.
-  :elpaca (counsel :autoloads t)
+  :ensure (counsel :autoloads t)
   :init
   (letrec ((load-counsel (lambda ()
                            (counsel-mode)

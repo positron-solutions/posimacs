@@ -8,7 +8,7 @@
 ;; Tree sitter support is installed 😀
 
 (use-package rust-ts-mode
-  :elpaca nil)              ; vestigal
+  :ensure nil)              ; vestigal
 
 (use-package rust-mode
   :hook ((rust-mode .  electric-pair-local-mode)
