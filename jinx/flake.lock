@@ -5,11 +5,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1681202837,
-        "narHash": "sha256-H+Rh19JDwRtpVPAWp64F+rlEtxUWBAQW28eAi3SRSzg=",
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "cfacdce06f30d2b68473a46042957675eebb3401",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
         "type": "github"
       },
       "original": {
@@ -21,32 +21,48 @@
     "jinx-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1682670429,
-        "narHash": "sha256-PBXcKgOMP9yHxtKFe00n17WmKFDkwE2cNOL95Gw+Cfg=",
+        "lastModified": 1705964277,
+        "narHash": "sha256-JJncMGDyVk7ctixqjeKR1HVXiAD//4priKACb8qgWxE=",
         "owner": "minad",
         "repo": "jinx",
-        "rev": "7fced90fdaca5a482cd08b80967e0eac5ee8d885",
+        "rev": "e7934278540b33c394a0aebdd9fa543aa84fc82a",
         "type": "github"
       },
       "original": {
         "owner": "minad",
-        "ref": "0.8",
+        "ref": "1.2",
         "repo": "jinx",
+        "type": "github"
+      }
+    },
+    "korean-hunspell-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1707669774,
+        "narHash": "sha256-I44tOUYNCVnz4y/Ic4UHcGFM+J3KbNkhEha1+6EvwaY=",
+        "owner": "spellcheck-ko",
+        "repo": "hunspell-dict-ko",
+        "rev": "606164264399ca037325bd41750f9c108ed4c290",
+        "type": "github"
+      },
+      "original": {
+        "owner": "spellcheck-ko",
+        "repo": "hunspell-dict-ko",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1682745931,
-        "narHash": "sha256-rMTSVmhXUbb4dF1NFYNchfhi5vvSgBvQmwuc5LbzU30=",
+        "lastModified": 1720498883,
+        "narHash": "sha256-fZshRrBBooochSy8OJrVjEJFsI0tPII9XgOzsMbQ09w=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2d05b5fb6e5eade3c4d0744b90d8a93d3c0a07f1",
+        "rev": "780d92cc30714eb5c026d12731ba7757698c3d9d",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-22.11",
+        "ref": "release-24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -55,6 +71,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "jinx-src": "jinx-src",
+        "korean-hunspell-src": "korean-hunspell-src",
         "nixpkgs": "nixpkgs"
       }
     },
