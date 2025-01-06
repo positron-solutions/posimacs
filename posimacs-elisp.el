@@ -134,7 +134,7 @@ to be slow."
   (add-hook 'ielm-mode-hook #'pmx--ielm-comint-truncate))
 
 (use-package lispy
-  :hook ((lisp-mode emacs-lisp-mode))
+  :hook ((lisp-mode emacs-lisp-mode inferior-emacs-lisp-mode))
   :config
 
   (setopt lispy-close-quotes-at-end-p t)
