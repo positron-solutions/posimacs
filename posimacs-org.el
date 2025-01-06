@@ -105,6 +105,7 @@
   ;; defaults.
   ;; Also see adaptive wrap.
   (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook #'visual-wrap-prefix-mode)
   (keymap-set org-mode-map "C-k" #'kill-visual-line)
 
   ;; Set timer to save org buffers and write a commit at midnight
@@ -128,12 +129,6 @@
       (error "Could not find git executable")))
 
   (run-at-time "24:00" t #'pmx-commit-agenda-files))
-
-;; works with `visual-line-mode'
-(use-package adaptive-wrap
-  :after org
-  :config
-  (add-hook 'org-mode-hook #'adaptive-wrap-prefix-mode))
 
 ;; see agenda whenever you come back from lunch
 (use-package idle-org-agenda
