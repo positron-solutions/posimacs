@@ -201,11 +201,11 @@ call unless there's a ton of windows for some reason."
   (member (buffer-local-value 'major-mode (get-buffer buf)) pmx-other-win-modes))
 
 (add-to-list 'display-buffer-alist
-             `(pmx-buffer-help-p        ;predicate
+             `(pmx-buffer-help-p       ;predicate
                (display-buffer--maybe-same-window
                 display-buffer-reuse-window
                 display-buffer-reuse-mode-window) ;functions to try
-               (mode . ,pmx-other-win-modes)
+               (mode . ,@pmx-other-win-modes)
                (inhibit-same-window . nil)))
 
 ;; Removed options that create frames
