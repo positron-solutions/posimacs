@@ -168,8 +168,12 @@ to be slow."
   (unbind-key (kbd "M-o") lispy-mode-map) ; lispy-other
   (unbind-key (kbd "M-j") lispy-mode-map) ; lispy-join
   (unbind-key (kbd "M-k") lispy-mode-map) ; lispy-kill-sentence
-  (unbind-key (kbd "M-i") lispy-mode-map) ; lispy-iedit
-  (unbind-key (kbd "b") lispy-mode-map)   ; special-lispy-back
+  (unbind-key (kbd "M-i") lispy-mode-map)
+
+  ;; (unbind-key (kbd "g") lispy-mode-map) ; TODO what does this do?
+  (unbind-key (kbd "~") lispy-mode-map)  ; lispy-tilda (insert ARG times)
+  (unbind-key (kbd "G") lispy-mode-map)  ; lispy-goto
+  (unbind-key (kbd "b") lispy-mode-map)  ; special-lispy-back
   (unbind-key (kbd "x") lispy-mode-map))  ; special-lispy-x
 
 ;; Seeing delimiter balance at all times is pretty useful.
