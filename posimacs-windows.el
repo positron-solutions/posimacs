@@ -20,14 +20,27 @@
 ;; (setq browse-url-browser-function (lambda (url) (eww-browse-url url t)))
 
 (setq ediff-split-window-function 'split-window-horizontally)
-(put 'erase-buffer 'disabled nil)
+
+(setopt scroll-margin 12)
+(setopt maximum-scroll-margin 0.2)
+(setopt scroll-down-aggressively 0.3)
+(setopt scroll-up-aggressively 0.3)
+(setopt scroll-conservatively 12)
+(setopt pixel-scroll-mode t)
+
+(setopt pixel-scroll-precision-interpolate-mice t)
+(setopt pixel-scroll-precision-use-momentum t)
+(setopt pixel-scroll-precision-interpolate-page t)
+
+;; TODO Mouse rubber banding
+;; TODO Mouse does not move point
 
 ;; This section implements anti-herky-jerk.  Herky jerk is when the opening the
 ;; minibuffer or a transient window causes windows to automatically scroll.  In
 ;; extremely suboptimal configurations, every buffer on the screen will
 ;; herky-jerk over repeated M-x invocations, causing epilepsy in small children.
 (setq scroll-preserve-screen-position nil)
-(setq scroll-error-top-bottom t)
+(setq scroll-error-top-bottom nil)
 (setq next-screen-context-lines 12)
 ;; Dynamically set `scroll-conservatively' to avoid automatic re-centers.  We
 ;; want automatic re-center when swiper for example goes off screen, but for
@@ -37,13 +50,14 @@
 ;; be maintained during minibuffer or transient display.
 (defvar pmx--no-herky-jerk-margin nil)
 (defvar pmx--no-herky-jerk-scroll-conservatively nil)
-(setq scroll-margin 12)
 (defun pmx--no-herky-jerk-enter (&rest _)
   "Shrinks margin."
-  (setq pmx--no-herky-jerk-scroll-conservatively scroll-conservatively)
-  (setq scroll-conservatively 101)
-  (setq pmx--no-herky-jerk-margin scroll-margin)
-  (setq scroll-margin 0))
+  (unless pmx--no-herky-jerk-scroll-conservatively
+    (setq pmx--no-herky-jerk-scroll-conservatively scroll-conservatively)
+    (setq scroll-conservatively 101))
+  (unless pmx--no-herky-jerk-margin
+    (setq pmx--no-herky-jerk-margin scroll-margin)
+    (setq scroll-margin 0)))
 
 (defun pmx--no-herky-jerk-exit ()
   "Expands margin."
@@ -62,6 +76,8 @@
   (advice-add 'transient-setup :before #'pmx--no-herky-jerk-enter)
   (add-hook 'transient-exit-hook #'pmx--no-herky-jerk-exit)
   (setopt transient-hide-during-minibuffer-read t))
+
+(setq warning-display-at-bottom nil)
 
 ;; Auto-balancing and less aggressive automatic window splitting are a
 ;; prerequisite for any sane window management strategy.
@@ -89,7 +105,7 @@ observed."
   (let ((window (or window (selected-window))))
     (if (and
          (window-splittable-p window t)
-         (eq (length (window-list)) 1))
+         (= (length (window-list)) 1))
         (with-selected-window window
           (split-window-right))
       nil)))
