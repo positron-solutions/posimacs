@@ -117,6 +117,10 @@
   (add-hook 'org-mode-hook #'visual-wrap-prefix-mode)
   (keymap-set org-mode-map "C-k" #'kill-visual-line)
 
+  ;; TODO this should be a dependency.  I don't know wha they are doing in org
+  ;; land, but it's weird.
+  ;; (require 'org-indent)
+
   ;; Set timer to save org buffers and write a commit at midnight
   (defun pmx-commit-agenda-files (&rest _)
     (if-let ((git-bin (executable-find "git"))

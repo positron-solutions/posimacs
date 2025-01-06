@@ -19,6 +19,10 @@
   :after magit
   :hook (magit-mode-hook . magit-todos-mode))
 
+;; TODO learn how to use this lol
+;; (use-package git-timemachine
+;;   :config)
+
 (use-package ediff
   :ensure nil
   ;; Prot's setup.  These are experimental.

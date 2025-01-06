@@ -190,10 +190,19 @@
   :hook (nix-ts-mode . eglot-ensure)
   :config
 
-;; Editing kubernetes yamls can link directly to API reference
-(use-package k8s-mode
-  :elpaca (k8s-mode :autoloads t)
-  :hook (k8s-mode . yas-minor-mode))
+  (defun pmx--project-flake-path (_)
+    (let ((flake-path (expand-file-name "flake.nix" (projectile-project-root))))
+      (if (file-exists-p flake-path)
+          `("nixd"
+            :initializationOptions
+            (:nixpkgs (:expr ,(format "import (builtins.getFlake
+    \"%s\").inputs.nixpkgs { }" flake-path))))
+        '("nixd"))))
+
+  ;; ("nixd"
+  ;;           :initializationOptions
+  ;;           (:nixpkgs (:expr "import (builtins.getFlake
+  ;;                   \"/home/satoshi/Desktop/prizeforge/prizeforge-site/flake.nix\").inputs.nixpkgs { }")))
 
   (let ((nix-settings
          '((nix-ts-mode) . #'pmx--project-flake-path)))
@@ -208,10 +217,15 @@
   :defer t
   :ensure (kubernetes :autoloads t))
 
-(use-package yaml-pro
-  :elpaca (yaml-pro :autoloads t)
-  ;; TODO Set up mode hooks
-  )
+(use-package kubedoc)
+
+(use-package kele)
+
+;; (use-package yaml-pro
+;;   :elpaca (yaml-pro :autoloads t)
+;;   (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
+;;   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+;;   (add-hook 'yaml-ts-mode-hook #'yaml-pro-ts-mode))
 
 (provide 'posimacs-prog)
 ;;; posimacs-prog.el ends here

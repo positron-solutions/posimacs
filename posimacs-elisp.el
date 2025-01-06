@@ -269,7 +269,8 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
       (progn (pop-to-buffer (get-buffer-create new-buffer-name))
              (ielm new-buffer-name)
              (ielm-change-working-buffer target-buffer))
-      (user-error "Target buffer %s is already an ielm buffer" (buffer-name target-buffer)))))
+      (user-error "Target buffer %s is already an ielm buffer"
+                  (buffer-name target-buffer)))))
 
 (global-set-key (kbd "M-i") 'pmx-ielm-this-buffer)
 
@@ -290,8 +291,8 @@ When TARGET-BUFFER is nil, use the result of `current-buffer'"
    (object-slots obj) "\n"))
 
 ;; TODO requires some tool
-(use-package debbugs
-  :commands (debbugs-gnu))
+;; (use-package debbugs
+;;   :commands (debbugs-gnu))
 
 ;; TODO move to a package for Elisp helpers
 (with-eval-after-load 'dash
