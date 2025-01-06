@@ -334,66 +334,6 @@
   :after org
   :bind (:map org-mode-map ("M-q" . #'unfill-paragraph)))
 
-;; presenting
-;; (use-package org-tree-slide
-;;   :after hide-mode-line
-;;   :elpaca (org-tree-slide :autoloads t)
-;;   :commands (org-tree-slide-mode)
-;;   :config
-;;   (setopt org-tree-slide-never-touch-face t)
-;;   (setopt org-tree-slide-header t)
-;;   (setopt org-tree-slide-date nil)
-;;   (setopt org-tree-slide-slide-in-effect t)
-;;   (setopt org-tree-slide-slide-in-blank-lines 4)
-;;   (setopt org-tree-slide-content-margin-top 1)
-;;   (setopt org-tree-slide-header-date nil)
-;;   (setopt org-tree-slide-header-author nil)
-;;   (setopt org-tree-slide-header-email nil)
-;;   (setopt org-tree-slide-indicator
-;;           '(:next nil :previous nil :content nil))
-
-;;   ;; TODO brutish
-;;   (defun pmx-org-tree-slide-toggle-full-screen ()
-;;     "When tree slide mode is active, run's teardown hook and set up again."
-;;     (interactive)
-;;     (when org-tree-slide-mode
-;;       (org-tree-slide-stop))
-;;     (setq-local pmx-presentation-full-screen
-;;                 (not pmx-presentation-full-screen))
-;;     (when org-tree-slide-mode
-;;       (pmx-presentation-start)))
-
-;;   (define-key org-tree-slide-mode-map (kbd "<right>") #'org-tree-slide-move-next-tree)
-;;   (define-key org-tree-slide-mode-map (kbd "<left>") #'org-tree-slide-move-previous-tree)
-;;   (define-key org-tree-slide-mode-map (kbd "<up>") #'org-tree-slide-content)
-;;   (define-key org-tree-slide-mode-map (kbd "<down>") #'pmx-org-tree-slide-quit)
-
-;;   ;; hack to clear gutter during presentation
-;;   (add-hook 'org-tree-slide-after-narrow-hook #'git-gutter:clear-gutter)
-;;   (add-hook 'org-tree-slide-before-move-next-hook #'moc-unhide-notes)
-;;   (add-hook 'org-tree-slide-before-move-prev-hook #'moc-unhide-notes)
-;;   (add-hook 'org-tree-slide-after-narrow-hook #'moc-hide-all)
-
-;;   (add-hook 'org-tree-slide-play-hook #'pmx-presentation-start)
-;;   (add-hook 'org-tree-slide-stop-hook #'pmx-presentation-stop)
-;;   )
-
-(use-package org-present
-  :after org
-  :config
-  (defun pmx-org-present-prepare-slide (buffer-name heading)
-    ;; Show only top-level headlines
-    (org-overview)
-
-    ;; Unfold the current entry
-    (org-show-entry)
-
-    ;; Show only direct subheadings of the slide but don't expand them
-    (org-show-children))
-  (add-hook 'org-present-mode-hook 'pmx-presentation-start)
-  (add-hook 'org-present-mode-quit-hook 'pmx-presentation-end)
-  (add-hook 'org-present-after-navigate-functions 'pmx-org-present-prepare-slide))
-
 ;; A pure library for manipulating & consuming org buffers.  This is really
 ;; useful for org hacking, but you can also use the built-in API's with the
 ;; benefit of deeper integration with the rest of org.
