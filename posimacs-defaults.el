@@ -144,9 +144,6 @@
 (put 'erase-buffer 'disabled nil)
 
 (blink-cursor-mode -1)
-;; (setq blink-cursor-interval 0.14
-;;       blink-cursor-delay 0.5
-;;       blink-cursor-blinks 300)
 
 ;; Thanks Steve Purcell
 (keymap-global-set "RET" 'newline-and-indent)
