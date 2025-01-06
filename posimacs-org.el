@@ -221,29 +221,64 @@
 
 (use-package hide-mode-line)
 
+;; Add this to your use-package :config section
+(defun pmx-screenshots-dir ()
+  (interactive)
+  ;; When taking screenshots from a focus buffer, it sets
+  ;; `moc-focus-base-buffer' so that you can decide based on the base
+  ;; buffer, not the focus buffer, which has no associated file.
+  (with-current-buffer (or moc-focus-base-buffer
+                           (current-buffer))
+    (expand-file-name
+     "screenshots/"
+     (or (when-let ((p (project-current))) (project-root p))
+         (temporary-file-directory)))))
+
+(defun pmx--jinx-desc ()
+  "Describe jinx mode state."
+  (format "jinx %s" (if global-jinx-mode
+                         (propertize "on" 'face 'transient-value)
+                       (propertize "off" 'face 'shadow))))
+
+(defun pmx--keycast-desc ()
+  "Describe keycast mode state."
+  (format "keycast %s"
+          (if keycast-freestyle-mode
+              (propertize "on" 'face 'transient-value)
+            (propertize "off" 'face 'shadow))))
+
 (use-package moc
   :ensure (moc :repo "~/.emacs.d/elpaca/repos/moc")
   :after org
   :config
-  (defun pmx-set-project-screenshots ()
-    (interactive)
-    (let ((dir (read-directory-name "screenshot directory: ")))
-      (unless (file-exists-p dir)
-        (make-directory dir t))
-      (setq moc-screenshot-path dir)))
-  ;; (defun pmx-project-screenshots ()
-  ;;   (expand-file-name
-  ;;    "screenshots/"
-  ;;    (or (project-root (project-current))
-  ;;        (temporary-file-directory))))
-  (setopt moc-screenshot-path #'pmx-set-project-screenshots)
-  (defun pmx-org-block-no-background ()
-    (face-remap-add-relative 'org-block '(:background nil)))
-  (add-hook 'moc-focus-mode-hook #'pmx-org-block-no-background))
+  (transient-append-suffix 'moc-dispatch '(3 2)
+    ["Spelling"
+     ("j" global-jinx-mode :description pmx--jinx-desc :transient t)])
 
-(use-package org-coke
+  (transient-append-suffix 'moc-dispatch '(3 3)
+    ["Casting"
+     ("k" keycast-freestyle-mode :description pmx--keycast-desc :transient t)])
+
+  (setq moc-subtle-cursor-blinks 2)
+  (setq moc-subtle-cursor-interval 0.1)
+
+  ;; (transient-remove-suffix 'moc-dispatch '(3 3))
+
+  ;; configure the function to be called to calculate the correct options at
+  ;; runtime
+  (setopt moc-screenshot-dir #'pmx-screenshots-dir)
+
+  (defun pmx--no-show-paren ()
+    (show-paren-local-mode -1))
+  (add-hook 'moc-focus-mode-hook #'pmx--no-show-paren)
+
+  (setopt moc-screenshot-path #'pmx-screenshots-dir))
+
+(use-package coke
+  :ensure (coke :repo "~/.emacs.d/etc/scratch-pkgs/coke.git")
   :after org
-  :config)
+  :config
+  (add-hook 'org-mode-hook #'coke-mode))
 
 (defvar-local pmx-old-window-configuration nil "Restore after tree slide exit.")
 (defvar-local pmx--header-line-cookie nil "Restore header line face.")
