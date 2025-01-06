@@ -53,6 +53,15 @@
   (setopt org-agenda-window-setup 'current-window) ; don't kill window layout
   (setopt org-auto-align-tags nil)                 ; whitespace is the devil
 
+  ;; Priority
+  (setopt org-priority-lowest 1)
+  (setopt org-priority-default 5)
+  (setopt org-priority-highest 9)
+
+  ;; Constant activity management
+  (setq org-agenda-custom-commands
+        '(("r" tags "refile")))
+
   ;; allow image scaling
   (setopt org-image-actual-width nil)
 
