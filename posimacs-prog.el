@@ -46,18 +46,8 @@
   (setopt lsp-idle-delay 10.0)   ; Reduce error noise while typing or completing
   (setopt lsp-headerline-breadcrumb-enable nil)
 
-  ;; This is a modified definition from the one provided by LSP
-  ;; TODO upstream these changes!
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection (lambda () lsp-nix-nil-server-path))
-                    :major-modes '(nix-ts-mode)
-                    :initialized-fn (lambda (workspace)
-                                      (with-lsp-workspace workspace
-                                        (lsp--set-configuration
-                                         (lsp-configuration-section "nil"))))
-                    :synchronize-sections '("nil")
-                    :server-id 'nix-nil-ts))
-  (add-to-list 'lsp-language-id-configuration '(nix-ts-mode . "Nix"))
+  (setopt lsp-rust-analyzer-closure-return-type-hints "always")
+  (setopt lsp-rust-analyzer-display-closure-return-type-hints t)
 
   ;; for local environments from envrc
   (defun pmx--lsp-set-plist (&rest _)
