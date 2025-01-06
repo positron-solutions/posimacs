@@ -55,9 +55,9 @@
   (advice-add #'lsp-mode :before #'pmx--lsp-set-plist)
 
   ;; Use LSP completions between triggers and min prefix
-  (defun pmx--company-zero-prefix ()
-    (setq-local company-minimum-prefix-length 0))
-  (add-hook 'lsp-mode-hook #'pmx--company-zero-prefix))
+  (defun pmx--company-set-prefix-length ()
+    (setq-local company-minimum-prefix-length 1))
+  (add-hook 'lsp-mode-hook #'pmx--company-set-prefix-length))
 
 ;; TODO check some cases where this may be relevant
 ;; (advice-add #'lsp :before #'envrc--update-env)
