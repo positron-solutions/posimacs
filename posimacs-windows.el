@@ -213,6 +213,7 @@ call unless there's a ton of windows for some reason."
       '((display-buffer--maybe-same-window
          display-buffer-reuse-window
          display-buffer-in-previous-window
+         display-buffer-pop-up-window
          display-buffer-use-some-window)))
 
 ;;; posimacs-windows.el ends here.
