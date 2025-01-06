@@ -3,10 +3,11 @@
 
 let
   cfg = config.posimacs;
-  client-or-server = "emacsclient --create-frame -a '/usr/bin/env emacs'";
+  client-or-server = "emacsclient --create-frame --alternate-editor emacs";
   # terminal version of the above
-  # client-or-server = "emacsclient -nw --create-frame -a '/usr/bin/env emacs'";
-in {
+  # client-or-server = "emacsclient -nw --create-frame -a emacs";
+in
+{
   options.posimacs = {
     aliases = lib.mkOption {
       default = pkgs.stdenv.isLinux;
