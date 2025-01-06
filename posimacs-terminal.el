@@ -12,8 +12,14 @@
   :config
   (setopt eat-query-before-killing-running-terminal 'auto)
   (setopt eat-kill-buffer-on-exit t)
+  ;; relevant bindings found in posimacs-bindings.el
+  (dolist (key '([up] [down] [left] [right]
+                 [?\e 111]              ; M-o
+                 [?\e 108]              ; M-z
+                 ))
+    (add-to-list 'eat-semi-char-non-bound-keys key))
+  (eat-update-semi-char-mode-map)
   (add-hook 'eat-session-created-hook #'eat-emacs-mode)
-  (keymap-set eat-semi-char-mode-map "M-o" nil)
 
   (defun pmx--eat-jump-to-line ()
     (interactive)
@@ -37,15 +43,13 @@
     (interactive)
     (eat-semi-char-mode)
     (goto-char (point-max)))
-  (keymap-set eat-mode-map
-              "RET" #'pmx--eat-return-to-semi-char)
+  (keymap-set eat-mode-map "RET" #'pmx--eat-return-to-semi-char)
 
   (defun pmx--eat-yank-to-semi-char ()
     (interactive)
     (eat-semi-char-mode)
     (yank))
-  (keymap-set eat-mode-map
-              "C-y" #'pmx--eat-yank-to-semi-char)
+  (keymap-set eat-mode-map "C-y" #'pmx--eat-yank-to-semi-char)
 
   (defun pmx--eat-yank-from-kill-ring-to-semi-char ()
     (interactive)
