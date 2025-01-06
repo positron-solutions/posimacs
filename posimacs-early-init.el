@@ -44,7 +44,8 @@
  ;; built-in packages are out of date or not.
  emacs-build-time '(26026 11222 728074 741000)
  default-frame-alist
- '((tool-bar-lines . 0)
+ '((name . "Emacs")
+   (tool-bar-lines . 0)
    (menu-bar-lines . 0)
    (internal-border-width . 0)
    (undecorated . t)
