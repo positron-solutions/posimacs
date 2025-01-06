@@ -13,6 +13,20 @@
 
 (use-package list-environment) ; specifically for inspecting nix envs
 
+(use-package elec-pair
+  :ensure nil
+  :config
+  ;; Selected modes opt out
+  ;; (electric-pair-local-mode -1)
+  (setopt electric-pair-pairs
+          '((34 . 34)                   ; "
+            (40 . 41)                   ; (
+            (91 . 93)                   ; [
+            (123 . 125)                 ; {
+            (60 . 61)))                 ; <
+  (with-eval-after-load rust-mode
+    (add-hook 'rust-mode-hook #'electric-pair-mode)))
+
 (setenv "LSP_USE_PLISTS" "true")        ; TODO at least one of these is redundant
 (use-package lsp-mode
   :defer t
