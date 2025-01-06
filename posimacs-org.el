@@ -82,7 +82,7 @@
   (setopt org-archive-reversed-order t) ;; newest first in archive
   (setopt org-habit-show-habits-only-for-today t)
   (setopt org-agenda-show-future-repeats nil)
-  (setopt org-blank-before-new-entry '((heading . t)
+  (setopt org-blank-before-new-entry '((heading . auto)
                                        (plain-list-item . auto)))
   (setopt org-cycle-separator-lines 2)
 
