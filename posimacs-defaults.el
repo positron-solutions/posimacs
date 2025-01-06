@@ -128,21 +128,20 @@
 
 (delete-selection-mode 1) ; Actions on active region will delete
 
-(column-number-mode 1) ; show columns in modeline
+(setq column-number-mode t) ; show columns in modeline
+(setq line-number-mode t)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 
-(setq scroll-error-top-bottom t)
-
 ;; nicer regex
 (setq reb-re-syntax 'read)
+
 (setq show-trailing-whitespace t)
 
-;; Why did I ever allow this to be set to nil?
-(setq enable-recursive-minibuffers t)
+(put 'erase-buffer 'disabled nil)
 
 (blink-cursor-mode -1)
 ;; (setq blink-cursor-interval 0.14
@@ -189,6 +188,7 @@
 (use-package bookmark
   :ensure nil
   :config
+  (setopt bookmark-save-flag 1)
   ;; Why yes, yes, please delete that bookmark that I just set.  It was garbage
   ;; obviously.  That's why I saved it.
   (run-at-time nil (* 5 60) #'bookmark-save))
