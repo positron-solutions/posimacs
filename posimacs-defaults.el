@@ -39,6 +39,9 @@
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 ;;; End filling & truncation
 
+;; I'm an adult
+(put #'narrow-to-region 'disabled nil)
+
 (pixel-scroll-precision-mode 1)
 
 ;; Too lazy
