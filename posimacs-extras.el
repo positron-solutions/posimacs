@@ -45,6 +45,11 @@
       (string-match-p (rx line-start (literal "lispy-"))
                       (symbol-name cmd))))
 
+(use-package erc
+  :ensure nil
+  :config
+  (setq erc-hide-list '("JOIN" "PART" "QUIT" "AWAY")))
+
 (use-package keypression
   :config
   (setopt keypression-combine-same-keystrokes t)
