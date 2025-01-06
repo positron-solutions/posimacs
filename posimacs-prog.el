@@ -23,9 +23,7 @@
             (40 . 41)                   ; (
             (91 . 93)                   ; [
             (123 . 125)                 ; {
-            (60 . 61)))                 ; <
-  (with-eval-after-load rust-mode
-    (add-hook 'rust-mode-hook #'electric-pair-mode)))
+            (60 . 61))))                ; <
 
 (setenv "LSP_USE_PLISTS" "true")        ; TODO at least one of these is redundant
 (use-package lsp-mode
