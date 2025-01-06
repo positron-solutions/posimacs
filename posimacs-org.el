@@ -198,6 +198,13 @@
   (setopt org-modern-variable-pitch t)
   (setopt org-modern-hide-stars 'leading)
 
+  (setopt org-modern-line-height 1.0)
+  (setopt org-modern-line-spacing 0.0)
+  (setopt org-modern-headline-line-height 1.5)
+  (setopt org-modern-headline-line-spacing 0.5)
+  (setopt org-modern-block-line-height 1.0)
+  (setopt org-modern-block-line-spacing 0.0)
+
   ;; I like to change up my stars
   (setopt org-modern-star 'replace)
   (setopt org-modern-replace-stars "∯∮∇σ𝛼∞𝜺")
