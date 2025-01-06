@@ -25,6 +25,9 @@
   (defun pmx--no-electric-pair ()
     (electric-pair-local-mode -1))
   (add-hook 'emacs-lisp-mode-hook #'pmx--no-electric-pair)
+
+  (keymap-global-set "M-;" #'backward-up-list)
+
   (with-eval-after-load 'counsel
     (defun pmx--counsel-outline-config ()
       (when (derived-mode-p 'emacs-lisp-mode))
