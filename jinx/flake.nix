@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-24.05";
     jinx-src = {
       url = "github:minad/jinx?ref=1.2";
       flake = false;
@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, jinx-src, korean-hunspell-src}:
+  outputs = { self, nixpkgs, flake-utils, jinx-src, korean-hunspell-src }:
     flake-utils.lib.eachDefaultSystem (system:
 
       let
@@ -62,7 +62,8 @@
         # Create the module and inject its dependency we declared above
         module = import ./jinx.nix { inherit emacs-jinx korean-hunspell; };
 
-      in rec {
+      in
+      rec {
         homeConfigurations = {
           emacs-jinx = module;
           default = homeConfigurations.emacs-jinx;
