@@ -130,14 +130,6 @@
 
   (run-at-time "24:00" t #'pmx-commit-agenda-files))
 
-;; see agenda whenever you come back from lunch
-(use-package idle-org-agenda
-  :after org
-  :defer 10
-  :config
-  (setq idle-org-agenda-interval 900)
-  (idle-org-agenda-mode))
-
 ;; show things when cursor gets there
 (use-package org-appear
   :ensure (org-appear :autoloads t)
