@@ -34,10 +34,6 @@
   (setopt org-agenda-prefer-last-repeat t)
   (setopt org-adapt-indentation nil)
 
-  ;; https://github.com/bastibe/org-journal/issues/392
-  ;; having cycling issues
-  ;; (setopt org-fold-core-style 'overlays)
-
   (setopt org-mouse-1-follows-link t)
   (setopt org-return-follows-link nil)
 
