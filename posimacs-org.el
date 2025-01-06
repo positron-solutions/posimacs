@@ -47,7 +47,7 @@
   ;; reflow.
   (setopt org-tags-column 0)
 
-  (setopt org-startup-folded 'show2levels)
+  (setopt org-startup-folded 'fold)
   (setopt org-list-indent-offset 0)             ; bullet lists
   (setopt org-insert-heading-respect-content t) ; don't let me screw up structure
   (setopt org-agenda-window-setup 'current-window) ; don't kill window layout
