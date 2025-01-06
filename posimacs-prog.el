@@ -163,19 +163,20 @@
   (add-hook 'text-mode-hook 'yas-minor-mode))
 
 (use-package flycheck
-  :commands (global-flycheck-mode)
-  :elpaca (flycheck :autoloads t)
-  :config
-  (setopt flycheck-emacs-lisp-load-path 'inherit)
-  (setopt flycheck-display-errors-delay 4.0)
-  (setopt flycheck-check-syntax-automatically '(save idle-change new-line
-                                                     mode-enabled))
-  (letrec ((flycheck-init
-            (lambda ()
-              (global-flycheck-mode)
-              (remove-hook 'elpaca-after-init-hook
-                           flycheck-init))))
-    (add-hook 'elpaca-after-init-hook flycheck-init)))
+    :commands (global-flycheck-mode)
+    :ensure (flycheck :autoloads t)
+    :config
+    (setopt flycheck-emacs-lisp-load-path 'inherit)
+    (setopt flycheck-display-errors-delay 2.0)
+    (setopt flycheck-idle-change-delay 2.0)
+    (setopt flycheck-check-syntax-automatically '(save idle-change new-line
+                                                  mode-enabled))
+    (letrec ((flycheck-init
+              (lambda ()
+                (global-flycheck-mode)
+                (remove-hook 'elpaca-after-init-hook
+                             flycheck-init))))
+      (add-hook 'elpaca-after-init-hook flycheck-init)))
 
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
