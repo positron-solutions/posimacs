@@ -19,6 +19,9 @@
                  ))
     (add-to-list 'eat-semi-char-non-bound-keys key))
   (eat-update-semi-char-mode-map)
+  (let ((after-load-alist nil)
+        (after-load-functions nil))
+    (eat-reload))
   (add-hook 'eat-session-created-hook #'eat-emacs-mode)
 
   (defun pmx--eat-jump-to-line ()
