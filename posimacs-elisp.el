@@ -80,7 +80,9 @@
   ;; multi-line expression indent nicely
   (setopt ielm-dynamic-multiline-inputs nil)
   (setopt ielm-header "Inferior Emacs Lisp Mode.  M-x\
-`ielm-change-working-buffer' to hack on some live buffer.\n\n")
+    `ielm-change-working-buffer' to hack on some live buffer.\n\n")
+
+  (electric-pair-mode -1)
 
   ;; Go to prompt when not at the end of the buffer
   (defun pmx-ielm-return ()
