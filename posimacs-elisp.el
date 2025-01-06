@@ -91,8 +91,28 @@
               (line-number-at-pos (point-max)))
            0)
         (goto-char (point-max))
-      (call-interactively #'ielm-return)))
-  (keymap-set inferior-emacs-lisp-mode-map "RET" #'pmx-ielm-return)
+      (call-interactively #'ielm-return)
+
+      ;; incidentally, if the point has been updated in the buffer,
+      ;; reflect that change in any windows displaying that buffer by updating
+      ;; the window point
+      (when-let ((windows (get-buffer-window-list ielm-working-buffer))
+                 (working-point (with-current-buffer ielm-working-buffer
+                                  (point))))
+        (mapc (lambda (w) (set-window-point w working-point)) windows))))
+
+  (keymap-set inferior-emacs-lisp-mode-map "S-<return>" #'newline-and-indent)
+  (defun pmx--ielm-return-binding ()
+    (let ((ielm-lispy-map (make-sparse-keymap)))
+      (keymap-set ielm-lispy-map "RET" #'pmx-ielm-return)
+      (set-keymap-parent ielm-lispy-map lispy-mode-map)
+      (if (buffer-local-boundp 'minor-mode-overriding-map-alist (current-buffer))
+          (push `(lispy-mode . ,ielm-lispy-map) (buffer-local-value
+                                                 'minor-mode-overriding-map-alist
+                                                 (current-buffer)))
+        (setq minor-mode-overriding-map-alist
+              (list`(lispy-mode . ,ielm-lispy-map))))))
+  (add-hook 'ielm-mode-hook 'pmx--ielm-return-binding)
 
   (defvar pmx--ielm-ring nil)           ; one global ring
   (defun pmx-ielm-init-history ()
