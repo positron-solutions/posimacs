@@ -8,11 +8,6 @@
 
 ;;; Code:
 
-(use-package default-text-scale
-  :delight default-text-scale-mode
-  :config
-  (default-text-scale-mode)) ;C-M-= and C-M-- for larger and smaller text
-
 ;; TODO check if fontification was broken with the older method
 ;; TODO narrow the rule to where it should be
 (defun pmx--setup-pretty-lambda ()
