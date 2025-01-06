@@ -79,7 +79,9 @@
   (set-face-attribute 'info-menu-header nil
                       :family "Roboto Slab"
                       :height 1.5
-                      :inherit 'default)
+                      :inherit 'default))
+
+(defun pmx--setup-helpful-face ()
   (set-face-attribute 'helpful-heading nil
                       :family "Roboto Slab"
                       :height 1.5
@@ -100,6 +102,8 @@
   :config
   (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
   (load-theme 'posimacs-dark t)
+  (with-eval-after-load 'helpful
+    (pmx--setup-helpful-face))
   (pmx--setup-fonts)
   (let ((pmx-setup-style
          (lambda ()
