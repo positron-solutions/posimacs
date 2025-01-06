@@ -160,31 +160,6 @@
   (setopt doom-modeline-env-version nil)
   (setopt doom-modeline-height 34))
 
-(use-package hl-line
-  :elpaca nil
-  :config
-  (global-hl-line-mode 1))
-
-;; ;; https://github.com/Malabarba/beacon
-;; ;; When you scroll, the cursor highlights very loudly
-;; (use-package beacon
-;;   :after window
-;;   :delight beacon-mode
-;;   :config
-;;   (setopt beacon-color "#33DB12")
-;;   (setopt beacon-blink-duration 0.2)
-;;   (setopt beacon-size 20)
-;;   ;; if a move jumps out of the 10x5 rectangle, blinks will happen
-;;   (setopt beacon-blink-when-point-moves-horizontally 20)
-;;   (setopt beacon-blink-when-point-moves-vertically 5)
-;;   (setopt beacon-blink-when-window-changes nil)
-;;   (setopt beacon-blink-when-focused nil)
-;;   (defun pmx--beaconator (_)
-;;     "Run beacon on every window state change."
-;;     (beacon-blink-automated))
-;;   (push 'pmx--beaconator window-state-change-functions)
-;;   (beacon-mode))
-
 ;; https://github.com/tarsius/hl-todo
 ;; highlight TODO keywords in code
 (use-package hl-todo
