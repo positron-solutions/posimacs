@@ -189,12 +189,22 @@
            :fetcher github
            :repo "remi-gelinas/nix-ts-mode")
   :init (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
-  :hook (nix-ts-mode . lsp-deferred))
+  :hook (nix-ts-mode . eglot-ensure)
+  :config
 
 ;; Editing kubernetes yamls can link directly to API reference
 (use-package k8s-mode
   :elpaca (k8s-mode :autoloads t)
   :hook (k8s-mode . yas-minor-mode))
+
+  (let ((nix-settings
+         '((nix-ts-mode) . #'pmx--project-flake-path)))
+    (with-eval-after-load 'eglot
+      (add-to-list 'eglot-server-programs nix-settings)))
+
+  (defun pmx--nixpkgs-fmt-on-save ()
+    (add-hook 'before-save-hook #'nixpkgs-fmt-buffer -100 t))
+  (add-hook 'nix-ts-mode-hook #'pmx--nixpkgs-fmt-on-save))
 
 (use-package kubernetes
   :defer t
