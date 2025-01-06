@@ -11,6 +11,11 @@
 
 ;;; Code:
 
+(setq history-length 200)
+(setq history-delete-duplicates t)
+
+;; Why did I ever allow this to be set to nil?
+(setq enable-recursive-minibuffers t)
 
 (use-package swiper                     ; the better incremental search
   :bind ("M-s" . swiper)
