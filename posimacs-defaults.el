@@ -42,8 +42,6 @@
 ;; I'm an adult
 (put #'narrow-to-region 'disabled nil)
 
-(pixel-scroll-precision-mode 1)
-
 ;; Too lazy
 (use-package autoinsert
   :ensure nil

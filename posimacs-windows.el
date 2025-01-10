@@ -21,12 +21,11 @@
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
-(setopt scroll-margin 12)
-(setopt maximum-scroll-margin 0.2)
+(setopt scroll-margin 0)
 (setopt scroll-down-aggressively 0.3)
 (setopt scroll-up-aggressively 0.3)
 (setopt scroll-conservatively 12)
-(setopt pixel-scroll-mode t)
+(pixel-scroll-precision-mode 1)
 
 (setopt pixel-scroll-precision-interpolate-mice t)
 (setopt pixel-scroll-precision-use-momentum t)
@@ -42,31 +41,63 @@
 (setq scroll-preserve-screen-position nil)
 (setq scroll-error-top-bottom nil)
 (setq next-screen-context-lines 12)
-;; Dynamically set `scroll-conservatively' to avoid automatic re-centers.  We
-;; want automatic re-center when swiper for example goes off screen, but for
-;; minibuffer or transient display, we want the minimum possible scroll.  And
-;; finally, dynamically shrink the margin so that the space created by margin
-;; will all be used up before automatic scrolling can occur and margins will not
-;; be maintained during minibuffer or transient display.
-(defvar pmx--no-herky-jerk-margin nil)
-(defvar pmx--no-herky-jerk-scroll-conservatively nil)
+
+;; Eliminate stupid window movements caused by minibuffer or transient opening
+;; and closing.
+(defvar-local pmx--no-herky-jerk-margin 12 "Kill all herky-jerk!")
+(defvar-local pmx--no-herky-jerk-post-scroll nil
+  "How far to scroll to avoid repeated herky jerks.")
+(defvar-local pmx--no-herky-jerk-pushed-window-point nil
+  "Where to restore the point to after jerk inducting state has ended.")
+
 (defun pmx--no-herky-jerk-enter (&rest _)
-  "Shrinks margin."
-  (unless pmx--no-herky-jerk-scroll-conservatively
-    (setq pmx--no-herky-jerk-scroll-conservatively scroll-conservatively)
-    (setq scroll-conservatively 101))
-  (unless pmx--no-herky-jerk-margin
-    (setq pmx--no-herky-jerk-margin scroll-margin)
-    (setq scroll-margin 0)))
+  "Push all window points"
+  (let ((windows (window-list)))
+    ;; TODO I never use vertical splits
+    (while-let ((w (pop windows)))
+      (with-current-buffer (window-buffer w)
+        (let ((beg (line-number-at-pos (window-start w)))
+              (current (line-number-at-pos (window-point w)))
+              (end (line-number-at-pos (window-end w))))
+          (when (> (- current beg)
+                   (- (- end beg) pmx--no-herky-jerk-margin))
+            ;; (if (eq w (minibuffer-selected-window))
+            ;;     (progn
+            ;;       (message "Boss I will scroll! %s" w)
+            ;;       (setq-local pmx--no-herky-jerk-post-scroll pmx--no-herky-jerk-margin)))
+            (setq-local pmx--no-herky-jerk-pushed-window-point (window-point w))
+            (let ((safe-pos (progn
+                              (ignore-errors
+                                (goto-char (window-point w))
+                                (previous-line pmx--no-herky-jerk-margin t))
+                              (point))))
+              (set-window-point w safe-pos)
+              (goto-char pmx--no-herky-jerk-pushed-window-point))))))))
 
 (defun pmx--no-herky-jerk-exit ()
-  "Expands margin."
-  (when pmx--no-herky-jerk-scroll-conservatively
-    (setq scroll-conservatively pmx--no-herky-jerk-scroll-conservatively))
-  (setq pmx--no-herky-jerk-scroll-conservatively nil)
-  (when pmx--no-herky-jerk-margin
-    (setq scroll-margin pmx--no-herky-jerk-margin))
-  (setq pmx--no-herky-jerk-margin nil))
+  "Restore pushed window points."
+  (let ((windows (window-list)))
+    ;; TODO I never use vertical splits
+    (while-let ((w (pop windows)))
+      (with-current-buffer (window-buffer w)
+        (when (buffer-local-boundp 'pmx--no-herky-jerk-pushed-window-point
+                                   (current-buffer))
+          (when-let ((old (buffer-local-value
+                           'pmx--no-herky-jerk-pushed-window-point
+                           (current-buffer))))
+            (set-window-point w old)
+            (goto-char old)
+            (kill-local-variable 'pmx--no-herky-jerk-pushed-window-point)))
+        ;; (when (buffer-local-boundp 'pmx--no-herky-jerk-post-scroll
+        ;;                            (current-buffer))
+        ;;   (when-let ((scroll (buffer-local-value
+        ;;                       'pmx--no-herky-jerk-post-scroll
+        ;;                       (current-buffer))))
+        ;;     (message "Boss!  I'm scrolling! %s" w)
+        ;;     (ignore-error 'end-of-buffer
+        ;;       (scroll-up-line pmx--no-herky-jerk-post-scroll))
+        ;;     (kill-local-variable 'pmx--no-herky-jerk-post-scroll)))
+        ))))
 
 (add-hook 'minibuffer-setup-hook #'pmx--no-herky-jerk-enter)
 (add-hook 'minibuffer-exit-hook #'pmx--no-herky-jerk-exit)
