@@ -147,7 +147,7 @@ List of BUFFER WINDOW SAFE-MARKER and RESTORE-MARKER.")
 
 ;; Windows are only eligible to be split horizontally
 (setq split-height-threshold nil)
-(setq split-width-threshold 120)
+(setq split-width-threshold 150)
 
 (defun balance-windows--advice (&rest _ignored)
   "Balance windows (intended as :after advice); any args are ignored."
@@ -160,10 +160,10 @@ List of BUFFER WINDOW SAFE-MARKER and RESTORE-MARKER.")
 
 (defun pmx-split-window-conservatively (&optional window)
   "Split WINDOW only if absolutely necessary.
-Only split if there is no split, and only split into left & right
-windows.  If no window is specified then WINDOW defaults to
-output of 'selected-window'.  'split-width-threshold' is
-observed."
+   Only split if there is no split, and only split into left & right
+   windows.  If no window is specified then WINDOW defaults to
+   output of 'selected-window'.  'split-width-threshold' is
+   observed."
   (interactive)
   (let ((window (or window (selected-window))))
     (if (and
@@ -221,9 +221,7 @@ call unless there's a ton of windows for some reason."
          ;; next call.
          (let ((source (selected-window))
                (tall (> (frame-pixel-height) (frame-pixel-width))))
-           (select-window (if tall
-                              (split-window-below)
-                            (split-window-right)))
+           (select-window (split-window-right))
            (if (eq source (next-window))
                (setq pmx--direction 1)
              (setq pmx--direction -1)
