@@ -15,31 +15,32 @@
 (use-package elisp-mode
   :ensure nil
   :config
-  ;; On save, check parens
-  (defun pmx--setup-check-paren-on-save ()
+  ;; After saving, check parens
+ (defun pmx--setup-check-paren-on-save ()
     (add-hook 'after-save-hook #'check-parens nil t))
-  (add-hook 'emacs-lisp-mode-hook #'pmx--setup-check-paren-on-save)
-  (defun pmx--disable-adaptive-auto-fill ()
-    (setq-local adaptive-auto-fill nil))
-  (add-hook 'emacs-lisp-mode-hook #'pmx--disable-adaptive-auto-fill)
-  (defun pmx--no-electric-pair ()
-    (electric-pair-local-mode -1))
-  (add-hook 'emacs-lisp-mode-hook #'pmx--no-electric-pair)
 
-  (keymap-global-set "M-;" #'backward-up-list)
+ (add-hook 'emacs-lisp-mode-hook #'pmx--setup-check-paren-on-save)
+ (defun pmx--disable-adaptive-auto-fill ()
+   (setq-local adaptive-auto-fill nil))
+ (add-hook 'emacs-lisp-mode-hook #'pmx--disable-adaptive-auto-fill)
+ (defun pmx--no-electric-pair ()
+   (electric-pair-local-mode -1))
+ (add-hook 'emacs-lisp-mode-hook #'pmx--no-electric-pair)
 
-  (with-eval-after-load 'counsel
-    (defun pmx--counsel-outline-config ()
-      (when (derived-mode-p 'emacs-lisp-mode))
-      (setq-local counsel-outline-settings
-                  (let ((old counsel-outline-settings))
-                    (setq old (assq-delete-all 'emacs-lisp-mode old))
-                    (push `(emacs-lisp-mode
-                            :outline-regexp ,outline-regexp
-                            :outline-level counsel-outline-level-emacs-lisp)
-                          old)
-                    old)))
-    (add-hook 'hack-local-variables-hook #'pmx--counsel-outline-config)))
+ (keymap-global-set "M-;" #'backward-up-list)
+
+ (with-eval-after-load 'counsel
+   (defun pmx--counsel-outline-config ()
+     (when (derived-mode-p 'emacs-lisp-mode))
+     (setq-local counsel-outline-settings
+                 (let ((old counsel-outline-settings))
+                   (setq old (assq-delete-all 'emacs-lisp-mode old))
+                   (push `(emacs-lisp-mode
+                           :outline-regexp ,outline-regexp
+                           :outline-level counsel-outline-level-emacs-lisp)
+                         old)
+                   old)))
+   (add-hook 'hack-local-variables-hook #'pmx--counsel-outline-config)))
 
 (with-eval-after-load 'company
   (defun pmx--company-elisp-tweaks ()
