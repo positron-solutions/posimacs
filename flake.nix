@@ -23,20 +23,20 @@
     };
   };
 
-  outputs = inputs:
-    inputs.flake-utils.lib.eachDefaultSystem (system:
-      let
-        # Submodules from our inputs are injected into the home manager module
-        module = import ./posimacs.nix {
-          emacs-jinx = inputs.emacs-jinx.homeConfigurations.${system}.default;
-          emacs-overlay = inputs.emacs-overlay;
-          emacs-igc-src = inputs.emacs-igc-src;
-        };
-      in
-      rec {
-        homeConfigurations = {
-          posimacs = module;
-          default = homeConfigurations.posimacs;
-        };
-      });
+    outputs = inputs:
+      inputs.flake-utils.lib.eachDefaultSystem (system:
+        let
+          # Submodules from our inputs are injected into the home manager module
+          module = import ./posimacs.nix {
+            emacs-jinx = inputs.emacs-jinx.homeConfigurations.${system}.default;
+            emacs-overlay = inputs.emacs-overlay;
+            emacs-igc-src = inputs.emacs-igc-src;
+          };
+        in
+        rec {
+          homeConfigurations = {
+            posimacs = module;
+            default = homeConfigurations.posimacs;
+          };
+        });
 }
