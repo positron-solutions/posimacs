@@ -153,6 +153,14 @@
   (setq org-appear-autosubmarkers t)
   (setq org-appear-autoentities t))
 
+;; TODO org special block needs a rewrite
+;; (use-package org-special-block-extras
+;;   :hook (org-mode . org-special-block-extras-mode)
+;;   :custom
+;;     (o-docs-libraries
+;;      '("~/org-special-block-extras/documentation.org")
+;;      "The places where I keep my ‘#+documentation’"))
+
 (use-package orgit
   :commands (orgit-store-link)
   :ensure (orgit
