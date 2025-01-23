@@ -15,7 +15,9 @@
   ;; relevant bindings found in posimacs-bindings.el
   (dolist (key '([up] [down] [left] [right]
                  [?\e 111]              ; M-o
-                 [?\e 108]              ; M-z
+                 [?\e 108]              ; M-l
+                 [?\e  99]              ; M-s
+                 [?\e 122]              ; M-z
                  ))
     (add-to-list 'eat-semi-char-non-bound-keys key))
   (eat-update-semi-char-mode-map)
