@@ -23,7 +23,7 @@
             (40 . 41)                   ; (
             (91 . 93)                   ; [
             (123 . 125)                 ; {
-            (60 . 61))))                ; <
+            (60 . 62))))                ; <
 
 (setenv "LSP_USE_PLISTS" "true")        ; TODO at least one of these is redundant
 (use-package lsp-mode
