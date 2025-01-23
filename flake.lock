@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "emacs-igc-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1737188950,
+        "narHash": "sha256-pd8aTzremsn/rY2fMTAb8Y2G/Lx/hhn9GsG4AFPvbAU=",
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "rev": "ef194a1e0e96f91dc7a57efcdf8a81ed716d18e0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emacs-mirror",
+        "ref": "feature/igc",
+        "repo": "emacs",
+        "type": "github"
+      }
+    },
     "emacs-jinx": {
       "inputs": {
         "flake-utils": [
@@ -131,6 +148,7 @@
     },
     "root": {
       "inputs": {
+        "emacs-igc-src": "emacs-igc-src",
         "emacs-jinx": "emacs-jinx",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
