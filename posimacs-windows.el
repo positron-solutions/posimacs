@@ -31,9 +31,6 @@
 (setopt pixel-scroll-precision-use-momentum t)
 (setopt pixel-scroll-precision-interpolate-page t)
 
-;; TODO Mouse rubber banding
-;; TODO Mouse does not move point
-
 ;; This section implements anti-herky-jerk.  Herky jerk is when the opening the
 ;; minibuffer or a transient window causes windows to automatically scroll.  In
 ;; extremely suboptimal configurations, every buffer on the screen will
@@ -45,60 +42,105 @@
 ;; Eliminate stupid window movements caused by minibuffer or transient opening
 ;; and closing.
 (defcustom pmx-no-herky-jerk-margin 12
-  "Kill all herky-jerk!"
+  "Number of lines to protect from incidental scrolling.
+A good value is the maximum height of your minibuffer, such as
+configured by `ivy-height' and similar variables that configure packages
+like `vertico' and `helm'."
   :type 'integer
   :group 'scrolling)
-(defvar-local pmx--no-herky-jerk-pushed-window-point nil
-  "Where to restore the point to after jerk inducting state has ended.")
 
+;; You would think we need multiple restore points.  However, there seems to be
+;; a behavior where window points in non-selected windows are restored all the
+;; time.  This was only apparent after moving them.
+(defvar pmx--no-herky-jerk-restore nil
+  "Where to restore selected buffer point.
+List of BUFFER WINDOW SAFE-MARKER and RESTORE-MARKER.")
+
+;; Counting line height would be more correct.  In general, lines are taller but
+;; not shorter than the default, so this is a conservative approximation that
+;; treats all lines as the default height.
 (defun pmx--no-herky-jerk-enter (&rest _)
-  "Adjust window points to prevent auto scrolling."
+  "Adjust window points to prevent implicit scrolling."
   (unless (> (minibuffer-depth) 1)
-    (let ((windows (window-list)))
-      ;; TODO I never use vertical splits
+    (let ((windows (window-at-side-list
+                    (window-frame (selected-window))
+                    'bottom))
+          ;; height of default lines
+          (frame-char-height (frame-char-height
+                              (window-frame (selected-window)))))
       (while-let ((w (pop windows)))
         (with-current-buffer (window-buffer w)
-          (let* ((beg (line-number-at-pos (window-start w)))
-                 (current (line-number-at-pos (window-point w)))
-                 (end (line-number-at-pos (window-end w)))
-                 (excess (1+ (- (- current beg)
-                                (- (- end beg) pmx-no-herky-jerk-margin)))))
-            ;; TODO I never use vertical splits
-            (when (> (- current beg)
-                     (- (- end beg) pmx-no-herky-jerk-margin))
-              (setq-local pmx--no-herky-jerk-pushed-window-point (window-point w))
-              (let ((safe-pos (progn
-                                (ignore-errors
-                                  (goto-char (window-point w))
-                                  (previous-line excess t))
-                                (point))))
-                (set-window-point w safe-pos)
-                (goto-char pmx--no-herky-jerk-pushed-window-point)))))))))
+          (let* ((current-line (line-number-at-pos (window-point w)))
+                 (end-line (line-number-at-pos (window-end w)))
+                 (window-pixel-height (window-pixel-height w))
+                 (window-used-height (cdr (window-text-pixel-size
+                                           w (window-start w) (window-end w))))
+                 (margin-height (* frame-char-height pmx-no-herky-jerk-margin))
+                 (unsafe-height (- window-used-height
+                                   (- window-pixel-height margin-height)))
+                 (unsafe-lines (+ 2 (ceiling (/ unsafe-height frame-char-height))))
+                 (exceeded-lines (- unsafe-lines (- end-line current-line))))
+            (when (> exceeded-lines 0)
+              ;;  save value for restore
+              (let* ((buffer (window-buffer w))
+                     (restore-marker (let ((marker (make-marker)))
+                                       ;; XXX this may error?
+                                       (set-marker marker (window-point w)
+                                                   buffer)))
+                     (safe-point (progn
+                                   (goto-char restore-marker)
+                                   ;; XXX goes up too many lines when skipping
+                                   ;; wrapped lines
+                                   (ignore-error '(beginning-of-buffer
+                                                   end-of-buffer)
+                                     (previous-line exceeded-lines t))
+                                   (end-of-line)
+                                   (point))))
+                (set-window-point w safe-point)
+                (when (eq w (minibuffer-selected-window))
+                  (let ((safe-marker (make-marker)))
+                    (set-marker safe-marker safe-point buffer)
+                    (setq pmx--no-herky-jerk-restore
+                          (list buffer w safe-marker restore-marker))))
+                (goto-char (marker-position restore-marker))))))))))
 
 (defun pmx--no-herky-jerk-exit ()
-  "Restore window points saved from auto scrolling."
-  (let ((windows (window-list)))
-    (while-let ((w (pop windows)))
-      (with-current-buffer (window-buffer w)
-        (when (buffer-local-boundp 'pmx--no-herky-jerk-pushed-window-point
-                                   (current-buffer))
-          (when-let ((old (buffer-local-value
-                           'pmx--no-herky-jerk-pushed-window-point
-                           (current-buffer))))
-            (set-window-point w old)
-            (goto-char old)
-            (kill-local-variable 'pmx--no-herky-jerk-pushed-window-point)))))))
+  "Restore window points that were rescued from implicit scrolling."
+  (when (and pmx--no-herky-jerk-restore
+             (= (minibuffer-depth) 1)
+             (null (transient-active-prefix)))
+    (when-let* ((restore pmx--no-herky-jerk-restore)
+                (buffer (pop restore))
+                (w (pop restore))
+                (safe-marker (pop restore))
+                (restore-marker (pop restore)))
+      (when (and (window-live-p w)
+                 (eq (window-buffer w) buffer)
+                 (= (window-point w) (marker-position safe-marker)))
+        (goto-char restore-marker)
+        (set-window-point w restore-marker))
+      (set-marker restore-marker nil)
+      (set-marker safe-marker nil)
+      (setq pmx--no-herky-jerk-restore nil))))
 
-(add-hook 'minibuffer-setup-hook #'pmx--no-herky-jerk-enter)
-(add-hook 'minibuffer-exit-hook #'pmx--no-herky-jerk-exit)
+;;;###autoload
+(define-minor-mode pmx-no-herky-jerk-mode
+  "Guard the point from unintended and stupid scrolling"
+  :group 'pmx-no-herky-jerk
+  :global t
+  (cond
+   (pmx-no-herky-jerk-mode
+    (add-hook 'minibuffer-setup-hook #'pmx--no-herky-jerk-enter)
+    (add-hook 'minibuffer-exit-hook #'pmx--no-herky-jerk-exit))
+   (t
+    (remove-hook 'minibuffer-setup-hook #'pmx--no-herky-jerk-enter)
+    (remove-hook 'minibuffer-exit-hook #'pmx--no-herky-jerk-exit))))
 
 ;; Add the same for transient
 (with-eval-after-load 'transient
   (advice-add 'transient-setup :before #'pmx--no-herky-jerk-enter)
   (add-hook 'transient-exit-hook #'pmx--no-herky-jerk-exit)
   (setopt transient-hide-during-minibuffer-read t))
-
-(setq warning-display-at-bottom nil)
 
 ;; Auto-balancing and less aggressive automatic window splitting are a
 ;; prerequisite for any sane window management strategy.
