@@ -69,6 +69,11 @@ in
       "vim" = client-or-server;
     };
 
+    programs.bash.bashrcExtra = ''
+      [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
+      source "$EAT_SHELL_INTEGRATION_DIR/bash"
+    '';
+
     home.sessionVariables = lib.mkIf cfg.aliases ({
       # Use standalone GUI emacs and fall back to terminal if GUI cannot load
       EDITOR = client-or-server;
