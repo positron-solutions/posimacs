@@ -221,11 +221,12 @@
 
 (use-package kele)
 
-;; (use-package yaml-pro
-;;   :elpaca (yaml-pro :autoloads t)
-;;   (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
-;;   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
-;;   (add-hook 'yaml-ts-mode-hook #'yaml-pro-ts-mode))
+(use-package yaml-pro
+  :ensure (yaml-pro :autoloads t)
+  :config
+  (push '(yaml-mode . yaml-ts-mode) major-mode-remap-alist)
+  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+  (add-hook 'yaml-ts-mode-hook #'yaml-pro-ts-mode))
 
 (provide 'posimacs-prog)
 ;;; posimacs-prog.el ends here
