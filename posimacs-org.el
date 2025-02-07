@@ -141,7 +141,7 @@
                       out out))))
       (error "Could not find git executable")))
 
-  (run-at-time "24:00" t #'pmx-commit-agenda-files))
+  (run-at-time "8:00" t #'pmx-commit-agenda-files))
 
 ;; show things when cursor gets there
 (use-package org-appear
