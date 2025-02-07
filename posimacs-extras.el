@@ -37,7 +37,7 @@
                     org-tree-slide-move-previous-tree
                     org-self-insert-command
                     pmx-org-tree-slide-quit
-                     ;; counsel-M-x
+                    ;; counsel-M-x
                     ivy-done))
       ;; todo filter if pre-command, but not post-command
       (string-match-p (rx line-start (literal "special-lispy-"))
