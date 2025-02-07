@@ -35,7 +35,7 @@
   (or (member cmd '(self-insert-command
                     org-tree-slide-move-next-tree
                     org-tree-slide-move-previous-tree
-                    org-self-insert-comand
+                    org-self-insert-command
                     pmx-org-tree-slide-quit
                      ;; counsel-M-x
                     ivy-done))
@@ -43,7 +43,8 @@
       (string-match-p (rx line-start (literal "special-lispy-"))
                       (symbol-name cmd))
       (string-match-p (rx line-start (literal "lispy-"))
-                      (symbol-name cmd))))
+                      (symbol-name cmd))
+      (string-match-p (rx line-start (literal "coke-")))))
 
 (use-package erc
   :ensure nil
@@ -82,6 +83,7 @@
           '((keycast-log-erase-buffer nil nil)
             (transient-update         nil nil)
             (self-insert-command      nil nil)
+            (org-self-insert-command  nil nil)
             (mwheel-scroll nil nil)))
 
   ;; Mode line hooks get called on start and stop :-)
