@@ -100,7 +100,9 @@
 
 (use-package doom-themes
   :config
-  (setq custom-theme-directory (expand-file-name "posimacs" user-emacs-directory))
+  (setq custom-theme-directory (expand-file-name "posimacs"
+                                                 user-emacs-directory))
+  (defface org-indent '((t :inherit default)) "Placeholder")
   (load-theme 'posimacs-dark t)
   (with-eval-after-load 'helpful
     (pmx--setup-helpful-face))
