@@ -380,6 +380,8 @@ determine the exact padding."
   (org-modern-tag :inherit '(secondary-selection org-modern-label)
                   :foreground "#FFFFFF" :background "#4D0059" :height 1.4)
 
+  (pulse-highlight-start-face :background "#001A24")
+
   (org-hide :foreground hidden))
 
 
