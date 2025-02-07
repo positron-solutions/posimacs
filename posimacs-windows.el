@@ -37,6 +37,7 @@
 ;; herky-jerk over repeated M-x invocations, causing epilepsy in small children.
 (setq scroll-preserve-screen-position nil)
 (setq scroll-error-top-bottom nil)
+(setopt warning-display-at-bottom nil)
 (setq next-screen-context-lines 12)
 
 ;; Eliminate stupid window movements caused by minibuffer or transient opening
