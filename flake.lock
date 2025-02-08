@@ -22,7 +22,9 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "jinx-src": "jinx-src",
+        "jinx-src": [
+          "jinx-src"
+        ],
         "korean-hunspell-src": "korean-hunspell-src",
         "nixpkgs": [
           "nixpkgs"
@@ -30,7 +32,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-KvIfIXE4KPPp6XUcnSMEZ2Wfe8x1JKdyrOluCZnLTh0=",
+        "narHash": "sha256-18xZ5wBLOXkDmkFPEUNw+fR4DlH3o+6okwjoGYli3hs=",
         "path": "./jinx",
         "type": "path"
       },
@@ -84,16 +86,16 @@
     "jinx-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1705964277,
-        "narHash": "sha256-JJncMGDyVk7ctixqjeKR1HVXiAD//4priKACb8qgWxE=",
+        "lastModified": 1738048052,
+        "narHash": "sha256-b+hWDJ70LmXILP+8o+6RNa0q+N4XOZNHOklg1xfvtrM=",
         "owner": "minad",
         "repo": "jinx",
-        "rev": "e7934278540b33c394a0aebdd9fa543aa84fc82a",
+        "rev": "2144d03f7bcc3f461b4e67f913dfc0055e4ad7e2",
         "type": "github"
       },
       "original": {
         "owner": "minad",
-        "ref": "1.2",
+        "ref": "1.12",
         "repo": "jinx",
         "type": "github"
       }
@@ -152,6 +154,7 @@
         "emacs-jinx": "emacs-jinx",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
+        "jinx-src": "jinx-src",
         "nixpkgs": "nixpkgs"
       }
     },

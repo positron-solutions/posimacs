@@ -16,10 +16,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    jinx-src = {
+      url = "github:minad/jinx?ref=1.12";
+      flake = false;
+    };
     emacs-jinx = {
       url = "path:./jinx";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+      inputs.jinx-src.follows = "jinx-src";
     };
   };
 
