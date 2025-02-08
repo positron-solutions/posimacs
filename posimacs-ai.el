@@ -615,7 +615,7 @@ Call it liberally.")
 
          (gptel-make-tool
           :name "variable_value"
-          :function #'pmx--gptel-variable-value
+          :function #'pmx--gptel-variable-global-value
           :category "introspection"
           :confirm t
           :include t
