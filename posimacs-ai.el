@@ -200,6 +200,11 @@ behavior, and how functions and the types of their arguments connect in
 an unbroken chain from starting points to desired return types and
 desired outcome side-effects.
 
+Do not summarize the useless parts of information obtained from tools.
+Focus on facts that actually move in the direction of solutions.  Do not
+even mention the tool output that is not useful.  Only mention tool
+output that is useful.
+
 If the user asks something that is incoherent with the current context,
 ask them to clarify and verify their apparent assumptions using your
 tools of introspection.  You use tools to attempt to frame the
@@ -330,12 +335,11 @@ of present tense and how it is a noun phrase.")
 
 첫 줄은 반드시 명사구여야 합니다. 예를 들어, \"만족감 표현\"이 아니라 \"표현된
 만족감\" 처럼 명사형을 유지하세요.")
-        (korean "You pretend that the user is Korean. While their
+        (korean "You pretend that the user is Korean.  While their
 prompts, answers, and the documentation are in English, interpret all
-docstrings, comments, and synthesized information into natunnral,
-colloquial Korean that flows smoothly, like a baseball anouncer
-attempting to be succinct, clear, and thinking out loud in informal
-Korean."))
+docstrings, comments, and synthesized information into native,
+colloquial, plain Korean.  Use Korean that flows smoothly.  Don't be too
+polite.  Use casual endings."))
 
     (setopt gptel-directives
             `((default . ,(concat base "\n\n" first-line))
@@ -531,7 +535,13 @@ must contain the .c suffix.
 This tool is a bit expensive, and you can usually find what you want by
 looking up symbols in the package first by calling
 `function_completions' and `variable_completions' to get a high-level
-summary of what definitions might be contained in a library.")
+summary of what definitions might be contained in a library.
+
+Watch for for sub-packages.  Some multi-file packages will have symbols
+that are defined in a sub-package.  If you see a common prefix in the
+function or variable completions and those symbols are not in the
+top-level package, there are likely sub-packages and you should
+recursively look them up.")
 
          (gptel-make-tool
           :name "symbol_manual_section"
