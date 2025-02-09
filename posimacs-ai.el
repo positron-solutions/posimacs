@@ -759,34 +759,93 @@ will coerce nils to something you can read or will error on my side.")
                   (:name "false" :type boolean :description "Must be false"))
           :description "A function the user wants to test out.")))
 
-  (defun pmx--gptel-post-insert (beg end)
-    (when (> (point-max) (window-end))
-      (scroll-up-line 2))
-    (goto-char end))
+  (defgroup gptel-butter nil "Buttery auto-scrolling in GPTel." :group 'convenience)
 
-  (add-to-list 'gptel-post-response-functions #'pmx--gptel-post-insert)
+  (defcustom gptel-butter-frequency 60
+    "How frequently to scroll.
+Values between 32 and your refresh rate are meaningful."
+    :group gptel-butter
+    :type number)
+
+  (defcustom gptel-butter-lines (12)
+    "How frequently to scroll.
+Set to your preferred."
+    :group gptel-butter
+    :type integer)
+
+  (defcustom gptel-butter-constant 2.0
+    "Controls acceleration and deceleration.
+Values should be larger than 1.0.  Extremely high values will just
+result in very jerky movements but possibly unstable math.  Values close
+to 1.0 will be ignored because there is a minimum that allows solutions
+to be found."
+    :group gptel-butter
+    :type float)
+
+  (defun gptel-butter-scroll ( fsm start-time start-time last-time
+                               last-window-start velocity acceleration)
+    "Scroll as needed to continue pursuing a solution."
+    (let* ((b (marker-buffer marker))
+           (p (marker-position marker))
+           (w (get-buffer-window buffer))
+           (info (gptel-fsm-info fsm))
+           (tracking (plist-get info :tracking)))
+      (if (or (null w)
+              (not (equal last-window-start (window-start)))
+              (eq (gptel-fsm-state fsm) 'DONE)
+              (and tracking (< tracking (window-start))))
+          '()       ; decline recursion
+        ;; Keep scrolling
+        (run-at-time (/ 1.0 gpte-butter-frequency) nil
+                     #'gptel-butter-scroll
+                     fsm start-time time
+                     (window-start w)
+                     velocity acceleration))))
+
+  ;;   (defun pmx--gptel-butter-chase-input ()
+  ;;     "Update the scrolling based on how fare we are behind our goal.
+  ;; As if chasing a stick of butter, we do not want to under or overshoot
+  ;; too much."
+  ;;     (when-let* ((tracking (plist-get info :tracking-marker))
+  ;;                 (buffer (marker-buffer tracking))
+  ;;                 (window (get-buffer-window buffer)))
+  ;;       (with-current-buffer (marker-buffer tracking)
+  ;;         (with-selected-window window
+  ;;           (let ((end-line (line-number-at-pos (marker-position tracking)))
+  ;;                 (window-end-line (line-number-at-pos (window-end window))))
+  ;;             (ignore-error 'end-of-buffer
+  ;;               (scroll-up-line (+ 2 (- end-line window-end-line)))))))))
+
+  (add-to-hook 'gptel-post-stream-hook #'pmx--gptel-butter-chase-input)
+
+  ;; (defun pmx--gptel-post-insert (beg end)
+  ;;   (when (> (point-max) (window-end))
+  ;;     (scroll-up-line 2))
+  ;;   (goto-char end))
+
+  ;; (add-to-list 'gptel-post-response-functions #'pmx--gptel-post-insert)
   ;; (remove-hook 'gptel-post-response-functions #'pmx--gptel-post-insert)
-
-  (defun pmx--gptel-after-insert-scroll (response info &rest _args)
-    (when-let* ((tracking (plist-get info :tracking-marker))
-                (buffer (marker-buffer tracking))
-                (window (get-buffer-window buffer)))
-      (with-current-buffer (marker-buffer tracking)
-        (with-selected-window window
-          (when (> (marker-position tracking) (window-end window))
-            (let ((end-line (line-number-at-pos (marker-position tracking)))
-                  (window-end-line (line-number-at-pos (window-end window))))
-              (ignore-error 'end-of-buffer
-                (scroll-up-line (+ 2 ( - end-line window-end-line))))))))))
+p
+  ;; (defun pmx--gptel-after-insert-scroll (response info &rest _args)
+  ;;   (when-let* ((tracking (plist-get info :tracking-marker))
+  ;;               (buffer (marker-buffer tracking))
+  ;;               (window (get-buffer-window buffer)))
+  ;;     (with-current-buffer (marker-buffer tracking)
+  ;;       (with-selected-window window
+  ;;         (when (> (marker-position tracking) (window-end window))
+  ;;           (let ((end-line (line-number-at-pos (marker-position tracking)))
+  ;;                 (window-end-line (line-number-at-pos (window-end window))))
+  ;;             (ignore-error 'end-of-buffer
+  ;;               (scroll-up-line (+ 2 ( - end-line window-end-line))))))))))
 
   ;; TODO post-stream-hook
   ;; pixel-precision
-  (advice-add #'gptel--insert-response :after #'pmx--gptel-after-insert-scroll)
-  (advice-add #'gptel-curl--stream-insert-response :after
-              #'pmx--gptel-after-insert-scroll)
+  ;; (advice-add #'gptel--insert-response :after #'pmx--gptel-after-insert-scroll)
+  ;; (advice-add #'gptel-curl--stream-insert-response :after
+  ;;             #'pmx--gptel-after-insert-scroll)
 
-  ;; (remove-hook 'gptel-post-response-functions 'gptel-end-of-response)
-  ;; (remove-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+  ;; (advice-remove #'gptel--insert-response #'pmx--gptel-after-insert-scroll)
+  ;; (advice-remove #'gptel-curl--stream-insert-response #'pmx--gptel-after-insert-scroll)
 
   (defun pmx--gptel-remove-empty-line (_beg end)
     (save-excursion
@@ -799,14 +858,18 @@ will coerce nils to something you can read or will error on my side.")
     (visual-wrap-prefix-mode -1)
     (visual-wrap-prefix-mode 1))
 
+  (add-hook 'gptel-post-response-functions #'pmx--gptel-goto-response-end)
   (add-hook 'gptel-post-response-functions #'pmx--gptel-remove-empty-line)
   (add-hook 'gptel-post-response-functions #'pmx--re-adapt-prefixes)
 
   (setopt gptel-response-separator "\n")
   (setopt gptel-confirm-tool-calls t)
   (setopt gptel-use-tools t)
-  (setopt gptel-display-buffer-action '(display-buffer-pop-up-window))
+  (setopt gptel-display-buffer-action '(display-buffer-in-previous-window))
+  ;; Brancing context is potentially neat, but the LLM output can break this
+  ;; setting
   (setopt gptel-org-branching-context nil)
+  (setopt gptel-expert-commands t)
 
   (setopt gptel-prompt-prefix-alist
           '((markdown-mode . "")

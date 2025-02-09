@@ -197,8 +197,8 @@ Repeats of that char should continue."
   ;; "C-p"                           ; finder-by-keyword
   ;; Replacement definitions, more coherence in defaults
   (general-unbind 'global-map "C-v")
-  (general-def 'global-map "M-c" #'scroll-down-command)
-  (general-def 'global-map "M-v" #'scroll-up-command)
+  (general-def 'global-map "M-c" #'pixel-scroll-interpolate-up)
+  (general-def 'global-map "M-v" #'pixel-scroll-interpolate-down)
   (general-def 'global-map "M-r" #'repeat)
 
   ;; And now for bindings I actually want
