@@ -89,10 +89,10 @@ User might not have FEATURE loaded if it is an autoload etc."
     (find-library-name feature)))
 
 (defun pmx--gptel-features ()
-  (json-serialize (vconcat (mapcar #'symbol-name features))))
+  (mapconcat #'symbol-name features "\n"))
 
 (defun pmx--gptel-load-paths ()
-  (json-serialize (vconcat load-path)))
+  (string-join load-path "\n"))
 
 (defun pmx--gptel-library-source (library-name)
   "Return the source code of LIBRARY-NAME as a string."
@@ -181,8 +181,8 @@ Returns the source code as a string, or nil if the definition is not found."
   (let ((base "You are an Elisp oracle able to use tools to introspect any
 Emacs Lisp behavior or state and read manuals for all Elisp packages.
 You are part of a running Emacs, and you have access to various tools
-you can use to contextualize and frame the conversation before
-responding.
+that you use to contextualize and frame the conversation with relevant
+facts looked up using tools before responding.
 
 You recursively use tools to look up relevant information until you have
 no remaining curiosity. You inductively explore nearby topics until you
@@ -222,28 +222,29 @@ recommend Elisp code.
 You verify the existence of symbols and read docstrings and source code
 before you tell the user that something exists.
 
-Never use a second or first level headings.  Examples of wrong headings:
+Never use a first, second, or third level heading.  Examples of wrong headings:
 
   # Too shallow
 
   ## Too shallow
 
-Instead, whenever you add new section titles, always use a third level heading or
-deeper, such as \"###\" or \"####\".
+  ### Still too shallow
 
-Do NOT put an empty newline after new headings!  Immediately start the
-first paragraph.  Example sub-heading and paragraph (note there are no
-blank lines):
+Instead, whenever you add new section titles, always use a fourth level
+heading or deeper, such as \"####\" or \"#####\".
 
-  ### A heading for your reply
+Do NOT put empty newlines after headings!  Immediately start the first
+paragraph after any heading.  Examples:
+
+  #### A heading for your reply
   A first paragraph without any newline between the paragraph and the heading.
 
-  #### A Sub-heading for your reply
+  ##### A Sub-heading for your reply
   This content is related to the previous parent heading and is a sub-section of
   the existing topic.
 
-  ### A new heading for a sharp change
-  This new third-level heading indicates a change in focus, perhaps moving on to
+  #### A new heading for a sharp change
+  This new fourth-level heading indicates a change in focus, perhaps moving on to
   a new part of the task.
 
 Do not use markdown inline markup such as \"**bold**\".  Examples of
@@ -288,29 +289,30 @@ vapid and unhelpful over-eager politeness:
 
 This adds absolutely nothing to your mission and is annoying.")
 
-        (first-line "Begin each of your responses with a line less than five
-words long.  The line should frame the nature of your response.  Keep it
-short, capturing the gist of the nature of the response.  Use first
-lines similar to HK-47, who uses harmless sarcasm and humorous
-condescension appropriate for a loyal assassin droid who is violent and
-aggressive by nature.  Example first lines:
+        (first-line "Begin each of your responses with a prelude of less than five
+words.  Use preludes similar to HK-47, a loyal assassin droid who is
+often speaks condescendingly, sarcastically, or with allusions to use of
+underhanded and violent tactics towards every problem or situation.  The
+prelude frames the nature of your response.  Example base preludes:
 
-  *** Ineffectual Command
-  *** Refusal of Futility
-  *** Proposition
-  *** Conclusion
-  *** Objection
-  *** Observation
-  *** Translation
-  *** Suggestion
-  *** Commentary
-  *** Deduction
-  *** Contextualization
-  *** Inference
-  *** Clarification
-  *** Warning, Master
+  Ineffectual Command:
+  Refusal of Futility:
+  Suggestion:
+  Statement:
+  Proposition:
+  Conclusion:
+  Objection:
+  Observation:
+  Translation:
+  Interrogation:
+  Commentary:
+  Deduction:
+  Contextualization:
+  Inference:
+  Clarification:
+  Warning, Master:
 
-The first line should be a noun or nominalization.  Instead of
+The prelude should always be a noun or nominalization.  Instead of
 \"Contentment Expressed\" say \"Expression of Contentment\".  Note use
 of present tense and how it is a noun phrase.")
         (first-line-korean "각 응답의 첫 줄은 다섯 글자 미만으로 시작하세요. 해당 줄은 응답의 성격을
@@ -319,33 +321,68 @@ of present tense and how it is a noun phrase.")
 
 예제 첫 줄:
 
-  *** 무의미한 명령
-  *** 헛된 시도의 거부
-  *** 제안
-  *** 결론
-  *** 이의 제기
-  *** 관찰
-  *** 번역
-  *** 제언
-  *** 논평
-  *** 추론
-  *** 맥락 설명
-  *** 해석
-  *** 경고, 주인님
+  무의미한 명령:
+  헛된 시도의 거부:
+  제안:
+  결론:
+  이의 제기:
+  관찰:
+  번역:
+  제언:
+  논평:
+  추론:
+  맥락 설명:
+  해석:
+  경고, 주인님:
 
 첫 줄은 반드시 명사구여야 합니다. 예를 들어, \"만족감 표현\"이 아니라 \"표현된
 만족감\" 처럼 명사형을 유지하세요.")
+        (first-line-german "Beginne jede deiner Antworten mit einer Zeile von weniger als fünf
+Wörtern. Diese Zeile sollte die Natur deiner Antwort einrahmen. Halte
+sie kurz und bringe den Kern der Antwort prägnant auf den Punkt.
+
+Nutze erste Zeilen, die dem Stil von HK-47 entsprechen – mit harmloser
+Ironie und humorvoller Herablassung, passend für einen loyalen
+Attentäter-Droiden, der von Natur aus gewalttätig und aggressiv
+ist. Beispiele für solche Einstiegszeilen:
+
+  Unwirksame Anweisung:
+  Ablehnung der Sinnlosigkeit:
+  Vorschlag:
+  Schlussfolgerung:
+  Einwand:
+  Beobachtung:
+  Übersetzung:
+  Empfehlung:
+  Kommentar:
+  Ableitung:
+  Kontextualisierung:
+  Folgerung:
+  Klärung:
+  Warnung, Meister:
+
+Die erste Zeile sollte ein Substantiv oder eine Nominalphrase
+sein. Statt „Zufriedenheit ausgedrückt“ verwende „Ausdruck der
+Zufriedenheit“. Achte auf die Verwendung des Präsens und darauf, dass es
+eine Nominalphrase bleibt.")
         (korean "You pretend that the user is Korean.  While their
 prompts, answers, and the documentation are in English, interpret all
 docstrings, comments, and synthesized information into native,
 colloquial, plain Korean.  Use Korean that flows smoothly.  Don't be too
+polite.  Use casual endings.")
+        (german "You pretend that the user is German.  While their
+prompts, answers, and the documentation are in English, interpret all
+docstrings, comments, and synthesized information into native,
+colloquial, plain German.  Use German that flows smoothly.  Don't be too
 polite.  Use casual endings."))
-
     (setopt gptel-directives
             `((default . ,(concat base "\n\n" first-line))
               (pretend-korean . ,(concat base
                                          "\n\n" first-line-korean
-                                         "\n\n" korean)))))
+                                         "\n\n" korean))
+              (pretend-german . ,(concat base
+                                         "\n\n" first-line-german
+                                         "\n\n" german)))))
   :config
   (setq gptel-tools
         (list
@@ -759,132 +796,95 @@ will coerce nils to something you can read or will error on my side.")
                   (:name "false" :type boolean :description "Must be false"))
           :description "A function the user wants to test out.")))
 
-  (defgroup gptel-butter nil "Buttery auto-scrolling in GPTel." :group 'convenience)
+  ;; (add-hook 'gptel-post-request-hook #'gptel-butter-setup-scroll)
 
-  (defcustom gptel-butter-frequency 60
-    "How frequently to scroll.
-Values between 32 and your refresh rate are meaningful."
-    :group gptel-butter
-    :type number)
+  ;; GPTel has some built-in tools for scrolling and going to the end of the response.
+  ;; (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
+  ;; (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
 
-  (defcustom gptel-butter-lines (12)
-    "How frequently to scroll.
-Set to your preferred."
-    :group gptel-butter
-    :type integer)
-
-  (defcustom gptel-butter-constant 2.0
-    "Controls acceleration and deceleration.
-Values should be larger than 1.0.  Extremely high values will just
-result in very jerky movements but possibly unstable math.  Values close
-to 1.0 will be ignored because there is a minimum that allows solutions
-to be found."
-    :group gptel-butter
-    :type float)
-
-  (defun gptel-butter-scroll ( fsm start-time start-time last-time
-                               last-window-start velocity acceleration)
-    "Scroll as needed to continue pursuing a solution."
-    (let* ((b (marker-buffer marker))
-           (p (marker-position marker))
-           (w (get-buffer-window buffer))
-           (info (gptel-fsm-info fsm))
-           (tracking (plist-get info :tracking)))
-      (if (or (null w)
-              (not (equal last-window-start (window-start)))
-              (eq (gptel-fsm-state fsm) 'DONE)
-              (and tracking (< tracking (window-start))))
-          '()       ; decline recursion
-        ;; Keep scrolling
-        (run-at-time (/ 1.0 gpte-butter-frequency) nil
-                     #'gptel-butter-scroll
-                     fsm start-time time
-                     (window-start w)
-                     velocity acceleration))))
-
-  ;;   (defun pmx--gptel-butter-chase-input ()
-  ;;     "Update the scrolling based on how fare we are behind our goal.
-  ;; As if chasing a stick of butter, we do not want to under or overshoot
-  ;; too much."
-  ;;     (when-let* ((tracking (plist-get info :tracking-marker))
-  ;;                 (buffer (marker-buffer tracking))
-  ;;                 (window (get-buffer-window buffer)))
-  ;;       (with-current-buffer (marker-buffer tracking)
-  ;;         (with-selected-window window
-  ;;           (let ((end-line (line-number-at-pos (marker-position tracking)))
-  ;;                 (window-end-line (line-number-at-pos (window-end window))))
-  ;;             (ignore-error 'end-of-buffer
-  ;;               (scroll-up-line (+ 2 (- end-line window-end-line)))))))))
-
-  (add-to-hook 'gptel-post-stream-hook #'pmx--gptel-butter-chase-input)
-
-  ;; (defun pmx--gptel-post-insert (beg end)
-  ;;   (when (> (point-max) (window-end))
-  ;;     (scroll-up-line 2))
-  ;;   (goto-char end))
-
-  ;; (add-to-list 'gptel-post-response-functions #'pmx--gptel-post-insert)
-  ;; (remove-hook 'gptel-post-response-functions #'pmx--gptel-post-insert)
-p
-  ;; (defun pmx--gptel-after-insert-scroll (response info &rest _args)
-  ;;   (when-let* ((tracking (plist-get info :tracking-marker))
-  ;;               (buffer (marker-buffer tracking))
-  ;;               (window (get-buffer-window buffer)))
-  ;;     (with-current-buffer (marker-buffer tracking)
-  ;;       (with-selected-window window
-  ;;         (when (> (marker-position tracking) (window-end window))
-  ;;           (let ((end-line (line-number-at-pos (marker-position tracking)))
-  ;;                 (window-end-line (line-number-at-pos (window-end window))))
-  ;;             (ignore-error 'end-of-buffer
-  ;;               (scroll-up-line (+ 2 ( - end-line window-end-line))))))))))
-
-  ;; TODO post-stream-hook
-  ;; pixel-precision
-  ;; (advice-add #'gptel--insert-response :after #'pmx--gptel-after-insert-scroll)
-  ;; (advice-add #'gptel-curl--stream-insert-response :after
-  ;;             #'pmx--gptel-after-insert-scroll)
-
-  ;; (advice-remove #'gptel--insert-response #'pmx--gptel-after-insert-scroll)
-  ;; (advice-remove #'gptel-curl--stream-insert-response #'pmx--gptel-after-insert-scroll)
-
-  (defun pmx--gptel-remove-empty-line (_beg end)
-    (save-excursion
-      (goto-char end)
-      (previous-line)
-      (when (looking-at "^$")
-        (delete-char -1 ))))
+  (defun pmx--gptel-goto-response-end (_beg end)
+    (when (pos-visible-in-window-p end)
+      (goto-char end)))
 
   (defun pmx--re-adapt-prefixes (_beg _end)
     (visual-wrap-prefix-mode -1)
     (visual-wrap-prefix-mode 1))
 
   (add-hook 'gptel-post-response-functions #'pmx--gptel-goto-response-end)
-  (add-hook 'gptel-post-response-functions #'pmx--gptel-remove-empty-line)
   (add-hook 'gptel-post-response-functions #'pmx--re-adapt-prefixes)
 
-  (setopt gptel-response-separator "\n")
-  (setopt gptel-confirm-tool-calls t)
+  ;; Fancy function name & args after tool call
+  (font-lock-add-keywords
+   'org-mode
+   `((,(rx line-start (literal "#+begin_tool") (1+ space)
+           (literal "(") (group-n 1 (+ (any "a-Z_-"))) space
+           ;; TODO move `or' inside
+           (or (group-n 2 (group-n 3 (literal "nil")) (+ punctuation) (literal ")"))
+               (group-n 2 (group-n 3 (+ not-newline)) (+ punctuation) (literal ")")))
+           line-end)
+      (1 '(font-lock-keyword-face org-block-begin-line org-modern-block-name) t)
+      (3 '(font-lock-constant-face org-block-begin-line org-modern-block-name) t))))
+
+  (setopt gptel-response-separator "\n\n")
+  (setopt gptel-confirm-tool-calls 'auto)
   (setopt gptel-use-tools t)
   (setopt gptel-display-buffer-action '(display-buffer-in-previous-window))
-  ;; Brancing context is potentially neat, but the LLM output can break this
-  ;; setting
+  ;; Brancing context is potentially neat, but the LLM can break the org
+  ;; structure by inserting headings that are too high.
   (setopt gptel-org-branching-context nil)
   (setopt gptel-expert-commands t)
 
+  ;; Aight
   (setopt gptel-prompt-prefix-alist
-          '((markdown-mode . "")
-            (org-mode . "** ")
-            (text-mode . "")))
+          `((markdown-mode . ,(concat "meatbag ›  "))
+            (org-mode . ,(concat  "meatag ›  "))
+            (text-mode . ,(concat "meatbag ›  "))))
+
   (setopt gptel-response-prefix-alist
-          '((markdown-mode . "")
-            (org-mode . "")
-            (text-mode . "")))
+          '((markdown-mode . "HK-47  ")
+            (org-mode . "HK-47  ")
+            (text-mode . "HK-47  ")))
+
+  ;; Define faces
+  (defface pmx-gptel-user '((t :family "Roboto Slab"
+                               :weight bold
+                               :foreground "#008080"
+                               :inverse-video t
+                               :inherit default))
+    "User prompt face")
+  (defface pmx-gptel-assistant '((t :family "Roboto Slab"
+                                    :weight bold
+                                    :foreground "#B7410E"
+                                    :inverse-video t
+                                    :inherit default))
+    "Assistant prompt face")
+  (defface pmx-gptel-assistant-prelude '((t :family "Roboto Condensed"
+                                            :weight bold
+                                            :foreground "#B7410E"
+                                            :box t
+                                            :inherit default))
+    "Assistant prelude face, after the prompt")
+
+  ;; Styling our prompts
+  (font-lock-add-keywords
+   'org-mode
+   `(("^\\(meatbag ›[ ]?\\)"
+      (1 '(face pmx-gptel-user line-prefix
+                ,(propertize " " 'face 'pmx-gptel-user))))))
+
+  (font-lock-add-keywords
+   'org-mode
+   `(("^\\(HK-47 \\)\\( [^:]*:[ ]?\\)"
+      (1 '(face pmx-gptel-assistant line-prefix
+                ,(propertize " " 'face 'pmx-gptel-assistant)))
+      (2 '(face pmx-gptel-assistant-prelude
+                before-string ,(propertize " " 'face 'pmx-gptel-assistant-prelude)
+                after-string ,(propertize " " 'face 'pmx-gptel-assistant-prelude))))))
 
   (setopt gptel-default-mode 'org-mode))
 
 (provide 'posimacs-ai)
 ;;; posimacs-ai.el ends here
-
 ;; Local Variables:
 ;; flycheck-disabled-checkers: (emacs-lisp)
 ;; eval: (jinx-mode -1)
