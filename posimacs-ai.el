@@ -166,9 +166,14 @@ Returns the source code as a string, or nil if the definition is not found."
 (defun pmx--gptel-coerce-nil ()
   nil)
 
-(defun pmx--gptel-all-arg-types (object string array null true false)
-  (message "object: %S\nstring: %S\narray: %S\nnull: %S\ntrue: %S\nfalse: %S"
-           object string array null true false))
+(defun pmx--gptel-all-arg-types (object string array null true false enum)
+  (message "object: %S\nstring: %S\narray: %S\nnull: %S\ntrue: %S\nfalse: %S\n\
+enum: %S"
+           object string array null true false enum))
+
+(defun pmx--gptel-async-tool (callback later-val)
+  (sit-for 2)
+  (funcall callback (format "Do it %s." later-val)))
 
 (use-package gptel
   :ensure (gptel
@@ -789,11 +794,26 @@ will coerce nils to something you can read or will error on my side.")
                          :properties (:foo (:type integer :description "Use 42"))
                          :required ["foo"])
                   (:name "string" :type string :description "A string")
-                  (:name "array" :type array :description "An array")
+                  (:name "array" :type array :description "An array"
+                         :items (:type number))
                   (:name "null" :type null :description "A null")
                   (:name "true" :type boolean :description "Must be true")
-                  (:name "false" :type boolean :description "Must be false"))
-          :description "A function the user wants to test out.")))
+                  (:name "false" :type boolean :description "Must be false")
+                  (:name "enum" :type string :description "A choice"
+                         :enum ["bar" "baz" "boo"]))
+          :description "A function the user wants to test out.")
+
+         (gptel-make-tool
+          :name "async_tool"
+          :function #'pmx--gptel-async-tool
+          :category "testing"
+          :include t
+          :async t
+          :args
+          '((:name "later-val" :type string :description "Just whenever."))
+          :description "A tool that takes a while.
+If the user says call it, always call it.")))
+
 
   ;; (add-hook 'gptel-post-request-hook #'gptel-butter-setup-scroll)
 
@@ -807,16 +827,20 @@ will coerce nils to something you can read or will error on my side.")
 
   (add-hook 'gptel-post-response-functions #'pmx--re-adapt-prefixes)
 
+  ;; leaves blank lines after consecutive tool calls and before the response prefix
   (setopt gptel-response-separator "\n\n")
+  ;; respects :confirm setting on individual tools.
   (setopt gptel-confirm-tool-calls 'auto)
   (setopt gptel-use-tools t)
+  ;; TODO gptel buffer is not selected when created
   (setopt gptel-display-buffer-action '(display-buffer-in-previous-window))
   ;; Brancing context is potentially neat, but the LLM can break the org
-  ;; structure by inserting headings that are too high.
+  ;; structure by inserting headings that break out of the current heading tree.
   (setopt gptel-org-branching-context nil)
   (setopt gptel-expert-commands t)
 
-  ;; Fancy function name & args after tool call
+  ;; Fancy function name & args after tool call.  This has been updated for the
+  ;; explicit-tool-turns branch.
   (font-lock-add-keywords
    'org-mode
    `((,(rx line-start (literal "#+begin_tool") (1+ space)
@@ -831,6 +855,9 @@ will coerce nils to something you can read or will error on my side.")
   ;; These prompts are trimmed out of context.  The font locking below styles
   ;; them.  Since the text doesn't match headings, you can use org headings for
   ;; other structural purposes, such as `gptel-org-branching-context'.
+  ;;
+  ;; You can text replace meatbag and HK-47 with whatever you want.  Just be
+  ;; sure to include it both in the font locking rule and the prompt(s).
   (setopt gptel-prompt-prefix-alist
           `((markdown-mode . ,(concat "meatbag ›  "))
             (org-mode . ,(concat  "meatbag ›  "))
@@ -841,7 +868,7 @@ will coerce nils to something you can read or will error on my side.")
             (org-mode . "HK-47  ")
             (text-mode . "HK-47  ")))
 
-  ;; Define faces
+  ;; Define unique faces so prompts are highly visible
   (defface pmx-gptel-user
     '((t :family "Roboto Slab"
          :weight bold
@@ -864,7 +891,7 @@ will coerce nils to something you can read or will error on my side.")
          :inherit default))
     "Assistant prelude face, after the prompt")
 
-  ;; Styling our prompts
+  ;; Styling our prompts with font locking
   (font-lock-add-keywords
    'org-mode
    `(("^\\(meatbag ›[ ]?\\)"
