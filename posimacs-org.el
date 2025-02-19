@@ -231,9 +231,9 @@
   (setopt org-modern-block-fringe t))
 
 ;; render nodes at other places
-(use-package org-transclusion
-  :hook org-mode
-  :after org)
+;; (use-package org-transclusion
+;;   :hook org-mode
+;;   :after org)
 
 ;; for regenerating tocs (deprecated in favor of export TOCs)
 (use-package org-make-toc

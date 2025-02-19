@@ -241,6 +241,7 @@ call unless there's a ton of windows for some reason."
          (other-window pmx--direction)))
   (setq pmx--last-win (selected-window)))
 
+;; TODO if scroll impossible, move point
 (keymap-global-set "M-o" #'pmx-other-window)
 
 ;; For all arbitrary text navigation and window changes, avy is used
