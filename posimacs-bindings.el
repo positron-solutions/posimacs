@@ -16,6 +16,45 @@
 
 ;;; Code:
 
+(defvar pmx--user-keys-punc-low ["{" "}" ";" "'"  "," "." "/" "<return>" "<tab>"
+                                 "`" "<backspace>"])
+(defvar pmx--user-keys-punc-high ["[" "]" ":" "\"" "<" ">" "?" "~"])
+
+(defun pmx-user-keys ()
+  "Show good keys."
+  (interactive)
+  (let ((buffer (generate-new-buffer "User Keys"))
+        (key-sets `(("Meta" . ,(cl-loop for k from ?\M-a to ?\M-z collect k))
+                    ("Control" . ,(cl-loop for k from ?\C-a to ?\C-z collect k))
+                    ("Meta Punctuation" .
+                     ,(cl-loop for k across pmx--user-keys-punc-low
+                               collect (format "M-%s" k)))
+                    ("Control Punctuation" .
+                     ,(cl-loop for k across pmx--user-keys-punc-low
+                               collect (format "C-%s" k)))
+                    ("Meta Punctuation High" .
+                     ,(cl-loop for k across pmx--user-keys-punc-high
+                               collect (format "M-%s" k))))))
+    (switch-to-buffer buffer)
+    (cl-loop
+     for ks in key-sets
+     do
+     (insert (car ks) "\n" (make-string (length (car ks)) ?\=) "\n")
+     (cl-loop for k in (cdr ks)
+              do
+              (let* ((sequence (vector k))
+                     (key-name (key-description sequence))
+                     (binding (key-binding sequence)))
+                (insert (format "%-20s%s\n" key-name
+                                (pcase binding
+                                  ((pred commandp)
+                                   (propertize (symbol-name binding) 'button t
+                                               'category
+                                               'helpful-describe-button-button))
+                                  ((pred keymapp) "keymap")
+                                  (_  (propertize  "nil" 'face 'success)))))))
+     (insert "\n"))))
+
 (defcustom pmx-reverse-ring-size 16
   "How many reverse actions to store."
   :type 'integer
@@ -158,7 +197,10 @@ Repeats of that char should continue."
     "r"                                 ; move-to-window-line-top-bottom
     "t"                                 ; transpose-words
     "u"                                 ; upcase
-    "z")                                ; zap-to-char
+    "z"                                 ; zap-to-char
+    "{"                                 ; forward-paragraph
+    "}"                                 ; backward-paragraph
+    )
 
 
   (general-unbind 'ctl-x-map
@@ -168,10 +210,15 @@ Repeats of that char should continue."
     "+"                                 ; balance-windows
     "."                                 ; set-fill-prefix
     ";"                                 ; comment-set-column
+    "{"                                 ; backward-paragraph
+    "}"                                 ; forward-paragraph
+    "'"                                 ; abbrev-prefix-mark
+    "~"                                 ; not-modified
 
     "C-o"                               ; set-goal-column
-    "C-l"                               ; downcase region
-    "C-u"                               ; upcase region
+    "C-l"                               ; downcase-region
+    "C-u"                               ; upcase-region
+    "C-q"                               ; quoted-insert
 
     "f"                                 ; set-fill-column
     "l"                                 ; count-lines-page
@@ -197,21 +244,58 @@ Repeats of that char should continue."
   ;; "C-p"                           ; finder-by-keyword
   ;; Replacement definitions, more coherence in defaults
   (general-unbind 'global-map "C-v")
-  (general-def 'global-map "M-c" #'pixel-scroll-interpolate-up)
-  (general-def 'global-map "M-v" #'pixel-scroll-interpolate-down)
-  (general-def 'global-map "M-r" #'repeat)
+
+  (defun pmx-scroll-third-up ()
+    (interactive)
+    (pixel-scroll-precision-interpolate
+     (ceiling (/ (window-text-height nil t) 3)) nil 1))
+
+  (defun pmx-scroll-third-down ()
+    (interactive)
+    (pixel-scroll-precision-interpolate
+     (ceiling (- (/ (window-text-height nil t) 3))) nil 1))
+
+  (general-def 'global-map "M-c" #'pmx-scroll-third-up)
+  (general-def 'global-map "M-v" #'pmx-scroll-third-down)
+  (general-def 'global-map "M-r" #'recenter)
 
   ;; And now for bindings I actually want
   (general-def 'global-map "M-e" #'eval-expression)
   (general-def 'org-mode-map "M-e" #'eval-last-sexp)
   (general-def 'dired-mode-map "j" #'dired-jump)
 
-  (general-def 'global-map "M-j" #'pmx-backward-to-char)
-  (general-def 'global-map "M-k" #'pmx-forward-to-char)
+  (defun pmx-backward-sexp ()
+    (interactive)
+    (condition-case _err
+        (backward-sexp)
+      (scan-error (backward-up-list))))
+
+  (defun pmx-forward-sexp ()
+    (interactive)
+    (condition-case _err
+        (forward-sexp)
+      (scan-error (backward-up-list -1))))
+
+  ;; (general-def 'global-map "M-j" #'pmx-backward-to-char)
+  ;; (general-def 'global-map "M-k" #'pmx-forward-to-char)
+
+  (general-def 'global-map "M-j" #'pmx-backward-sexp)
+  (general-def 'global-map "M-k" #'pmx-forward-sexp)
+
+  (defun pmx-kill-backward-sexp ()
+    (interactive)
+    (let ((end (point)))
+      (backward-sexp)
+      (kill-region (point) end)))
+
+  (general-def "M-DEL" #'pmx-kill-backward-sexp)
+  (general-unbind 'lispy-mode-map "M-DEL")
+
   (general-def 'global-map "M-l" #'avy-goto-word-1)
 
-  (general-def 'global-map "M-0" #'forward-sexp)
-  (general-def 'global-map "M-9" #'backward-sexp)
+  ;; TODO defaults?
+  ;; (general-def 'global-map "M-0" #'forward-sexp)
+  ;; (general-def 'global-map "M-9" #'backward-sexp)
 
   (defun pmx-eat-project-toggle ()
     "Toggle the project terminal."
@@ -225,6 +309,7 @@ Repeats of that char should continue."
 
   (general-def 'global-map "M-z" #'pmx-eat-project-toggle)
   (general-def 'eat-semi-char-mode-map "M-z" #'pmx-eat-project-toggle)
+
   (general-def 'global-map "M-u" #'universal-argument)
 
   (defun pmx-backward-symbol ()
@@ -234,6 +319,23 @@ Repeats of that char should continue."
 
   (general-def 'global-map "M-f" #'forward-symbol)
   (general-def 'global-map "M-b" #'pmx-backward-symbol)
+
+  (defun pmx-org-backward-up-list ()
+    (interactive)
+    (if (org-at-heading-p)
+        (if (= (point) (line-beginning-position))
+            (org-up-heading 1)
+          (org-back-to-heading))
+      (org-up-element)))
+
+  (general-def 'org-mode-map "M-;" #'pmx-org-backward-up-list)
+
+  ;; Spacebar re-work
+  (general-def "M-SPC" #'set-mark-command)
+  (general-def "C-SPC" #'cycle-spacing)
+  (general-def "S-SPC" #'pop-to-mark-command)
+  ;; TODO cycle marks
+  (general-def "M-S-SPC" #'pop-global-mark)
 
   ;; TODO add to mode maps for regex input
   ;; C-q is borderline M-x, but useful for regex input
@@ -255,8 +357,8 @@ Repeats of that char should continue."
   (general-unbind 'mhtml-mode-map "M-o") ; TODO user-keys
   (general-unbind 'diff-mode-map "M-o")
   (general-unbind 'org-mode-map "M-h")
-  (general-unbind 'org-mode-map "M-j")
   (general-unbind 'org-mode-map "M-o")
+  (general-unbind 'org-mode-map "M-j")
   (general-unbind 'org-mode-map "M-h")
   (general-unbind 'org-mode-map "M-e")
   (general-unbind 'ibuffer-mode-map "M-s")
@@ -380,9 +482,24 @@ Repeats of that char should continue."
       ("C-m m" "Emacs Manual" info-emacs-manual)
       ("g" "Glossary" search-emacs-glossary)]])
 
-  (general-def "M-h" 'pmx-help))
+  (general-def "M-h" 'pmx-help)
+
+  ;; TODO add pop-to-buffer option in GPTel
+  (defun pmx-gptel ()
+    (interactive)
+    ;; TODO one AI per project
+    (let* ((project (file-name-base
+                     (directory-file-name
+                      (or (project-root (project-current t))
+                          default-directory))))
+           (buffer-name (format "*HK-47 %s*" project))
+           (buffer (gptel buffer-name)))
+      (pop-to-buffer buffer)))
+
+  (keymap-global-set "M-a" #'pmx-gptel))
 
 (provide 'posimacs-bindings)
+
 ;;; posimacs-bindings ends here
 
 ;; Local Variables:

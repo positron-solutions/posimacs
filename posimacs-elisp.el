@@ -171,6 +171,12 @@ to be slow."
   (unbind-key (kbd "M-k") lispy-mode-map) ; lispy-kill-sentence
   (unbind-key (kbd "M-i") lispy-mode-map)
 
+  (unbind-key (kbd "M-j") lispy-mode-map) ; lispy-down
+  (unbind-key (kbd "M-k") lispy-mode-map) ; lispy-up
+  (unbind-key (kbd "M-m") lispy-mode-map) ; lispy-mark-symbol
+  (bind-key (kbd "j") #'special-lispy-up  lispy-mode-map)
+  (bind-key (kbd "k") #'special-lispy-down lispy-mode-map)
+
   ;; (unbind-key (kbd "g") lispy-mode-map) ; TODO what does this do?
   (unbind-key (kbd "~") lispy-mode-map)  ; lispy-tilda (insert ARG times)
   (unbind-key (kbd "G") lispy-mode-map)  ; lispy-goto
