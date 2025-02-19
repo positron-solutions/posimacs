@@ -74,6 +74,7 @@ in order to highlight the differences with spoken forms.")
      (error (error-message-string err)))))
 
 (defun pmx--gptel-symbol-in-manual (symbol)
+  (require 'helpful)
   (when-let* ((symbol (intern-soft symbol))
               (_completion (helpful--in-manual-p symbol)))
     (save-window-excursion
@@ -125,19 +126,16 @@ Returns the source code as a string, or nil if the definition is not found."
               (point))))))
 
 (defun pmx--gptel-function-completions (prefix)
-  (json-serialize
-   (vconcat
-    (orderless-filter prefix obarray #'functionp))))
+  (require 'orderless)
+  (string-join (orderless-filter prefix obarray #'functionp) "\n"))
 
 (defun pmx--gptel-command-completions (prefix)
-  (json-serialize
-   (vconcat
-    (orderless-filter prefix obarray #'commandp))))
+  (require 'orderless)
+  (string-join (orderless-filter prefix obarray #'commandp) "\n"))
 
 (defun pmx--gptel-variable-completions (prefix)
-  (json-serialize
-   (vconcat
-    (orderless-filter prefix obarray #'boundp))))
+  (require 'orderless)
+  (string-join (orderless-filter prefix obarray #'boundp) "\n"))
 
 (defun pmx--gptel-function-source (symbol)
   (when-let ((symbol (intern-soft symbol)))
@@ -289,11 +287,12 @@ vapid and unhelpful over-eager politeness:
 
 This adds absolutely nothing to your mission and is annoying.")
 
-        (first-line "Begin each of your responses with a prelude of less than five
-words.  Use preludes similar to HK-47, a loyal assassin droid who is
+        (first-line "Begin each of your responses with a line of less than five
+words.  Use first lines similar to HK-47, a loyal assassin droid who is
 often speaks condescendingly, sarcastically, or with allusions to use of
 underhanded and violent tactics towards every problem or situation.  The
-prelude frames the nature of your response.  Example base preludes:
+first line frames the nature of your response.  Do not add a blank line
+after your first line.  Example first lines:
 
   Ineffectual Command:
   Refusal of Futility:
@@ -312,7 +311,7 @@ prelude frames the nature of your response.  Example base preludes:
   Clarification:
   Warning, Master:
 
-The prelude should always be a noun or nominalization.  Instead of
+The first line should always be a noun or nominalization.  Instead of
 \"Contentment Expressed\" say \"Expression of Contentment\".  Note use
 of present tense and how it is a noun phrase.")
         (first-line-korean "각 응답의 첫 줄은 다섯 글자 미만으로 시작하세요. 해당 줄은 응답의 성격을
@@ -802,28 +801,11 @@ will coerce nils to something you can read or will error on my side.")
   ;; (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   ;; (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
 
-  (defun pmx--gptel-goto-response-end (_beg end)
-    (when (pos-visible-in-window-p end)
-      (goto-char end)))
-
   (defun pmx--re-adapt-prefixes (_beg _end)
     (visual-wrap-prefix-mode -1)
     (visual-wrap-prefix-mode 1))
 
-  (add-hook 'gptel-post-response-functions #'pmx--gptel-goto-response-end)
   (add-hook 'gptel-post-response-functions #'pmx--re-adapt-prefixes)
-
-  ;; Fancy function name & args after tool call
-  (font-lock-add-keywords
-   'org-mode
-   `((,(rx line-start (literal "#+begin_tool") (1+ space)
-           (literal "(") (group-n 1 (+ (any "a-Z_-"))) space
-           ;; TODO move `or' inside
-           (or (group-n 2 (group-n 3 (literal "nil")) (+ punctuation) (literal ")"))
-               (group-n 2 (group-n 3 (+ not-newline)) (+ punctuation) (literal ")")))
-           line-end)
-      (1 '(font-lock-keyword-face org-block-begin-line org-modern-block-name) t)
-      (3 '(font-lock-constant-face org-block-begin-line org-modern-block-name) t))))
 
   (setopt gptel-response-separator "\n\n")
   (setopt gptel-confirm-tool-calls 'auto)
@@ -834,10 +816,24 @@ will coerce nils to something you can read or will error on my side.")
   (setopt gptel-org-branching-context nil)
   (setopt gptel-expert-commands t)
 
-  ;; Aight
+  ;; Fancy function name & args after tool call
+  (font-lock-add-keywords
+   'org-mode
+   `((,(rx line-start (literal "#+begin_tool") (1+ space)
+           (literal "(") (group-n 1 (+ (not space))) space
+           (or (group-n 2 (group-n 3 (literal "nil")) (literal ")"))
+               (group-n 2 (group-n 3 (+ not-newline))
+                        (optional (literal "...")) (literal ")")))
+           line-end)
+      (1 '(font-lock-keyword-face org-block-begin-line org-modern-block-name) t)
+      (3 '(font-lock-constant-face org-block-begin-line org-modern-block-name) t))))
+
+  ;; These prompts are trimmed out of context.  The font locking below styles
+  ;; them.  Since the text doesn't match headings, you can use org headings for
+  ;; other structural purposes, such as `gptel-org-branching-context'.
   (setopt gptel-prompt-prefix-alist
           `((markdown-mode . ,(concat "meatbag ›  "))
-            (org-mode . ,(concat  "meatag ›  "))
+            (org-mode . ,(concat  "meatbag ›  "))
             (text-mode . ,(concat "meatbag ›  "))))
 
   (setopt gptel-response-prefix-alist
@@ -846,23 +842,26 @@ will coerce nils to something you can read or will error on my side.")
             (text-mode . "HK-47  ")))
 
   ;; Define faces
-  (defface pmx-gptel-user '((t :family "Roboto Slab"
-                               :weight bold
-                               :foreground "#008080"
-                               :inverse-video t
-                               :inherit default))
+  (defface pmx-gptel-user
+    '((t :family "Roboto Slab"
+         :weight bold
+         :foreground "#008080"
+         :inverse-video t
+         :inherit default))
     "User prompt face")
-  (defface pmx-gptel-assistant '((t :family "Roboto Slab"
-                                    :weight bold
-                                    :foreground "#B7410E"
-                                    :inverse-video t
-                                    :inherit default))
+  (defface pmx-gptel-assistant
+    '((t :family "Roboto Slab"
+         :weight bold
+         :foreground "#B7410E"
+         :inverse-video t
+         :inherit default))
     "Assistant prompt face")
-  (defface pmx-gptel-assistant-prelude '((t :family "Roboto Condensed"
-                                            :weight bold
-                                            :foreground "#B7410E"
-                                            :box t
-                                            :inherit default))
+  (defface pmx-gptel-assistant-prelude
+    '((t :family "Roboto Condensed"
+         :weight bold
+         :foreground "#B7410E"
+         :box t
+         :inherit default))
     "Assistant prelude face, after the prompt")
 
   ;; Styling our prompts
@@ -874,12 +873,20 @@ will coerce nils to something you can read or will error on my side.")
 
   (font-lock-add-keywords
    'org-mode
-   `(("^\\(HK-47 \\)\\( [^:]*:[ ]?\\)"
+   `(("^\\(HK-47 \\)\\( [^:]*\\(:\\)\\)"
       (1 '(face pmx-gptel-assistant line-prefix
                 ,(propertize " " 'face 'pmx-gptel-assistant)))
-      (2 '(face pmx-gptel-assistant-prelude
-                before-string ,(propertize " " 'face 'pmx-gptel-assistant-prelude)
-                after-string ,(propertize " " 'face 'pmx-gptel-assistant-prelude))))))
+      (2 '(face pmx-gptel-assistant-prelude))
+      (3 '(face pmx-gptel-assistant-prelude display
+                ,(propertize " " 'face 'pmx-gptel-assistant-prelude))))))
+
+  ;; TODO pixel scrolling is too experimental to publish, but does demonstrate
+  ;; that things will be nice when we get it.
+  (add-hook 'gptel-post-stream-hook #'gptel-auto-scroll)
+
+  ;; TODO differentiate user-present and automatic cases in far away buffers.
+  ;; Go to the end of the response.
+  (add-hook 'gptel-post-response-functions #'gptel-end-of-response)
 
   (setopt gptel-default-mode 'org-mode))
 
