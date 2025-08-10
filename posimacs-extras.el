@@ -12,8 +12,9 @@
 (use-package snow
   :ensure (snow :host github :repo "alphapapa/snow.el"))
 
+;; TODO unable to update in this configuration
 (use-package mandelbrot
-  :ensure (mandelbrot :repo "/home/satoshi/.emacs.d/scratch-pkgs/mandelbrot/"))
+  :ensure (mandelbrot :repo "/home/satoshi/.emacs.d/etc/scratch-pkgs/mandelbrot"))
 
 ;; tracking command usage to measure pain
 (use-package keyfreq
