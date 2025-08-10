@@ -18,6 +18,7 @@
                  [?\e 108]              ; M-l
                  [?\e  99]              ; M-s
                  [?\e 122]              ; M-z
+                 [?\e 118]              ; M-v
                  ))
     (add-to-list 'eat-semi-char-non-bound-keys key))
   (eat-update-semi-char-mode-map)
