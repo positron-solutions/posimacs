@@ -26,6 +26,8 @@
 (setopt scroll-up-aggressively 0.3)
 (setopt scroll-conservatively 12)
 (pixel-scroll-precision-mode 1)
+;; Don't leave cursor only partially visible
+(setopt make-cursor-line-fully-visible t)
 
 (setopt pixel-scroll-precision-interpolate-mice t)
 (setopt pixel-scroll-precision-use-momentum t)
@@ -143,6 +145,8 @@ List of BUFFER WINDOW SAFE-MARKER and RESTORE-MARKER.")
   (add-hook 'transient-exit-hook #'pmx--no-herky-jerk-exit)
   (setopt transient-hide-during-minibuffer-read t))
 
+(pmx-no-herky-jerk-mode 1)
+
 ;; Auto-balancing and less aggressive automatic window splitting are a
 ;; prerequisite for any sane window management strategy.
 
@@ -232,7 +236,7 @@ call unless there's a ton of windows for some reason."
          ;; If we are not repeating an other-window command, reverse the
          ;; direction and select in that direction.
          (if (eq pmx--last-win (selected-window))
-             (setq pmx--direction (- pmx--direction))
+             (setq pmx--directionapmx--direction (- pmx--direction))
            ;;  we changed windows out of band. Reverse directions.
            (setq pmx--direction -1))
          (other-window pmx--direction))
