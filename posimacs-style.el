@@ -55,7 +55,7 @@
 (defun pmx--setup-fonts (&rest _)
   "Nice fonts for nice people (and robots)."
   ;; Base fonts
-  (set-face-attribute 'default nil :family "Roboto Mono" :height 144 :weight 'normal)
+  (set-face-attribute 'default nil :family "Roboto Mono" :height 108 :weight 'normal)
   (set-face-attribute 'fixed-pitch-serif nil :family "Roboto Mono")
   (set-face-attribute 'variable-pitch nil  :family "Noto Serif CJK KR")
   (set-face-attribute 'header-line nil
