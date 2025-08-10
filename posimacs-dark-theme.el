@@ -1,4 +1,4 @@
-;;; posimacs-dark-theme.el --- Posimacs dark theme -*- no-byte-compile: t; -*-
+;;; posimacs-dark-theme.el --- Posimacs dark theme -*- no-byte-compile: t; lexical-binding: t-*-
 (require 'doom-themes)
 
 ;;; Commentary:

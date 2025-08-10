@@ -1,4 +1,4 @@
-;;; posimacs-minibuffer --- The Minibuffer on Steroids
+;;; posimacs-minibuffer --- The Minibuffer on Steroids -*-lexical-binding: t-*-
 
 ;;; Commentary:
 ;;
