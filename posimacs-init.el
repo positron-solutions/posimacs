@@ -141,9 +141,9 @@
                         "posimacs-rust.el"
                         "posimacs-style.el"
                         "posimacs-vc.el"
-                        "posimacs-terminal.el"
 
-                        "jinx/posimacs-jinx.el")))
+                        "jinx/posimacs-jinx.el"
+                        "vterm/posimacs-vterm.el")))
   (dolist (file-name posimacs-files)
     (load (expand-file-name
            (concat "posimacs/" file-name)

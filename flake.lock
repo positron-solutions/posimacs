@@ -62,6 +62,45 @@
         "type": "github"
       }
     },
+    "emacs-vterm": {
+      "inputs": {
+        "emacs-vterm-src": [
+          "emacs-vterm-src"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754822742,
+        "narHash": "sha256-yJhsPZ5ThoRCKz/wECGumXekZ1D7v3BfU3+Na1eK3uE=",
+        "path": "/home/satoshi/Desktop/positron/posimacs/vterm",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/satoshi/Desktop/positron/posimacs/vterm",
+        "type": "path"
+      }
+    },
+    "emacs-vterm-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736786730,
+        "narHash": "sha256-ZBAQOUr+IrDlXUKpG2HUzNjVfGdphXqrmiPn90bvAVY=",
+        "owner": "akermu",
+        "repo": "emacs-libvterm",
+        "rev": "056ad74653704bc353d8ec8ab52ac75267b7d373",
+        "type": "github"
+      },
+      "original": {
+        "owner": "akermu",
+        "repo": "emacs-libvterm",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -115,17 +154,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1735651292,
-        "narHash": "sha256-YLbzcBtYo1/FEzFsB3AnM16qFc6fWPMIoOuSoDwvg9g=",
+        "lastModified": 1753749649,
+        "narHash": "sha256-+jkEZxs7bfOKfBIk430K+tK9IvXlwzqQQnppC2ZKFj4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0da3c44a9460a26d2025ec3ed2ec60a895eb1114",
+        "rev": "1f08a4df998e21f4e8be8fb6fbf61d11a1a5076a",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "release-24.05",
         "repo": "nixpkgs",
+        "rev": "1f08a4df998e21f4e8be8fb6fbf61d11a1a5076a",
         "type": "github"
       }
     },
@@ -150,6 +189,8 @@
         "emacs-igc-src": "emacs-igc-src",
         "emacs-jinx": "emacs-jinx",
         "emacs-overlay": "emacs-overlay",
+        "emacs-vterm": "emacs-vterm",
+        "emacs-vterm-src": "emacs-vterm-src",
         "flake-utils": "flake-utils",
         "jinx-src": "jinx-src",
         "nixpkgs": "nixpkgs"

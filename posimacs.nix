@@ -1,4 +1,4 @@
-{ emacs-jinx, emacs-overlay, emacs-igc-src, ... }:
+{ emacs-jinx, emacs-vterm, emacs-overlay, emacs-igc-src, ... }:
 { config, pkgs, lib, ... }:
 
 let
@@ -20,6 +20,7 @@ in
   # import modules within modules for composition / dependency
   imports = [
     emacs-jinx
+    emacs-vterm
   ];
 
   config = {
