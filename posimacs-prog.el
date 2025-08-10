@@ -181,6 +181,7 @@
 
 ;; TODO Dape with Rust
 
+;; Thanks, Steve
 ;; https://github.com/purcell/emacs.d/blob/master/lisp/init-nix.el
 (use-package nix-ts-mode
   :ensure (nix-ts-mode
@@ -195,23 +196,20 @@
       (if (file-exists-p flake-path)
           `("nixd"
             :initializationOptions
-            (:nixpkgs (:expr ,(format "import (builtins.getFlake
-    \"%s\").inputs.nixpkgs { }" flake-path))))
+            ;; This plist will be serialized to JSON and sent to the server
+            (:nixpkgs
+             (:expr ,(format
+                      "import (builtins.getFlake \"%s\").inputs.nixpkgs { }"
+                      flake-path))))
         '("nixd"))))
-
-  ;; ("nixd"
-  ;;           :initializationOptions
-  ;;           (:nixpkgs (:expr "import (builtins.getFlake
-  ;;                   \"/home/satoshi/Desktop/prizeforge/prizeforge-site/flake.nix\").inputs.nixpkgs { }")))
 
   (let ((nix-settings
          '((nix-ts-mode) . #'pmx--project-flake-path)))
     (with-eval-after-load 'eglot
       (add-to-list 'eglot-server-programs nix-settings)))
 
-  (defun pmx--nixpkgs-fmt-on-save ()
-    (add-hook 'before-save-hook #'nixpkgs-fmt-buffer -100 t))
-  (add-hook 'nix-ts-mode-hook #'pmx--nixpkgs-fmt-on-save))
+  ;; nixpkgs-fmt defines autoloads for this
+  (add-hook 'nix-ts-mode-hook #'nixpkgs-fmt-on-save-mode))
 
 (use-package kubernetes
   :defer t
