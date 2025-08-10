@@ -170,6 +170,10 @@
 ;; highlight TODO keywords in code
 (use-package hl-todo
   :config
+  (push '("XXX" . "#ff0000") hl-todo-keyword-faces)
+  (push '("LIES" . "#f242f5") hl-todo-keyword-faces)
+  (push '("ROLL" . "#393973") hl-todo-keyword-faces)
+  (push '("DEBT" . "#384861") hl-todo-keyword-faces)
   (global-hl-todo-mode))
 
 ;; Gotta keep up with everyone else and their cool dashboards
