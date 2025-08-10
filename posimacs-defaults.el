@@ -42,6 +42,8 @@
 ;; I'm an adult
 (put #'narrow-to-region 'disabled nil)
 
+(setq ring-bell-function #'ignore)
+
 ;; Too lazy
 (use-package autoinsert
   :ensure nil
