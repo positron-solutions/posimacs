@@ -3,11 +3,11 @@
     "emacs-igc-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1737188950,
-        "narHash": "sha256-pd8aTzremsn/rY2fMTAb8Y2G/Lx/hhn9GsG4AFPvbAU=",
+        "lastModified": 1753947728,
+        "narHash": "sha256-ptuVreCmBpUpk8wWrgIM5pPe3Bm2HmbZNgP5jtCKxp8=",
         "owner": "emacs-mirror",
         "repo": "emacs",
-        "rev": "ef194a1e0e96f91dc7a57efcdf8a81ed716d18e0",
+        "rev": "a0757e0ac05e6277d534c94792c1e5c2c3434399",
         "type": "github"
       },
       "original": {
@@ -31,32 +31,29 @@
         ]
       },
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-18xZ5wBLOXkDmkFPEUNw+fR4DlH3o+6okwjoGYli3hs=",
-        "path": "./jinx",
+        "lastModified": 1754488129,
+        "narHash": "sha256-mcRoWg55N2uIemhmSrDdN0skmYZ+yrlZ2CJLM4wJh+M=",
+        "path": "/home/satoshi/Desktop/positron/posimacs/jinx",
         "type": "path"
       },
       "original": {
-        "path": "./jinx",
+        "path": "/home/satoshi/Desktop/positron/posimacs/jinx",
         "type": "path"
       }
     },
     "emacs-overlay": {
       "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ],
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1729300482,
-        "narHash": "sha256-yX0wijy9mDtE55XKOlv132fvtySHmmUWaFljgOMzw1k=",
+        "lastModified": 1754185988,
+        "narHash": "sha256-eyMAmcuCoJ33Z4gZNPuEjk7mjkb1vWidUUNpF1LGGx8=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "6a395318b684197b6bc210d0c174c97034248a95",
+        "rev": "e2605be20a68d8d72e6879c8b0522ee16fad0acf",
         "type": "github"
       },
       "original": {
@@ -70,11 +67,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1710146030,
-        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
         "type": "github"
       },
       "original": {
@@ -86,16 +83,16 @@
     "jinx-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1738048052,
-        "narHash": "sha256-b+hWDJ70LmXILP+8o+6RNa0q+N4XOZNHOklg1xfvtrM=",
+        "lastModified": 1753670715,
+        "narHash": "sha256-XDZAJnjo48VuyWM8E8RC21ykgDplvGMNqARG/1uS9Z4=",
         "owner": "minad",
         "repo": "jinx",
-        "rev": "2144d03f7bcc3f461b4e67f913dfc0055e4ad7e2",
+        "rev": "214d98c18c01897eab108a880b18aa3b64632a03",
         "type": "github"
       },
       "original": {
         "owner": "minad",
-        "ref": "1.12",
+        "ref": "2.3",
         "repo": "jinx",
         "type": "github"
       }
@@ -118,11 +115,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1729293466,
-        "narHash": "sha256-spbxC7Q4w6IwD1zIb2iC+M3vHsBgBARhYsIA0y5O9K0=",
+        "lastModified": 1735651292,
+        "narHash": "sha256-YLbzcBtYo1/FEzFsB3AnM16qFc6fWPMIoOuSoDwvg9g=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "496999009d053ec663854deb9e28f8600c38de99",
+        "rev": "0da3c44a9460a26d2025ec3ed2ec60a895eb1114",
         "type": "github"
       },
       "original": {
@@ -134,16 +131,16 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1729181673,
-        "narHash": "sha256-LDiPhQ3l+fBjRATNtnuDZsBS7hqoBtPkKBkhpoBHv3I=",
+        "lastModified": 1751274312,
+        "narHash": "sha256-/bVBlRpECLVzjV19t5KMdMFWSwKLtb5RyXdjz3LJT+g=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4eb33fe664af7b41a4c446f87d20c9a0a6321fa3",
+        "rev": "50ab793786d9de88ee30ec4e4c24fb4236fc2674",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-24.05",
+        "ref": "nixos-24.11",
         "repo": "nixpkgs",
         "type": "github"
       }
