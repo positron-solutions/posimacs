@@ -44,14 +44,14 @@ in
 
     programs.emacs = {
       enable = true;
-      package = pkgs.emacs-unstable;
-      # package = pkgs.emacs-git.overrideAttrs (old: {
-      #   src = emacs-igc-src;
-      #   buildInputs = old.buildInputs ++ [ pkgs.mps ];
-      #   configureFlags = old.configureFlags ++ [
-      #     "--with-mps=yes"
-      #   ];
-      # );
+      # package = pkgs.emacs-unstable;
+      package = pkgs.emacs-git.overrideAttrs (old: {
+        src = emacs-igc-src;
+        buildInputs = old.buildInputs ++ [ pkgs.mps ];
+        configureFlags = old.configureFlags ++ [
+          "--with-mps=yes"
+        ];
+      });
       extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
     };
 
@@ -59,6 +59,7 @@ in
 
     # Fontconfig will ensure that fonts installed in home.packages
     # are available
+    # ROLL this is old.  There seems to be a new home manager way to manage fonts.
     fonts.fontconfig.enable = true;
 
     programs.bash.shellAliases = lib.mkIf cfg.aliases {
