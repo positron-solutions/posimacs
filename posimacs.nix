@@ -32,14 +32,16 @@ in
     home.packages = with pkgs; [
       aspell
       aspellDicts.en
-      nerdfonts
+      nerd-fonts.symbols-only
+      nerd-fonts.iosevka
       ripgrep
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       roboto
       roboto-mono
       roboto-slab
-      symbola
+      # Network error Killed my build :-(
+      # symbola
     ];
 
     programs.emacs = {
