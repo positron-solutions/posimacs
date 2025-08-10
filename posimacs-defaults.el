@@ -128,8 +128,8 @@
 
 (delete-selection-mode 1) ; Actions on active region will delete
 
-(setq column-number-mode t) ; show columns in modeline
-(setq line-number-mode t)
+(column-number-mode 1) ; show columns in modeline
+(line-number-mode 1)
 
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
