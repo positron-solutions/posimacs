@@ -44,7 +44,7 @@
  mode-line-format nil
  ;; Builds with Nix set this to a garbage time.  Elpaca needs to guess if
  ;; built-in packages are out of date or not.
- emacs-build-time '(26026 11222 728074 741000)
+ emacs-build-time '(26772 34841 835831 722000)
  default-frame-alist
  '((name . "Emacs")
    (tool-bar-lines . 0)
