@@ -12,7 +12,6 @@ your elisp files.  It does not rely on Nix to manage elisp packages.  Elpaca
 is used for package locking.
 
 ** The Big Picture Scheme
-
 Different tools are appropriate for different aspects of propagating configuring
 for Emacs and your home environment around Emacs.
 
@@ -79,7 +78,6 @@ for Emacs and your home environment around Emacs.
   #+end_src
 
 ** About the Included Emacs Configurations
-
  *This is not meant to be an excellent distribution of Emacs yet.* The practice
  of distributing hunks of configuration by burying them in git repos is
  anachronistic.  Work is ongoing to update this anachronism to 2003-2004 level
@@ -89,7 +87,7 @@ for Emacs and your home environment around Emacs.
  decent setup for:
 
  - LSP and a Rust Analyzer build included, integration via Rustic
- - Minibuffer completions with Ivy + AMX + Counsel
+ - Minibuffer completions with Ivy + Prescient + Counsel
  - Vterm integration & nix build of emacs-libvterm
 
  Much of my actual setup is unpublished.  It's still unclear which parts will be
@@ -97,7 +95,6 @@ for Emacs and your home environment around Emacs.
  some other mechanism.  Bear with me.
 
 ** Installation
-
 There are three parts to implement the full scheme:
 
 - Setting up home manager and including this repository as a flake input (local
@@ -106,7 +103,6 @@ There are three parts to implement the full scheme:
 - Rehydrating package versions from the elpaca lock file.  Optional.
 
 *** Including Home Manager Module
-
  Clone this repository and symlink it into your =~/.emacs.d= directory.
 
  Home manager can use this repo as a flake input.  The input contains a
@@ -169,7 +165,6 @@ There are three parts to implement the full scheme:
 #+END_SRC
 
 *** Loading Emacs files
-
 In order for posimacs modules to have their lisp files loaded, you can load the
 shims or do something similar to their contents.
 
@@ -187,7 +182,6 @@ shims or do something similar to their contents.
 #+END_SRC
 
 *** Using Elpaca's Package Lock
-
 Elpaca does provide facilities to lock packages at the recipe level.
 
 You can also freeze and rehydrate versions from a lock file.  The versions used
@@ -201,9 +195,7 @@ TODO it's currently not automatic to use a lock file for installation, so
 versions will float, meaning you could pick up unwanted supply chain contents
 until you feed the lockfile to Elpaca.  Further work is needed on checking how
 Elpaca behaves when new versions are available.
-
 *** Home Manager
-
 Tell home manager to update your nix environment
 
 #+BEGIN_SRC bash
@@ -216,18 +208,14 @@ your dependencies and building packages.  Connect to the daemon with
 =emacsclient=.
 
 Otherwise you can just run =emacs= to watch the process manually.
-
 *** Additional OSX Steps
-
 Copy the font files from =~/.nix-profile/share/fonts/= to =~/Library/Fonts/=
 
 You will /still/ need to run =M-x nerd-icons-install-fonts= for icons to
 begin working.  Can't pre-install them as they are not picked up in
 =~/Library/Fonts/=
-
 *** Server
 Instead of running a server, the recommended way to use Emacs these days is to start the server during Emacs startup.  You alias your Emacs command to one that first tries to start emacs-client and then falls back to starting Emacs, which will start the server.  This way, when the last Emacs frame is closed, Emacs is dead.  It is reliable and convenient compared to using systemctl to restart Emacs.
-
 **** Daemon
 If you insist on using the Daemon, there are some things you should know.
 
@@ -243,7 +231,6 @@ restart your daemon manually (it prints this instruction after =home-manager
 switch=) by running =systemctl --user restart emacs=.
 
 ** The Actual Vision
-
 The optimum Nix integration appears to be slightly different than what is
 currently implemented.
 
@@ -265,7 +252,6 @@ files around the internet is a form of implicit dependencies that virtually
 ensures cargo culting & decay.  Posimacs is being used to develop a better way.
 
 ** Maintenance
-
 There's 2-3 layers of modularization and customization we can use to achieve
 cooperative customization:
 
@@ -273,16 +259,13 @@ cooperative customization:
 2. Home manager modules
 3. Emacs packages (from a package repo or custom source)
 4. Emacs files in non-package format
-
 *** Don't Forget Customize!
-
 You likely don't need to change a variable setting in this repo.  Configure the
 relevant variable in your =custom.el= file by using =M-x customize= or =C-h v
 <variable name>= and save it the way you like.  If it's a matter of opinion, we
 don't need to fix it in source.
 
 *** When blocked by a config, try to make it /more/ flexible
-
 If something is in your way, attempt to extract it to a new `.el` file
 or parameterize it.  Maintaining an independent branch may become too
 painful over time, but could be viable if you are doing local
