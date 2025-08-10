@@ -84,17 +84,13 @@
   (define-key ivy-minibuffer-map (kbd "C-p") nil)
   (define-key ivy-minibuffer-map (kbd "C-<return>") #'ivy-immediate-done))
 
-(use-package ivy-rich  ; More informative ivy completionsq
-  :after (ivy counsel-projectile)
-  :config
-  (ivy-rich-mode +1)
-  (ivy-rich-project-root-cache-mode +1))
+(use-package ivy-rich)
 
 (use-package nerd-icons-ivy-rich
-  :after ivy-rich
   :config
   (nerd-icons-ivy-rich-mode 1)
-  (ivy-rich-mode 1))
+  (ivy-rich-mode 1)
+  (ivy-rich-project-root-cache-mode 1))
 
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
 (use-package counsel
