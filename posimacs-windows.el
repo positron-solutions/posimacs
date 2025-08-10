@@ -253,7 +253,9 @@ call unless there's a ton of windows for some reason."
   :custom
   (setq avy-escape-chars '(?\e ?\C-g))
   :config
-  (setq avy-all-windows 'all-frames)) ; avy can switch frames
+  (setq avy-all-windows 'all-frames) ; avy can switch frames
+  (setq avy-keys '(?l ?m ?j ?k ?f ?c ?d ?o ?i ?a ?w ?s ?e ?v ?n ?h ?g ?\; ?9 ?0
+                      ?2 ?3 ?, ?.)))
 
 ;; focus help window so that it can be closed immediately with 'q'
 (setq help-window-select t)
