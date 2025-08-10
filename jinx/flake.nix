@@ -5,7 +5,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs?ref=release-24.05";
     jinx-src = {
-      url = "github:minad/jinx?ref=1.12";
+      url = "github:minad/jinx?ref=2.3";
       flake = false;
     };
     korean-hunspell-src = {

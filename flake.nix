@@ -17,11 +17,11 @@
       inputs.flake-utils.follows = "flake-utils";
     };
     jinx-src = {
-      url = "github:minad/jinx?ref=1.12";
+      url = "github:minad/jinx?ref=2.3";
       flake = false;
     };
     emacs-jinx = {
-      url = "path:./jinx";
+      url = "path:/home/satoshi/Desktop/positron/posimacs/jinx";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
       inputs.jinx-src.follows = "jinx-src";
