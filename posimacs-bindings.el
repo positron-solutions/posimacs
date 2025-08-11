@@ -364,10 +364,96 @@ Repeats of that char should continue."
   (general-unbind 'ibuffer-mode-map "M-s")
   (general-unbind 'ibuffer-mode-map "M-j")
 
+  (defun pmx-vterm-avy-goto-word-1 ()
+    "Jump, but enable vterm copy mode first"
+    (interactive)
+    (unless vterm-copy-mode
+      (vterm-copy-mode 1))
+    (call-interactively #'avy-goto-word-1))
+
+  (defun pmx-vterm-kill-region ()
+    "Kill, but enable vterm copy mode first"
+    (interactive)
+    (unless vterm-copy-mode
+      (vterm-copy-mode 1))
+    (call-interactively #'kill-region))
+
+  (defun pmx-vterm-send-enter ()
+    "Enter, but disable vterm copy mode first"
+    (interactive)
+    (when vterm-copy-mode
+      (vterm-copy-mode -1)
+      (end-of-buffer))
+    (call-interactively 'vterm-send-enter))
+
+  (defun pmx-vterm-yank ()
+    "Yank, but disable vterm copy mode first"
+    (interactive)
+    (when vterm-copy-mode
+      (vterm-copy-mode -1))
+    (call-interactively 'vterm-yank-primary))
+
+  ;; Vterm's terminal bindings interfere with even basic text editing ;-(
+  ;; use `vterm-send-C-S-a' etc.
+  (general-unbind 'vterm-mode-map
+    "M-a"
+    "M-b"
+    "M-d"
+    "M-c"
+    "M-f"
+    "M-f"
+    "M-h"
+    "M-j"
+    "M-k"
+    "M-l"
+    "M-s"
+    "M-y"
+    "M-v"
+    "M-z")
+
   ;; Finish up by correcting repeat maps that were screwd up
-  (setq undo-repeat-map (make-sparse-keymap))
-  (put #'undo 'repeat-map undo-repeat-map)
-  (keymap-set undo-repeat-map "/" #'undo))
+  ;; (setq undo-repeat-map (make-sparse-keymap))
+  ;; (put #'undo 'repeat-map undo-repeat-map)
+  ;; (keymap-set undo-repeat-map "/" #'undo)
+
+  ;; Rebind vterm with modified shortcuts that enable `vterm-copy-mode'
+  (general-def 'vterm-mode-map "M-l" #'pmx-vterm-avy-goto-word-1)
+  (general-def 'vterm-mode-map "M-w" #'pmx-vterm-kill-region)
+  (general-def 'vterm-mode-map "RET" #'pmx-vterm-send-enter)
+  (general-def 'vterm-mode-map "C-y" #'vterm-yank)
+
+  (defvar vterm-buffer-name)
+  (defun pmx--vterm-project (&optional arg)
+    "Start Vterm in the current project's root directory.
+
+Start a new Vterm session, or switch to an already active session.
+Return the buffer selected (or created).
+
+With a non-numeric prefix ARG, create a new session.
+
+With a numeric prefix ARG (like
+\\[universal-argument] 42 \\[vterm-project]), switch to the session with
+that number, or create it if it doesn't already exist."
+    (interactive "P")
+    (require 'project)
+    (let* ((default-directory (project-root (project-current t)))
+           (vterm-buffer-name (project-prefixed-buffer-name "vterm")))
+      ;; buffer name is dynamically bound
+      (vterm)))
+
+  (defun pmx-vterm-project-toggle ()
+    "Toggle the project terminal."
+    (interactive)
+    (if (string-match-p "vterm-"
+                        (symbol-name (buffer-local-value
+                                      'major-mode
+                                      (current-buffer))))
+        (call-interactively #'previous-buffer)
+      (call-interactively #'pmx--vterm-project)))
+
+  (general-def 'global-map "M-z" #'pmx-vterm-project-toggle)
+  (general-def 'vterm-mode-map "M-z" #'pmx-vterm-project-toggle))
+
 
 ;; TODO new package for sure
 (use-package transient

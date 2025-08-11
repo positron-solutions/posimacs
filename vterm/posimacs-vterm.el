@@ -8,9 +8,11 @@
 ;;; Code:
 
 (use-package vterm
-  :elpaca nil
+  :ensure nil
   :load-path  "~/.emacs.d/vendor/emacs-vterm"
-  :commands (vterm vterm-other-window))
+  :commands (vterm vterm-other-window)
+  :config
+  (define-obsolete-function-alias #'eat #'vterm "0.1.0"))
 
 (provide 'posimacs-vterm)
 ;;; posimacs-vterm.el ends here
