@@ -31,8 +31,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1754488129,
-        "narHash": "sha256-mcRoWg55N2uIemhmSrDdN0skmYZ+yrlZ2CJLM4wJh+M=",
+        "lastModified": 1754815158,
+        "narHash": "sha256-PyN/XD4GniVu78DmV1FEQFOtT/DlkFTE7WIvav7dCKA=",
         "path": "/home/satoshi/Desktop/positron/posimacs/jinx",
         "type": "path"
       },
@@ -75,8 +75,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1754822742,
-        "narHash": "sha256-yJhsPZ5ThoRCKz/wECGumXekZ1D7v3BfU3+Na1eK3uE=",
+        "lastModified": 1754915842,
+        "narHash": "sha256-H7Lr1a5SaStRLk4WdkfactcEp/DMyv3l0frDSDaM/0c=",
         "path": "/home/satoshi/Desktop/positron/posimacs/vterm",
         "type": "path"
       },
