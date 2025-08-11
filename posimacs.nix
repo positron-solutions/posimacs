@@ -34,15 +34,16 @@ in
       aspell
       aspellDicts.en
       nerd-fonts.symbols-only
+      material-design-icons
+      weather-icons
       nerd-fonts.iosevka
+      nerd-fonts.iosevka-term
       ripgrep
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       roboto
       roboto-mono
       roboto-slab
-      # Network error Killed my build :-(
-      # symbola
     ];
 
     programs.emacs = {
