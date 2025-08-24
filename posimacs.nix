@@ -51,10 +51,30 @@ in
       # package = pkgs.emacs-unstable;
       package = pkgs.emacs-git.overrideAttrs (old: {
         src = emacs-igc-src;
+        stdenv = pkgs.llvmPackages.stdenv;
         buildInputs = old.buildInputs ++ [ pkgs.mps ];
         configureFlags = old.configureFlags ++ [
           "--with-mps=yes"
         ];
+
+        preConfigure = ''
+          export CC=${pkgs.llvmPackages.clang}/bin/clang
+          export CXX=${pkgs.llvmPackages.clang}/bin/clang++
+          export AR=${pkgs.llvm}/bin/llvm-ar
+          export NM=${pkgs.llvm}/bin/llvm-nm
+          export LD=${pkgs.lld}/bin/ld.lld
+          export RANLIB=${pkgs.llvm}/bin/llvm-ranlib
+        '';
+
+        # Extra compiler flags (Clang-flavored)
+        NIX_CFLAGS_COMPILE = toString ([
+          "-O2"
+          "-march=znver2"
+          "-mtune=znver2"
+          "-flto=thin"
+          "-fprofile-generate"
+          # "-fprofile-use=$HOME/.cache/emacs/emacs.profdata"
+        ] ++ old.NIX_CFLAGS_COMPILE or []);
       });
       extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
     };
