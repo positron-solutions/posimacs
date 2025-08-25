@@ -84,7 +84,7 @@
           "-march=znver2"
           "-mtune=znver2"
           "-flto=full"
-          "-fprofile-generate"
+          # "-fprofile-generate"
           # "-fprofile-use=$HOME/.cache/emacs/emacs.profdata"
         ]);
        };
