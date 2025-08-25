@@ -86,11 +86,12 @@
 
 (use-package ivy-rich)
 
-(use-package nerd-icons-ivy-rich
-  :config
-  (nerd-icons-ivy-rich-mode 1)
-  (ivy-rich-mode 1)
-  (ivy-rich-project-root-cache-mode 1))
+;; Busted icon sets :-(
+;; (use-package nerd-icons-ivy-rich
+;;   :config
+;;   (nerd-icons-ivy-rich-mode 1)
+;;   (ivy-rich-mode 1)
+;;   (ivy-rich-project-root-cache-mode 1))
 
 ;; Counsel provides many of the completion options for base emacs workflows to ivy
 (use-package counsel
