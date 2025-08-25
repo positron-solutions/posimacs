@@ -14,7 +14,7 @@
   :hook (elpaca-after-init-hook . global-jinx-mode)
   :bind ([remap ispell-word] . jinx-correct)
   :config
-  (setq jinx-languages "en_US ko")
+  (setq jinx-languages "en_US")
   (setq jinx-delay 2.0)
   (global-jinx-mode 1))
 
