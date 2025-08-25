@@ -6,8 +6,9 @@ let
   client-or-server = "emacsclient --create-frame --alternate-editor emacs";
   # terminal version of the above
   # client-or-server = "emacsclient -nw --create-frame -a emacs";
-in
-{
+
+  profdata = ./merged.profdata;
+in {
   options.posimacs = {
     aliases = lib.mkOption {
       default = pkgs.stdenv.isLinux;
@@ -71,9 +72,9 @@ in
           "-O2"
           "-march=znver2"
           "-mtune=znver2"
-          "-flto=thin"
-          "-fprofile-generate"
-          # "-fprofile-use=$HOME/.cache/emacs/emacs.profdata"
+          "-flto=full"
+          # "-fprofile-generate"
+          "-fprofile-use=${profdata}"
         ] ++ old.NIX_CFLAGS_COMPILE or []);
       });
       extraPackages = (epkgs: [ epkgs.treesit-grammars.with-all-grammars ]);
